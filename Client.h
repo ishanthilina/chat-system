@@ -1,3 +1,6 @@
+#ifndef _CLIENT_HEADER_
+#define _CLIENT_HEADER_
+
 #include <string>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -19,3 +22,5 @@ private:
 	string s_LogName;
 	sockaddr_in o_address;
 };
+
+#endif

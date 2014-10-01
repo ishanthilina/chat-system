@@ -175,11 +175,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DeliveryController.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Logger.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Message.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\MessageFactory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Server.cpp"
 				>
 			</File>
 		</Filter>
@@ -193,11 +205,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DeliveryController.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Logger.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Message.h"
 				>
 			</File>
 			<File
 				RelativePath=".\MessageFactory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Server.h"
 				>
 			</File>
 		</Filter>
