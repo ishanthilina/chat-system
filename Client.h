@@ -2,8 +2,11 @@
 #define _CLIENT_HEADER_
 
 #include <string>
+#include <cstdio>	//defines sprintf
 #include <netinet/in.h>
 #include <arpa/inet.h>
+
+#include <iostream>
 
 using namespace std;
 
@@ -23,4 +26,4 @@ private:
 	sockaddr_in o_address;
 };
 
-#endif
+#endif	//_CLIENT_HEADER_

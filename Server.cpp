@@ -120,10 +120,11 @@ void Server::RunServer()
 					 printf("Host disconnected , ip %s , port %d \n" , inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
 
 					 //Close the socket and mark as 0 in list for reuse
-//					 close( i_SocketDescriptor );
-//					 client_socket[i] = 0;
+
 
 					 //TODO - Handle close logic
+					 close( i_SocketDescriptor );
+					 //					 client_socket[i] = 0;
 				 }
 				 else	//if it is not a disconnect
 				 {

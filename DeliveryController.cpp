@@ -15,11 +15,8 @@ int DeliveryController::processMessage( Message * o_Message )
 	{
 		cout<<"DeliveryController::login msg"<<endl;
 
-		//Client oClient = new Client(o_Message->GetMessage(),o_Message->GetSenderSocket(),)
-
-
-
-
+		Client * oClient = new Client(o_Message->GetMessage(),o_Message->GetSenderSocket(),o_Message->GetSenderSockAddr());
+		o_Server->AddClient(oClient);
 
 	}
 
