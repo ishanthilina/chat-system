@@ -1,7 +1,7 @@
 #include "MessageFactory.h"
 
 
-Message * MessageFactory::createMessage( int i_Sender, string s_Message,, sockaddr_in o_SenderSockAddr)
+Message * MessageFactory::createMessage( int i_Sender, string s_Message, sockaddr_in o_SenderSockAddr)
 {
 	cout<<"MessageFactory::createMessage"<<endl;
 	MessageType oMsgType=getMessageType(s_Message);

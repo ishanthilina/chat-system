@@ -5,6 +5,17 @@ class DeliveryController;
 
 #include <string>
 #include <iostream>
+#include <stdio.h>	//defines perror
+#include <stdlib.h>	//defines  exit and EXIT_FAILURE
+#include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
+#include <errno.h>
+
+//#include <arpa/inet.h>    //close
+//#include <sys/types.h>
+//#include <sys/socket.h>
+//#include <netinet/in.h>
+#include <unistd.h>   //defines read
+
 #include <vector>
 #include "DeliveryController.h"
 #include "MessageFactory.h"
@@ -27,7 +38,8 @@ protected:
 private:
 	MessageFactory * p_MsgFactory;
 	DeliveryController * p_MsgProcessor;
-	vector<string> * clients;
+	vector<Client*> * o_Clients;
+	vector<int*> * o_ClientDescriptors;
 };
 
-#endif
+#endif	//_SERVER_HEADER_
