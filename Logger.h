@@ -2,6 +2,7 @@
 #define _LOGGER_HEADER_
 
 #include <string>
+#include <iostream>
 
 #include "Client.h"
 
@@ -15,4 +16,4 @@ protected:
 private:
 };
 
-#endif
+#endif //_LOGGER_HEADER_

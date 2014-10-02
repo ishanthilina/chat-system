@@ -1,12 +1,42 @@
 #include "Message.h"
 
-Message::Message(string s_Message, MessageType e_MessageType, int i_Sender, int i_Receiver )
+static const char * EnumStrings[] = { "LIN", "P2P", "LOU" };
+
+const char * GetTextForEnum( int i_EnumVal )
+{
+	return EnumStrings[i_EnumVal];
+}
+
+const MessageType GetEnumFromString(string s_EnumStr){
+	MessageType oReturnType;
+	bool bReturnTypeWasSet=false;
+	for (int i=0; i<4;i++){
+		if (s_EnumStr.compare(EnumStrings[i])==0)
+		{
+			oReturnType=static_cast<MessageType>(i);
+			bReturnTypeWasSet=true;
+			//cout<<i;
+			break;
+		}
+		//cout<<"No : "<<i<<":"<<s_EnumStr;
+	}
+	if (!bReturnTypeWasSet)
+	{
+		//cout<<"ErroR";
+		oReturnType=ERROR;
+	}
+
+	return oReturnType;
+}
+
+Message::Message(string s_Message, MessageType e_MessageType, int i_Sender, vector<string> * o_Receivers, sockaddr_in o_SenderSockAddr)
 {
 
 	this->s_Message = s_Message;
 	this->e_MessageType = e_MessageType;
-	this->i_Receiver = i_Receiver;
-	this->i_Sender = i_Sender;
+	this->o_Receivers = o_Receivers;
+	this->i_SenderSocket = i_Sender;
+	this->o_SenderSockAddr=o_SenderSockAddr;
 
 }
 
@@ -21,23 +51,20 @@ MessageType Message::GetMessageType()
 	return e_MessageType;
 }
 
-int Message::getSender()
+int Message::GetSenderSocket()
 {
 
-	return i_Sender;
+	return i_SenderSocket;
 }
 
-int Message::getReceiver()
+vector<string> * Message::getReceivers()
 {
-	return i_Receiver;
-
+	return o_Receivers;
 }
 
-
-
-
-int main()
+sockaddr_in Message::GetSenderSockAddr()
 {
-
-	return 0;
+	return o_SenderSockAddr;
 }
+
+

@@ -12,7 +12,7 @@ class Client
 public:
 	Client(string s_UserName, int i_Socket,sockaddr_in o_address);
 	string GetUserName();
-	string GetLogNanme();
+	string GetLogName();
 	int GetSocket();
 	sockaddr_in GetAddressStruct();
 protected:

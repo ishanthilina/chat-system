@@ -2,6 +2,9 @@
 #define _MESSAGE_FACTORY_HEADER_
 
 #include <string>
+#include <iostream>
+#include <vector>
+#include <netinet/in.h>	//for sockaddr_in
 #include "Message.h"
 
 using namespace std;
@@ -9,7 +12,7 @@ using namespace std;
 class MessageFactory
 {
 public:
-	Message createMessage(int i_sender, string s_Message);
+	Message * createMessage(int i_sender, string s_Message, sockaddr_in o_SenderSockAddr);
 	MessageFactory();
 protected:
 private:

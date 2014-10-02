@@ -1,3 +1,4 @@
+#include "Client.h"
 
 Client::Client( string s_UserName, int i_Socket, sockaddr_in o_address)
 {
@@ -5,7 +6,8 @@ Client::Client( string s_UserName, int i_Socket, sockaddr_in o_address)
 	this->i_Socket = i_Socket;
 	this->o_address = o_address;
 
-	this->s_LogName = s_UserName+"-"+inet_ntoa(address.sin_addr)+"-"+ntohs(address.sin_port);
+	this->s_LogName = s_UserName+"-"+string(inet_ntoa(o_address.sin_addr));
+		//+"-"+string(ntohs(o_address.sin_port));
 }
 
 std::string Client::GetUserName()
@@ -13,7 +15,7 @@ std::string Client::GetUserName()
 	return s_UserName;
 }
 
-std::string Client::GetLogNanme()
+std::string Client::GetLogName()
 {
 	return s_LogName;
 }
