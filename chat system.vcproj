@@ -224,6 +224,10 @@
 				RelativePath=".\Server.h"
 				>
 			</File>
+			<File
+				RelativePath=".\Utils.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

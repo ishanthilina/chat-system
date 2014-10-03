@@ -45,7 +45,7 @@ Message * MessageFactory::createMessage( int i_Sender, string s_Message, sockadd
 		oMessage=new Message(s_Message.substr(iReceiverListEndLoc+1,s_Message.length()-iReceiverListEndLoc),DIRECT,i_Sender,oReceivers,o_SenderSockAddr);
 		
 	}
-	else		//else this is a invalid message
+	else		//else this is an invalid message
 	{	
 		cout<<"MessageFactory::ERROR msg"<<endl;
 		oMessage=new Message(s_Message,ERROR,i_Sender,NULL,o_SenderSockAddr);

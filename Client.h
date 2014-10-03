@@ -1,10 +1,12 @@
 #ifndef _CLIENT_HEADER_
 #define _CLIENT_HEADER_
 
+#include <algorithm>
 #include <string>
 #include <cstdio>	//defines sprintf
 #include <netinet/in.h>
 #include <arpa/inet.h>
+//#include "Utils.h"
 
 #include <iostream>
 

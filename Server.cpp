@@ -1,5 +1,6 @@
 #include "Server.h"
 
+
 #define MAX_INPUT_BUFFER_SIZE 1025
 #define PORT 8888
 
@@ -13,6 +14,7 @@ Server::Server( MessageFactory * p_MsgFactory,DeliveryController * p_MsgProcesso
 
 void Server::RunServer()
 {
+	
 
 	int i_MasterSocket, i_Addrlen, i_NewSocket, i_SocketActivity, i_ReadValue, i_SocketDescriptor, i_MaxSocketDescriptor, i_Option=1;
 	struct sockaddr_in o_Address;
@@ -47,7 +49,7 @@ void Server::RunServer()
 		 perror("bind failed");
 		 exit(EXIT_FAILURE);
 	 }
-	 printf("Listener on port %d \n", PORT);
+	 //LogDebug("Listener on port %d \n", PORT);
 
 	 //try to specify maximum of 3 pending connections for the master socket
 	 if (listen(i_MasterSocket, 3) < 0)
@@ -133,7 +135,7 @@ void Server::RunServer()
 
 					 Message * oMmessage=p_MsgFactory->createMessage(i_SocketDescriptor,string(z_InputBuffer),o_Address);
 					 p_MsgProcessor->processMessage(oMmessage);
-					 cout<<"Server:: "<<oMmessage->GetMessage()<<endl;
+					 //cout<<"Server:: "<<oMmessage->GetMessage()<<endl;
 					 delete oMmessage;
 				 }
 
@@ -166,7 +168,71 @@ void Server::RunServer()
 
 int Server::AddClient( Client * o_Client )
 {
-	cout<<"SERVER:: Add Client - "<<o_Client->GetLogName();
+	printf("SERVER:: Add Client - %s\n",o_Client->GetLogName().c_str());
+
+	//check if the username is unique
+	for(vector<Client*>::iterator it=o_Clients->begin();it!=o_Clients->end();++it)
+	{
+
+		if (o_Client->GetUserName().compare((*it)->GetUserName())==0)
+		{
+			return 1;
+		}
+
+	}
+
+	o_Clients->push_back(o_Client);
+
+	return 0;
+
+}
+
+int Server::SendMessage( string s_Message, int i_socket )
+{
+
+
+	if( send(i_socket, s_Message.c_str(), strlen(s_Message.c_str()), 0) != strlen(s_Message.c_str()) ) 
+	{
+		perror("send");
+	}
+
+}
+
+bool Server::IsClientExists( string username )
+{
+	//check if the username is unique
+	for(vector<Client*>::iterator it=o_Clients->begin();it!=o_Clients->end();++it)
+	{
+		//cout<<username<<"-"<<(*it)->GetUserName()<<endl;
+
+		if (username.compare((*it)->GetUserName())==0)
+		{
+			return true;
+		}
+
+	}
+
+	return false;
+}
+
+int Server::GetClient(Client * oClient, int i_socket )
+{
+	for(vector<Client*>::iterator it=o_Clients->begin();it!=o_Clients->end();++it)
+	{
+		//cout<<username<<"-"<<(*it)->GetUserName()<<endl;
+
+		if (i_socket==(*it)->GetSocket())
+		{
+			oClient = (*it);
+			//cout<<(*it)->GetSocket()<<endl;
+			//cout<<(*it)->GetUserName()<<endl;
+			//cout<<oClient->GetUserName()<<endl;
+			return 0;
+		}
+
+	}
+
+	return 1;
 
 }
 

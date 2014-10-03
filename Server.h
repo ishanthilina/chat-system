@@ -4,6 +4,7 @@
 class DeliveryController;
 
 #include <string>
+#include <string.h>   //strlen
 #include <iostream>
 #include <stdio.h>	//defines perror
 #include <stdlib.h>	//defines  exit and EXIT_FAILURE
@@ -19,6 +20,7 @@ class DeliveryController;
 #include <vector>
 #include "DeliveryController.h"
 #include "MessageFactory.h"
+//#include "Utils.h"
 
 using namespace std;
 
@@ -30,6 +32,8 @@ public:
 	int Disconnect(int i_Socket);
 	int AddClient(Client * o_Client);
 	bool RemoveClient(Client * o_Client);
+	bool IsClientExists(string username);
+	int GetClient(Client * oClient,int i_socket);
 	//Client GetAllClients();
 	void RunServer();
 
