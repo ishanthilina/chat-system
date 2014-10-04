@@ -194,7 +194,10 @@ int Server::SendMessage( string s_Message, int i_socket )
 	if( send(i_socket, s_Message.c_str(), strlen(s_Message.c_str()), 0) != strlen(s_Message.c_str()) ) 
 	{
 		perror("send");
+		return 1;
 	}
+
+	return 0;
 
 }
 
@@ -215,7 +218,7 @@ bool Server::IsClientExists( string username )
 	return false;
 }
 
-int Server::GetClient(Client * oClient, int i_socket )
+Client * Server::GetClient( int i_socket )
 {
 	for(vector<Client*>::iterator it=o_Clients->begin();it!=o_Clients->end();++it)
 	{
@@ -223,16 +226,39 @@ int Server::GetClient(Client * oClient, int i_socket )
 
 		if (i_socket==(*it)->GetSocket())
 		{
-			oClient = (*it);
-			//cout<<(*it)->GetSocket()<<endl;
-			//cout<<(*it)->GetUserName()<<endl;
-			//cout<<oClient->GetUserName()<<endl;
-			return 0;
+			//oClient = new Client((*it)->GetUserName(),(*it)->GetSocket(),(*it)->GetAddressStruct());
+			//cout<<"-"<<(*it)->GetUserName()<<endl;
+
+			return (*it);
+
+			//return 0;
 		}
 
 	}
 
-	return 1;
+	return NULL;
+
+}
+
+Client * Server::GetClient( string username )
+{
+	for(vector<Client*>::iterator it=o_Clients->begin();it!=o_Clients->end();++it)
+	{
+		//cout<<username<<"-"<<(*it)->GetUserName()<<endl;
+
+		if (username.compare((*it)->GetUserName())==0)
+		{
+			//oClient = new Client((*it)->GetUserName(),(*it)->GetSocket(),(*it)->GetAddressStruct());
+			//cout<<"-"<<(*it)->GetUserName()<<endl;
+
+			return (*it);
+
+			//return 0;
+		}
+
+	}
+
+	return NULL;
 
 }
 

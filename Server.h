@@ -33,7 +33,8 @@ public:
 	int AddClient(Client * o_Client);
 	bool RemoveClient(Client * o_Client);
 	bool IsClientExists(string username);
-	int GetClient(Client * oClient,int i_socket);
+	Client * GetClient(int i_socket);
+	Client * GetClient(string username);
 	//Client GetAllClients();
 	void RunServer();
 

@@ -31,8 +31,8 @@ int DeliveryController::processMessage( Message * o_Message )
 
 		//Authenticate the message
 		Client * oClient;
-		int status=o_Server->GetClient(oClient,o_Message->GetSenderSocket());
-		if (status)
+		oClient=o_Server->GetClient(o_Message->GetSenderSocket());
+		if (oClient==NULL)
 		{
 			o_Server->SendMessage("Authentication failure!. Please re-login.",o_Message->GetSenderSocket());
 			return 1;
@@ -42,7 +42,7 @@ int DeliveryController::processMessage( Message * o_Message )
 
 		//construct the message to be sent
 		string sMsg;
-		cout<<oClient->GetSocket();  // SEGFAULT HERE
+		//cout<<oClient->GetSocket();  // SEGFAULT HERE
 		sMsg=oClient->GetUserName();
 		sMsg.append(" : ");
 
@@ -63,9 +63,19 @@ int DeliveryController::processMessage( Message * o_Message )
 		sMsg.append(" : ");
 		sMsg.append(o_Message->GetMessage());
 
+		//send the message to all the recipients
+		for(vector<string>::iterator it=oReceivers->begin();it!=oReceivers->end();++it)
+		{
+			oClient=o_Server->GetClient(*it);
+			if(oClient!=NULL)
+			{
+				o_Server->SendMessage(sMsg,oClient->GetSocket());
+			}
+
+		}
 
 
-		cout<<sMsg<<endl;
+		//cout<<sMsg<<endl;
 		cout<<"End"<<endl;
 
 	}
