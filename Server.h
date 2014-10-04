@@ -44,7 +44,7 @@ private:
 	MessageFactory * p_MsgFactory;
 	DeliveryController * p_MsgProcessor;
 	vector<Client*> * o_Clients;
-	vector<int*> * o_ClientDescriptors;
+	vector<int> * o_ClientDescriptors;
 };
 
 #endif	//_SERVER_HEADER_

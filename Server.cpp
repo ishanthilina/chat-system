@@ -9,7 +9,7 @@ Server::Server( MessageFactory * p_MsgFactory,DeliveryController * p_MsgProcesso
 	this->p_MsgFactory=p_MsgFactory;
 	this->p_MsgProcessor=p_MsgProcessor;
 	o_Clients = new vector<Client*>;
-	o_ClientDescriptors = new vector<int*>;
+	o_ClientDescriptors = new vector<int>;
 }
 
 void Server::RunServer()
@@ -73,9 +73,9 @@ void Server::RunServer()
 		 i_MaxSocketDescriptor= i_MasterSocket;
 
 		 //add child sockets to set
-		 for(vector<int*>::iterator it=o_ClientDescriptors->begin();it!=o_ClientDescriptors->end();++it)
+		 for(vector<int>::iterator it=o_ClientDescriptors->begin();it!=o_ClientDescriptors->end();++it)
 		 {
-			 i_SocketDescriptor = (**it);
+			 i_SocketDescriptor = (*it);
 			 FD_SET( i_SocketDescriptor , &o_ReadFds);
 
 			 //highest file descriptor number, need it for the select function
@@ -103,14 +103,14 @@ void Server::RunServer()
 			 }
 
 			 //add new socket to the watching set of sockets
-			 o_ClientDescriptors->push_back(&i_NewSocket);
+			 o_ClientDescriptors->push_back(i_NewSocket);
 
 		 }
 
 		 //else its some IO operation on some other socket
-		 for(vector<int*>::iterator it=o_ClientDescriptors->begin();it!=o_ClientDescriptors->end();++it)
+		 for(vector<int>::iterator it=o_ClientDescriptors->begin();it!=o_ClientDescriptors->end();++it)
 		 {
-			 i_SocketDescriptor = (**it);
+			 i_SocketDescriptor = (*it);
 
 			 if (FD_ISSET( i_SocketDescriptor , &o_ReadFds))
 			 {
