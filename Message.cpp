@@ -1,6 +1,6 @@
 #include "Message.h"
 
-static const char * EnumStrings[] = { "LIN", "P2P", "LOU" };
+static const char * EnumStrings[] = { "LIN", "PTP", "LOU" };
 
 const char * GetTextForEnum( int i_EnumVal )
 {
@@ -10,7 +10,7 @@ const char * GetTextForEnum( int i_EnumVal )
 const MessageType GetEnumFromString(string s_EnumStr){
 	MessageType oReturnType;
 	bool bReturnTypeWasSet=false;
-	for (int i=0; i<4;i++){
+	for (int i=0; i<3;i++){
 		if (s_EnumStr.compare(EnumStrings[i])==0)
 		{
 			oReturnType=static_cast<MessageType>(i);
