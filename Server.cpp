@@ -126,7 +126,20 @@ void Server::RunServer()
 
 					 //TODO - Handle close logic
 					 close( i_SocketDescriptor );
-					 //					 client_socket[i] = 0;
+					 //remove the connection from listening sockets
+					 o_ClientDescriptors->erase(it);
+					 //remove from the clients list also
+					 for(vector<Client*>::iterator it1=o_Clients->begin();it1!=o_Clients->end();++it1)
+					 	{
+						 if ((*it1)->GetSocket()==i_SocketDescriptor)
+						 		{
+						 			delete *it1;
+						 			o_Clients->erase(it1);
+						 			break;
+						 		}
+					 	}
+					 break;
+
 				 }
 				 else	//if it is not a disconnect
 				 {
