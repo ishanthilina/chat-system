@@ -121,10 +121,7 @@ void Server::RunServer()
 					 getpeername(i_SocketDescriptor, (struct sockaddr*)&o_Address , (socklen_t*)&i_Addrlen);
 					 printf("Host disconnected , ip %s , port %d \n" , inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
 
-					 //Close the socket and mark as 0 in list for reuse
-
-
-					 //TODO - Handle close logic
+					 //Close the socket
 					 close( i_SocketDescriptor );
 					 //remove the connection from listening sockets
 					 o_ClientDescriptors->erase(it);
@@ -150,6 +147,7 @@ void Server::RunServer()
 					 p_MsgProcessor->processMessage(oMmessage);
 					 //cout<<"Server:: "<<oMmessage->GetMessage()<<endl;
 					 delete oMmessage;
+					 break;
 				 }
 
 			 }
@@ -275,6 +273,32 @@ Client * Server::GetClient( string username )
 
 }
 
+int Server::RemoveClient( Client * o_Client )
+{
+	//Close the socket
+	close( o_Client->GetSocket() );
+	//remove the connection from listening sockets
+	for(vector<int>::iterator it=o_ClientDescriptors->begin();it!=o_ClientDescriptors->end();++it)
+			 {
+		if(o_Client->GetSocket() ==(*it)){
+			o_ClientDescriptors->erase(it);
+			break;
+		}
+
+			 }
+	//remove from the clients list also
+	for(vector<Client*>::iterator it1=o_Clients->begin();it1!=o_Clients->end();++it1)
+	{
+		if ((*it1)->GetSocket()==o_Client->GetSocket())
+		{
+			delete *it1;
+			o_Clients->erase(it1);
+			break;
+		}
+	}
+
+	return 0;
+}
 int main(){
 
 	MessageFactory * pFactory = new MessageFactory();

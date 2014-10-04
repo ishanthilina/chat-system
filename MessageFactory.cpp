@@ -45,6 +45,10 @@ Message * MessageFactory::createMessage( int i_Sender, string s_Message, sockadd
 		oMessage=new Message(s_Message.substr(iReceiverListEndLoc+1,s_Message.length()-iReceiverListEndLoc),DIRECT,i_Sender,oReceivers,o_SenderSockAddr);
 		
 	}
+	else if(oMsgType==LOGOUT)
+		{
+		oMessage=new Message("Logout",LOGOUT,i_Sender,NULL,o_SenderSockAddr);
+		}
 	else		//else this is an invalid message
 	{	
 		cout<<"MessageFactory::ERROR msg"<<endl;

@@ -79,6 +79,20 @@ int DeliveryController::processMessage( Message * o_Message )
 		cout<<"End"<<endl;
 
 	}
+	else if(o_Message->GetMessageType()==LOGOUT){
+		//Authenticate the message
+				Client * oClient;
+				oClient=o_Server->GetClient(o_Message->GetSenderSocket());
+				if (oClient==NULL)
+				{
+					o_Server->SendMessage("Authentication failure!. Please re-login.",o_Message->GetSenderSocket());
+					return 1;
+				}
+
+				cout<<"DeliveryController::logout msg"<<endl;
+
+				o_Server->RemoveClient(oClient);
+	}
 
 	return 0;
 

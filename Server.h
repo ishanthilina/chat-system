@@ -31,7 +31,7 @@ public:
 	int SendMessage(string s_Message, int i_socket);
 	int Disconnect(int i_Socket);
 	int AddClient(Client * o_Client);
-	bool RemoveClient(Client * o_Client);
+	int RemoveClient(Client * o_Client);
 	bool IsClientExists(string username);
 	Client * GetClient(int i_socket);
 	Client * GetClient(string username);

@@ -10,7 +10,7 @@ const char * GetTextForEnum( int i_EnumVal )
 const MessageType GetEnumFromString(string s_EnumStr){
 	MessageType oReturnType;
 	bool bReturnTypeWasSet=false;
-	for (int i=0; i<3;i++){
+	for (int i=0; i<4;i++){
 		if (s_EnumStr.compare(EnumStrings[i])==0)
 		{
 			oReturnType=static_cast<MessageType>(i);
