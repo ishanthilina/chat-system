@@ -23,6 +23,7 @@
 
 #include "SocketOperator.h"
 #include "EventListener.h"
+#include "EventHandler.h"
 
 
 class ChatClient {

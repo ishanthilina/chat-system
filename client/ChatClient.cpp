@@ -60,14 +60,35 @@ int ChatClient::StartClient() {
 	SocketOperator * oNetSockOperator=new SocketOperator(sockfd);
 	SocketOperator * oTerminalSocketOperator=new SocketOperator(STDIN_FILENO);
 
+	//login
+//	std::string username;
+//	std::cout<<"Please Enter UserName: "<<std::endl;
+//	std::cin>>username;
+//	std::string loginMessage="LIN;";
+//	loginMessage.append(username);
+//
+//	char *cstr = new char[loginMessage.length() + 1];
+//	strcpy(cstr, loginMessage.c_str());
+//
+//	oNetSockOperator->WriteToSocket(cstr,loginMessage.length());
+//	delete [] cstr;
+//	oNetSockOperator->ReadFromSocket(cstr,14);
+//	std::cout<<cstr;
+//
+//	//check the reply
+
+	EventHandler * oEventHndler=new EventHandler(oNetSockOperator);
+
+
 	//event listener
-	EventListener * eventListener=new EventListener(sockfd,oNetSockOperator,oTerminalSocketOperator);
+	EventListener * eventListener=new EventListener(sockfd,oNetSockOperator,oTerminalSocketOperator,oEventHndler);
 	eventListener->Listen();
 
 
 	delete oNetSockOperator;
 	delete oTerminalSocketOperator;
 	delete eventListener;
+	delete oEventHndler;
 
 	return 0;
 

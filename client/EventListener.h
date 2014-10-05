@@ -23,16 +23,18 @@
 #include <string>
 
 #include "SocketOperator.h"
+#include "EventHandler.h"
 
 class EventListener {
 public:
-	EventListener(int sockfd, SocketOperator * oNetSockOperator, SocketOperator * oTerminalSocketOperator);
+	EventListener(int sockfd, SocketOperator * oNetSockOperator, SocketOperator * oTerminalSocketOperator,EventHandler * oeventHandler);
 	int Listen();
 	virtual ~EventListener();
 private:
 	int sockfd;
 	SocketOperator * oNetSockOperator;
 	SocketOperator * oTerminalSocketOperator;
+	EventHandler * o_eventHandler;
 };
 
 #endif /* EVENTLISTENER_H_ */

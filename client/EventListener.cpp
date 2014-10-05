@@ -7,10 +7,11 @@
 
 #include "EventListener.h"
 
-EventListener::EventListener(int sockfd,SocketOperator * oNetSockOperator, SocketOperator * oTerminalSocketOperator) {
+EventListener::EventListener(int sockfd,SocketOperator * oNetSockOperator, SocketOperator * oTerminalSocketOperator,EventHandler * oeventHandler) {
 	this->sockfd=sockfd;
 	this->oNetSockOperator=oNetSockOperator;
 	this->oTerminalSocketOperator=oTerminalSocketOperator;
+	this->o_eventHandler=oeventHandler;
 
 }
 
@@ -58,7 +59,12 @@ int EventListener::Listen(){
 //				//printf("s: %s\n",message.substr(0,n));
 //				std::cout<<buffer;
 //			}
-			oNetSockOperator->ReadFromSocket(buffer,255);
+			int status=oNetSockOperator->ReadFromSocket(buffer,255);
+			if(status){
+				printf("Server Disconnected");
+				return 0;
+			}
+
 			std::cout<<buffer;
 
 		}
@@ -91,9 +97,10 @@ int EventListener::Listen(){
 			oTerminalSocketOperator->ReadFromSocket(buffer,255);
 
 			std::string message(buffer);
+			o_eventHandler->HandleEvent(message.substr(0,message.find_first_of('\n')));
 
 
-			oNetSockOperator->WriteToSocket(buffer,message.find_first_of("\n"));
+			//oNetSockOperator->WriteToSocket(buffer,message.find_first_of("\n"));
 
 
 
