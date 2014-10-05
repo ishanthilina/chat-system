@@ -1,6 +1,6 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
-OBJS =		client.o
+OBJS =		client.o SocketOperator.o ChatClient.o EventListener.o
 
 LIBS =
 
