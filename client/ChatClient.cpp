@@ -62,7 +62,7 @@ int ChatClient::StartClient() {
 
 	//login
 //	std::string username;
-//	std::cout<<"Please Enter UserName: "<<std::endl;
+	std::cout<<"Please Enter UserName: "<<std::endl;
 //	std::cin>>username;
 //	std::string loginMessage="LIN;";
 //	loginMessage.append(username);
