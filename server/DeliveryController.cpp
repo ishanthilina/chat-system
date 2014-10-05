@@ -8,7 +8,7 @@ DeliveryController::DeliveryController( Logger * o_Logger)
 
 int DeliveryController::processMessage( Message * o_Message )
 {
-	cout<<"Processing message: "<< o_Message->GetMessage()<<endl;
+	//cout<<"Processing message: "<< o_Message->GetMessage()<<endl;
 
 	//login message
 	if(o_Message->GetMessageType()==LOGIN)
@@ -64,19 +64,20 @@ int DeliveryController::processMessage( Message * o_Message )
 		sMsg.append(o_Message->GetMessage());
 
 		//send the message to all the recipients
+		Client * oClient1;
 		for(vector<string>::iterator it=oReceivers->begin();it!=oReceivers->end();++it)
 		{
-			oClient=o_Server->GetClient(*it);
-			if(oClient!=NULL)
+			oClient1=o_Server->GetClient(*it);
+			if(oClient1!=NULL)
 			{
-				o_Server->SendMessage(sMsg,oClient->GetSocket());
+				o_Server->SendMessage(sMsg,oClient1->GetSocket());
 			}
 
 		}
 
-
+		o_Logger->LogEvent(oClient,sMsg);
 		//cout<<sMsg<<endl;
-		cout<<"End"<<endl;
+		//cout<<"End"<<endl;
 
 	}
 	else if(o_Message->GetMessageType()==LOGOUT){
