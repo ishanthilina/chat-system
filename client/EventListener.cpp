@@ -65,7 +65,7 @@ int EventListener::Listen(){
 				return 0;
 			}
 
-			std::cout<<buffer;
+			std::cout<<buffer<<endl;
 
 		}
 
@@ -98,6 +98,7 @@ int EventListener::Listen(){
 
 			std::string message(buffer);
 			o_eventHandler->HandleEvent(message.substr(0,message.find_first_of('\n')));
+			cout<<"CMD event handled"<<endl;
 
 
 			//oNetSockOperator->WriteToSocket(buffer,message.find_first_of("\n"));
