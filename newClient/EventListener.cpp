@@ -46,7 +46,7 @@ int EventListener::Listen(){
 		}
 
 		if (FD_ISSET(sockfd, &readfds)) {
-			printf("Incoming message: ");
+			//printf("Incoming message: ");
 
 //			if ((valread = read( sockfd , buffer, 255)) == 0)
 //			{
@@ -65,7 +65,9 @@ int EventListener::Listen(){
 				return 0;
 			}
 
-			std::cout<<buffer<<endl;
+			std::string message(buffer);
+			o_MessageProcessor->ProcessServerInput(message.substr(0,message.find_first_of('\n')));
+			//std::cout<<buffer<<endl;
 
 		}
 
@@ -98,7 +100,7 @@ int EventListener::Listen(){
 
 			std::string message(buffer);
 			o_MessageProcessor->ProcessUserInput(message.substr(0,message.find_first_of('\n')));
-			cout<<"CMD event handled"<<endl;
+			//cout<<"CMD event handled"<<endl;
 
 
 			//oNetSockOperator->WriteToSocket(buffer,message.find_first_of("\n"));

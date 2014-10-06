@@ -15,3 +15,19 @@ int MessageParser::CreateLoginMessage( string* sMessageContent )
 	return 0;
 
 }
+
+int MessageParser::CreateChatMessage( string* sMessageContent )
+{
+	//validate the string first
+	std::size_t found = (*sMessageContent).find(";");
+	if (found==std::string::npos)
+	{
+		return 1;
+	}
+
+	string sLoginMsg="PTP;";
+	sLoginMsg.append(*sMessageContent);
+	(*sMessageContent)=sLoginMsg;
+	return 0;
+
+}
