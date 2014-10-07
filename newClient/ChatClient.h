@@ -25,6 +25,7 @@
 #include "MessageProcessor.h"
 #include "MessageParser.h"
 #include "EventListener.h"
+#include "MessageFactory.h"
 
 
 class ChatClient {

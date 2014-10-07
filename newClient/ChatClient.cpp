@@ -7,6 +7,7 @@
 
 #include "ChatClient.h"
 
+
 ChatClient::ChatClient() {
 	// TODO Auto-generated constructor stub
 
@@ -80,15 +81,17 @@ int ChatClient::StartClient() {
 	MessageParser * oMsgParser=new MessageParser();
 	MessageProcessor * oEventHndler=new MessageProcessor(oMsgParser,oNetSockOperator,oTerminalSocketOperator);
 
+	MessageFactory * oMessageFactory = new MessageFactory(oEventHndler);
 
 	//event listener
-	EventListener * eventListener=new EventListener(sockfd,oNetSockOperator,oTerminalSocketOperator,oEventHndler);
+	EventListener * eventListener=new EventListener(sockfd,oNetSockOperator,oTerminalSocketOperator,oEventHndler,oMessageFactory);
 	eventListener->Listen();
 
 
 	delete oNetSockOperator;
 	delete oTerminalSocketOperator;
 	delete eventListener;
+	delete oMessageFactory;
 	delete oEventHndler;
 	delete oMsgParser;
 

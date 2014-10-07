@@ -7,11 +7,12 @@
 
 #include "EventListener.h"
 
-EventListener::EventListener(int sockfd,SocketOperator * oNetSockOperator, SocketOperator * oTerminalSocketOperator,MessageProcessor * oMsgProcessor) {
+EventListener::EventListener(int sockfd,SocketOperator * oNetSockOperator, SocketOperator * oTerminalSocketOperator,MessageProcessor * oMsgProcessor,MessageFactory * oMessageFactory) {
 	this->sockfd=sockfd;
 	this->o_NetSockOperator=oNetSockOperator;
 	this->o_TerminalSocketOperator=oTerminalSocketOperator;
 	this->o_MessageProcessor=oMsgProcessor;
+	this->o_MessageFactory=oMessageFactory;
 
 }
 
@@ -66,7 +67,8 @@ int EventListener::Listen(){
 			}
 
 			std::string message(buffer);
-			o_MessageProcessor->ProcessServerInput(message.substr(0,message.find_first_of('\n')));
+			//o_MessageProcessor->ProcessServerInput(message.substr(0,message.find_first_of('\n')));
+			o_MessageFactory->CreateMessage(message.substr(0,message.find_first_of('\n')));
 			//std::cout<<buffer<<endl;
 
 		}

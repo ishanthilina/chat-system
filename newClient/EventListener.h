@@ -24,10 +24,11 @@
 
 #include "SocketOperator.h"
 #include "MessageProcessor.h"
+#include "MessageFactory.h"
 
 class EventListener {
 public:
-	EventListener(int sockfd, SocketOperator * oNetSockOperator, SocketOperator * oTerminalSocketOperator,MessageProcessor * oMsgProcessor);
+	EventListener(int sockfd, SocketOperator * oNetSockOperator, SocketOperator * oTerminalSocketOperator,MessageProcessor * oMsgProcessor,MessageFactory * oMessageFactory);
 	int Listen();
 	virtual ~EventListener();
 private:
@@ -35,6 +36,7 @@ private:
 	SocketOperator * o_NetSockOperator;
 	SocketOperator * o_TerminalSocketOperator;
 	MessageProcessor * o_MessageProcessor;
+	MessageFactory * o_MessageFactory;
 };
 
 #endif /* EVENTLISTENER_H_ */

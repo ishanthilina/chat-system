@@ -179,6 +179,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MessageFactory.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MessageParser.cpp"
 				>
 			</File>
@@ -202,6 +206,10 @@
 			</File>
 			<File
 				RelativePath=".\EventListener.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MessageFactory.h"
 				>
 			</File>
 			<File

@@ -10,17 +10,20 @@
 
 #include <string>
 #include <stdlib.h>     /* atoi */
+#include "MessageProcessor.h"
+#include <iostream>
 
 using namespace std;
 
 class MessageFactory {
 public:
-	MessageFactory();
+	MessageFactory(MessageProcessor * oMessageProcessor);
 	void CreateMessage(string sNewMessage);
 	virtual ~MessageFactory();
 private:
 	int i_CurrentMsgLength;
 	string s_CurrentMessage;
+	MessageProcessor * o_MessageProcessor;
 };
 
 #endif /* MESSAGEFACTORY_H_ */
