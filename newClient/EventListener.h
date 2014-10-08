@@ -26,6 +26,8 @@
 #include "MessageProcessor.h"
 #include "MessageFactory.h"
 
+#define MAX_INPUT_BUFFER_SIZE 1025
+
 class EventListener {
 public:
 	EventListener(int sockfd, SocketOperator * oNetSockOperator, SocketOperator * oTerminalSocketOperator,MessageProcessor * oMsgProcessor,MessageFactory * oMessageFactory);

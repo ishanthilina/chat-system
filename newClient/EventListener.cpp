@@ -60,7 +60,7 @@ int EventListener::Listen(){
 //				//printf("s: %s\n",message.substr(0,n));
 //				std::cout<<buffer;
 //			}
-			int iReadValue=o_NetSockOperator->ReadFromSocket(buffer,255);
+			int iReadValue=o_NetSockOperator->ReadFromSocket(buffer,MAX_INPUT_BUFFER_SIZE);
 			if(!iReadValue){
 				printf("Server Disconnected");
 				return 0;
@@ -99,7 +99,7 @@ int EventListener::Listen(){
 //
 //			}
 
-			o_TerminalSocketOperator->ReadFromSocket(buffer,255);
+			o_TerminalSocketOperator->ReadFromSocket(buffer,MAX_INPUT_BUFFER_SIZE);
 
 			std::string message(buffer);
 			o_MessageProcessor->ProcessUserInput(message.substr(0,message.find_first_of('\n')));

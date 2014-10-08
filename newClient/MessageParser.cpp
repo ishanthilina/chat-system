@@ -77,13 +77,24 @@ int MessageParser::CreateChatMessage( string* sMessageContent )
 		return 1;
 	}
 
-
+	cout<<(*sMessageContent).length()<<endl;
 	//get the protocol string
 	string sProtocol(GetTextForEnum(DIRECT));
 
 	//get total message length
-	int iMsgLength = (*sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+3;
-	char zBuf[2];
+	int iMsgLength = (*sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+1; //+ the length of the number
+
+	char zBuf[64];
+	sprintf(zBuf, "%d", iMsgLength);
+	int iMsgLengthLength=string(zBuf).length();
+	iMsgLength+=iMsgLengthLength;
+
+	sprintf(zBuf, "%d", iMsgLength);
+	int iNewMsgLengthLength=string(zBuf).length();
+	if(iNewMsgLengthLength>iMsgLengthLength){
+		iMsgLength+=iNewMsgLengthLength-iMsgLengthLength;
+	}
+
 	sprintf(zBuf, "%d", iMsgLength);
 
 	string sNotifMsg=GetMessageHeader();
