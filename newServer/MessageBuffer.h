@@ -12,6 +12,7 @@
 
 #include <string>
 #include <map>
+#include <cstring>
 
 #include "BufferredMessage.h"
 #include "MessageFactory.h"

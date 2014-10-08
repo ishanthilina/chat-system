@@ -31,18 +31,18 @@ int StringMessageBuilder::CreateChatMessage(string* sMessageContent)
 string StringMessageBuilder::CreateAuthStatusMessage(bool bAuthStatus) {
 
 	//get the protocol string
-	string sProtocol(GetTextForEnum(NOTIFICATION));
+	string sProtocol(GetTextForEnum(AUTHENTICATION));
 
-	string * sMessageContent;
+	string sMessageContent;
 	if(bAuthStatus){
-		(*sMessageContent)="success";
+		(sMessageContent)="success";
 	}
 	else{
-		(*sMessageContent)="failure";
+		(sMessageContent)="failure";
 	}
 
 	//get total message length
-	int iMsgLength = (*sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+3;
+	int iMsgLength = (sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+3;
 	char zBuf[2];
 	sprintf(zBuf, "%d", iMsgLength);
 
@@ -50,7 +50,7 @@ string StringMessageBuilder::CreateAuthStatusMessage(bool bAuthStatus) {
 	sMsg.append(string(zBuf));
 	sMsg.append("|");
 	sMsg.append(sProtocol);
-	sMsg.append(*sMessageContent);
+	sMsg.append(sMessageContent);
 	sMsg.append(GetMessageFooter());
 
 	return sMsg;

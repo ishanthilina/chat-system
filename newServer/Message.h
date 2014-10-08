@@ -14,7 +14,8 @@ enum MessageType
 	DIRECT=1,
 	LOGOUT=2,
 	NOTIFICATION=3,
-	ERROR=4 //denotes a message type with an error
+	AUTHENTICATION=4,
+	ERROR=5 //denotes a message type with an error
 };
 
 const char * GetTextForEnum( int );

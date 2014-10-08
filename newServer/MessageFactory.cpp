@@ -3,6 +3,7 @@
 
 Message * MessageFactory::createMessage( int i_Sender, string s_Message, sockaddr_in o_SenderSockAddr)
 {
+	LogDebug("MessageFactory.cpp: Generating message for :: %s",s_Message.c_str());
 	//cout<<"MessageFactory::createMessage"<<endl;
 	MessageType oMsgType=getMessageType(s_Message);
 
@@ -66,7 +67,7 @@ MessageType MessageFactory::getMessageType( string s_Message )
 	if(s_Message.length()<2){
 		return ERROR;
 	}
-	string sType = s_Message.substr(0,3);
+	string sType = s_Message.substr(0,4);
 
 	return GetEnumFromString(sType);
 

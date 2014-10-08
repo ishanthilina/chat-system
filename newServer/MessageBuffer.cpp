@@ -22,9 +22,24 @@ MessageBuffer::~MessageBuffer() {
 	delete p_BufferredMessages;
 }
 
+//|;|18|LIN;ishan|;|
+//|;|21|PTP;ishan;qq|;|
+
 void MessageBuffer::CreateMessage(int iSocketDescriptor, string sNewMessage,
 		sockaddr_in oAddress)
 {
+
+	//remove any null characters or new lines at the end of the string
+
+	if(sNewMessage.compare(sNewMessage.length()-1,1,"\n") ==0)
+	{
+		sNewMessage=sNewMessage.substr(0,sNewMessage.size()-1);
+	}
+	if(sNewMessage.compare(sNewMessage.length()-1,1,"\r") ==0)
+	{
+		sNewMessage=sNewMessage.substr(0,sNewMessage.size()-1);
+	}
+
 
 	//check if a message is already being built for this socket
 	std::map<int, BufferredMessage*>::iterator it;
@@ -70,7 +85,32 @@ void MessageBuffer::CreateMessage(int iSocketDescriptor, string sNewMessage,
 	else	//if a message is not already being built
 	{
 		BufferredMessage * oBufferedMsg = new BufferredMessage(sNewMessage);
-		p_BufferredMessages->insert(pair<int, BufferredMessage*>(iSocketDescriptor,oBufferedMsg));
+
+		//only do anything if this is a valid message
+		if(oBufferedMsg->IsValidMessage())
+		{
+			//check if the message is completely built
+			if(oBufferedMsg->IsMessageComplete())
+			{
+				string sMsg=oBufferedMsg->GetFullMessage();
+				Message * pMessage = p_MsgFactory->createMessage(iSocketDescriptor,
+									sMsg.substr(6,(sMsg.length()-(3+6)) ),
+									oAddress);
+
+				p_DeliveryController->processMessage(pMessage);
+				delete oBufferedMsg;
+				delete pMessage;
+				return;
+			}
+
+			p_BufferredMessages->insert(pair<int, BufferredMessage*>(iSocketDescriptor,oBufferedMsg));
+		}
+		else	//if invalid message
+		{
+			delete oBufferedMsg;
+		}
+
+
 	}
 
 }

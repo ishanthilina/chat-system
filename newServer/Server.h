@@ -26,6 +26,7 @@
 
 #include "MessageBuffer.h"
 #include "ClientRegistry.h"
+#include "Utils.h"
 
 using namespace std;
 

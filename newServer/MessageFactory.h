@@ -6,6 +6,7 @@
 #include <vector>
 #include <netinet/in.h>	//for sockaddr_in
 #include "Message.h"
+#include "Utils.h"
 
 using namespace std;
 

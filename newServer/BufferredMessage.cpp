@@ -16,10 +16,11 @@ BufferredMessage::BufferredMessage(string sMessage)
 	}
 
 	//get the length of the total message
-	const char* pzMsgLength=sMessage.substr(3,1).c_str();
+	const char* pzMsgLength=sMessage.substr(3,2).c_str();
 	i_MsgLength=atoi(pzMsgLength);
 
 	this->s_Message=sMessage;
+	this->b_ValidMessage=true;
 }
 
 bool BufferredMessage::IsMessageComplete()

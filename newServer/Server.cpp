@@ -55,7 +55,7 @@ void Server::RunServer() {
 
 		 //accept the incoming connection
 		 i_Addrlen = sizeof(o_Address);
-		 puts("Waiting for connections ...");
+		 LogDebug("Server.cpp: %s","Waiting for connections ...");
 
 		 SocketOperator * pSocketOperator = new SocketOperator();
 
@@ -104,6 +104,7 @@ void Server::RunServer() {
 
 				 //add new socket to the watching set of sockets
 				 p_ClientDescriptors->push_back(i_NewSocket);
+				 LogDebug("Server.cpp: Added ip %s , port %d to the listening set.",inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
 
 			 }
 
@@ -119,7 +120,8 @@ void Server::RunServer() {
 					 {
 						 //Somebody disconnected , get his details and print
 						 getpeername(i_SocketDescriptor, (struct sockaddr*)&o_Address , (socklen_t*)&i_Addrlen);
-						 printf("Host disconnected , ip %s , port %d \n" , inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
+						 //printf("Host disconnected , ip %s , port %d \n" , inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
+						 LogDebug("Server.cpp: Host disconnected, ip %s , port %d",inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
 
 						 //remove the client info
 						 p_ClientRegistry->RemoveClient(p_ClientRegistry->GetClient(i_SocketDescriptor));
@@ -152,6 +154,7 @@ void Server::RunServer() {
 //						 //cout<<"Server:: "<<oMmessage->GetMessage()<<endl;
 //						 delete oMmessage;
 
+						 LogDebug("Server.cpp: Incoming message from ip %s , port %d. Message : %s",inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port),z_InputBuffer);
 						 p_MsgBuffer->CreateMessage(i_SocketDescriptor,string(z_InputBuffer),o_Address);
 
 						 break;

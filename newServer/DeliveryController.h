@@ -16,6 +16,7 @@
 #include "Logger.h"
 #include "SocketOperator.h"
 #include "StringMessageBuilder.h"
+#include "Utils.h"
 
 using namespace std;
 
