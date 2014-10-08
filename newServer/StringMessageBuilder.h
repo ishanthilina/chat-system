@@ -3,6 +3,7 @@
 
 
 #include <string>
+#include <stdio.h>
 
 #include "Message.h"
 

@@ -1,0 +1,46 @@
+/*
+ * Server.h
+ *
+ *  Created on: Oct 8, 2014
+ *      Author: ishan
+ */
+
+#ifndef SERVER_H_
+#define SERVER_H_
+
+#include <string>
+#include <string.h>   //strlen
+#include <iostream>
+#include <stdio.h>	//defines perror
+#include <stdlib.h>	//defines  exit and EXIT_FAILURE
+#include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
+#include <errno.h>
+
+#include <arpa/inet.h>    //close, AF_INET
+//#include <sys/types.h>
+//#include <sys/socket.h>
+//#include <netinet/in.h>
+#include <unistd.h>   //defines read
+
+#include <vector>
+
+#include "MessageBuffer.h"
+#include "ClientRegistry.h"
+
+using namespace std;
+
+#define MAX_INPUT_BUFFER_SIZE 1025
+#define PORT 8888
+
+class Server {
+public:
+	Server(MessageBuffer * pMsgBuffer, ClientRegistry * pclientRegistry);
+	void RunServer();
+	virtual ~Server();
+private:
+	//int i_MasterSocket, i_Addrlen;
+	vector<int> * p_ClientDescriptors;
+	MessageBuffer * p_MsgBuffer;
+};
+
+#endif /* SERVER_H_ */

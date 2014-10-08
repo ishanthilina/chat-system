@@ -1,7 +1,11 @@
 #ifndef _CLIENT_REGISTRY_HEADER_
 #define _CLIENT_REGISTRY_HEADER_
 
+#include <vector>
+
 #include "Client.h"
+
+using namespace std;
 
 
 class ClientRegistry

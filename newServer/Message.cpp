@@ -1,6 +1,6 @@
 #include "Message.h"
 
-static const char * EnumStrings[] = { "LIN", "PTP", "LOU", "NTF" };
+static const char * EnumStrings[] = { "LIN;", "PTP;", "LOU;", "NTF;" };
 
 const char * GetTextForEnum( int i_EnumVal )
 {

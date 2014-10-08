@@ -1,12 +1,25 @@
-#ifndef _MESSAGE_BUFFER_HEADER_
-#define _MESSAGE_BUFFER_HEADER_
+/*
+ * MessageBuffer.h
+ *
+ *  Created on: Oct 8, 2014
+ *      Author: ishan
+ */
 
-class MessageBuffer
-{
+#ifndef MESSAGEBUFFER_H_
+#define MESSAGEBUFFER_H_
+
+#include <netinet/in.h>	//sockaddr_in
+
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class MessageBuffer {
 public:
-	void CreateMessage(string sNewMessage);
-protected:
-private:
+	MessageBuffer();
+	virtual ~MessageBuffer();
+	void CreateMessage(int iSocketDescriptor,string sNewMessage,sockaddr_in oAddress);
 };
 
-#endif	//_MESSAGE_BUFFER_HEADER_
+#endif /* MESSAGEBUFFER_H_ */

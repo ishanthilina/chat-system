@@ -1,3 +1,5 @@
+#include "ClientRegistry.h"
+
 ClientRegistry::ClientRegistry()
 {
 	o_Clients = new vector<Client*>;
@@ -26,16 +28,17 @@ int ClientRegistry::AddClient( Client * o_Client )
 int ClientRegistry::RemoveClient( Client * o_Client )
 {
 	//Close the socket
-	close( o_Client->GetSocket() );
-	//remove the connection from listening sockets
-	for(vector<int>::iterator it=o_ClientDescriptors->begin();it!=o_ClientDescriptors->end();++it)
-	{
-		if(o_Client->GetSocket() ==(*it)){
-			o_ClientDescriptors->erase(it);
-			break;
-		}
+//	close( o_Client->GetSocket() );
+//	//remove the connection from listening sockets
+//	for(vector<int>::iterator it=o_ClientDescriptors->begin();it!=o_ClientDescriptors->end();++it)
+//	{
+//		if(o_Client->GetSocket() ==(*it)){
+//			o_ClientDescriptors->erase(it);
+//			break;
+//		}
+//
+//	}
 
-	}
 	//remove from the clients list also
 	for(vector<Client*>::iterator it1=o_Clients->begin();it1!=o_Clients->end();++it1)
 	{
