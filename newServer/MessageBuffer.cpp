@@ -7,15 +7,19 @@
 
 #include "MessageBuffer.h"
 
-MessageBuffer::MessageBuffer() {
+MessageBuffer::MessageBuffer(DeliveryController * pDeliveryController) {
 	// TODO Auto-generated constructor stub
-	TintBMMap* p_BufferredMessages = new TintBMMap();
-		MessageFactory * p_MsgFactory;
+	p_BufferredMessages = new TintBMMap();
+	p_MsgFactory = new MessageFactory();
+
+	p_DeliveryController = pDeliveryController;
+
 
 }
 
 MessageBuffer::~MessageBuffer() {
-	// TODO Auto-generated destructor stub
+	delete p_MsgFactory;
+	delete p_BufferredMessages;
 }
 
 void MessageBuffer::CreateMessage(int iSocketDescriptor, string sNewMessage,
@@ -34,11 +38,17 @@ void MessageBuffer::CreateMessage(int iSocketDescriptor, string sNewMessage,
 		//if the message is complete now
 		if(oBufferedMsg->IsMessageComplete())
 		{
-			//TODO - Call the message processor
+			//create message out of it
+			string sMsg=oBufferedMsg->GetFullMessage();
+			Message * pMessage = p_MsgFactory->createMessage(iSocketDescriptor,
+					sMsg.substr(6,(sMsg.length()-4) ),
+					oAddress);
 
+			p_DeliveryController->processMessage(pMessage);
 			//remove the message from the map
 			p_BufferredMessages->erase(it);
 
+			delete pMessage;
 			delete oBufferedMsg;
 			return;
 

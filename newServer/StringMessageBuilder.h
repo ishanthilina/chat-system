@@ -19,6 +19,8 @@ public:
 	int CreateNotificationMessage(string * sMessageContent);
 	//PTP messages
 	int CreateChatMessage(string * sMessageContent);
+	//Authentication status message
+	string CreateAuthStatusMessage(bool bAuthStatus);
 	//MessageType GetMessageType(string sMessageContent);
 	//string GetMessageContent(string sMessageContent);
 protected:

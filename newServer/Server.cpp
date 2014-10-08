@@ -57,6 +57,11 @@ void Server::RunServer() {
 		 i_Addrlen = sizeof(o_Address);
 		 puts("Waiting for connections ...");
 
+		 SocketOperator * pSocketOperator = new SocketOperator();
+
+		 p_DeliveryController= new  DeliveryController(p_ClientRegistry,pSocketOperator);
+		 p_MsgBuffer = new MessageBuffer(p_DeliveryController);
+
 		 while(true)
 		 {
 			 //clear the socket set
@@ -116,6 +121,8 @@ void Server::RunServer() {
 						 getpeername(i_SocketDescriptor, (struct sockaddr*)&o_Address , (socklen_t*)&i_Addrlen);
 						 printf("Host disconnected , ip %s , port %d \n" , inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
 
+						 //remove the client info
+						 p_ClientRegistry->RemoveClient(p_ClientRegistry->GetClient(i_SocketDescriptor));
 						 //Close the socket
 						 close( i_SocketDescriptor );
 						 //remove the connection from listening sockets
@@ -130,6 +137,8 @@ void Server::RunServer() {
 //							 			break;
 //							 		}
 //						 	}
+
+
 						 break;
 
 					 }
@@ -159,17 +168,34 @@ void Server::RunServer() {
 		 }
 }
 
-Server::Server(MessageBuffer* pMsgBuffer, ClientRegistry* pclientRegistry)
+Server::Server(ClientRegistry* pclientRegistry)
 {
+	this->p_ClientRegistry = pclientRegistry;
+	p_ClientDescriptors = new vector<int>;
 
 }
 
 Server::~Server() {
-	// TODO Auto-generated destructor stub
+	delete p_DeliveryController;
+	delete p_MsgBuffer;
 }
 
 int main()
 {
+	ClientRegistry * pClientRegistry= new ClientRegistry();
+	//Logger * pLogger = new  Logger();
+	//StringMessageBuilder * pStringMsgBuilder = new StringMessageBuilder();
+	//MessageFactory * pMsgFactory = new MessageFactory();
+
+	Server * pServer = new Server(pClientRegistry);
+	pServer->RunServer();
+
+
+	delete pClientRegistry;
+	//delete pLogger;
+	//delete pStringMsgBuilder;
+	//delete pMsgFactory;
+
 	return 0;
 }
 

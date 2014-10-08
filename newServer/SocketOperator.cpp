@@ -24,10 +24,11 @@ int SocketOperator::ReadFromSocket(int iSocket,char * buffer,int iBufferSize)
 	return 0;
 }
 
-int SocketOperator::WriteToSocket(int iSocket,const char * buffer,int iBufferSize)
+int SocketOperator::WriteToSocket(int iSocket,string sBuffer,int iBufferSize)
 {
+	const char * zBuffer=sBuffer.c_str();
 	int iValWritten=0;
-	if ((iValWritten = write( iSocket , buffer, iBufferSize)) == 0)
+	if ((iValWritten = write( iSocket , zBuffer, iBufferSize)) == 0)
 	{
 		printf("Error writing to socket");
 		return 1;

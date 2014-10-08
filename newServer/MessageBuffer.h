@@ -15,6 +15,8 @@
 
 #include "BufferredMessage.h"
 #include "MessageFactory.h"
+#include "Message.h"
+#include "DeliveryController.h"
 
 using namespace std;
 
@@ -22,12 +24,13 @@ typedef std::map<int, BufferredMessage*> TintBMMap;
 
 class MessageBuffer {
 public:
-	MessageBuffer();
+	MessageBuffer(DeliveryController * pDeliveryController);
 	virtual ~MessageBuffer();
 	void CreateMessage(int iSocketDescriptor,string sNewMessage,sockaddr_in oAddress);
 private:
 	TintBMMap* p_BufferredMessages;
 	MessageFactory * p_MsgFactory;
+	DeliveryController * p_DeliveryController;
 
 };
 

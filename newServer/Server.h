@@ -34,13 +34,15 @@ using namespace std;
 
 class Server {
 public:
-	Server(MessageBuffer * pMsgBuffer, ClientRegistry * pclientRegistry);
+	Server(ClientRegistry * pclientRegistry);
 	void RunServer();
 	virtual ~Server();
 private:
 	//int i_MasterSocket, i_Addrlen;
 	vector<int> * p_ClientDescriptors;
 	MessageBuffer * p_MsgBuffer;
+	DeliveryController * p_DeliveryController;
+	ClientRegistry * p_ClientRegistry;
 };
 
 #endif /* SERVER_H_ */

@@ -18,13 +18,13 @@
 #include <netdb.h>
 #include <iostream>
 
-
+using namespace std;
 
 class SocketOperator {
 public:
 	SocketOperator();
 	int ReadFromSocket(int iSocket,char * buffer,int iBufferSize);
-	int WriteToSocket(int iSocket,const char * buffer,int iBufferSize);
+	int WriteToSocket(int iSocket,string sBuffer,int iBufferSize);
 
 	virtual ~SocketOperator();
 private:
