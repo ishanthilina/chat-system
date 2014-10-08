@@ -1,6 +1,6 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
-OBJS =		Client.o ClientRegistry.o Logger.o Message.o MessageBuffer.o MessageFactory.o Server.o SocketOperator.o StringMessageBuilder.o 
+OBJS =		BufferredMessage.o Client.o ClientRegistry.o Logger.o Message.o MessageBuffer.o MessageFactory.o Server.o SocketOperator.o StringMessageBuilder.o 
 
 LIBS =
 

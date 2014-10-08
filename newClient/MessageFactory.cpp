@@ -45,7 +45,7 @@ void MessageFactory::CreateMessage(string sNewMessage)
 		return;
 
 	}
-	else if(this->s_CurrentMessage.length() == i_CurrentMsgLength)	//if the message size has been exceeded
+	else if(this->s_CurrentMessage.length() > i_CurrentMsgLength)	//if the message size has been exceeded
 	{
 		//TODO - show error
 		cout<<"Invalid incoming message - Exceeds defined length"<<endl;
