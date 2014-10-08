@@ -19,9 +19,9 @@ int SocketOperator::ReadFromSocket(char * buffer,int iBufferSize)
 	if ((iValRead = read( i_Socket , buffer, iBufferSize)) == 0)
 	{
 		printf("Server Disconnected");
-		return 1;
+		return 0;
 	}
-	return 0;
+	return iValRead;
 }
 
 int SocketOperator::WriteToSocket(const char * buffer,int iBufferSize)

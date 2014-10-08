@@ -28,7 +28,7 @@ void MessageFactory::CreateMessage(string sNewMessage)
 		}
 
 		//get the length of the total message
-		const char* pzMsgLength=sNewMessage.substr(3,1).c_str();
+		const char* pzMsgLength=sNewMessage.substr(3,2).c_str();
 		i_CurrentMsgLength=atoi(pzMsgLength);
 
 	}
@@ -48,7 +48,7 @@ void MessageFactory::CreateMessage(string sNewMessage)
 	else if(this->s_CurrentMessage.length() > i_CurrentMsgLength)	//if the message size has been exceeded
 	{
 		//TODO - show error
-		cout<<"Invalid incoming message - Exceeds defined length"<<endl;
+		cout<<"Invalid incoming message - Exceeds defined length -"<<sNewMessage<<"  "<<s_CurrentMessage.length()<<"---"<<i_CurrentMsgLength<<endl;
 	}
 
 }

@@ -3,6 +3,8 @@
 
 
 #include <string>
+#include <stdio.h>
+#include <iostream>
 
 
 using namespace std;
@@ -12,9 +14,16 @@ enum MessageType
 	LOGIN = 0,
 	DIRECT=1,
 	LOGOUT=2,
-	DELIVERY_STATUS_REPORT=3,
-	ERROR=4 //denotes a message type with an error
+	NOTIFICATION=3,
+	AUTHENTICATION=4,
+	ERROR=5 //denotes a message type with an error
 };
+
+const char * GetTextForEnum( int );
+const MessageType GetEnumFromString(string);
+
+string GetMessageHeader();
+string GetMessageFooter();
 
 class MessageParser
 {

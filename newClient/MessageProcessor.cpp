@@ -50,7 +50,7 @@ void MessageProcessor::ProcessUserInput( string sInput )
 
 void MessageProcessor::ProcessServerInput( string sInput )
 {
-	//cout<<"ServerInput"<<endl;
+	//cout<<this->e_CurrentState<<endl;
 	//if the user has not given any username yet
 	if(this->e_CurrentState == LOGIN_USERNAME_PENDING)
 	{
@@ -62,22 +62,28 @@ void MessageProcessor::ProcessServerInput( string sInput )
 	//if waiting for authentication after sending username
 	else if(this->e_CurrentState == LOGIN_USERNAME_SENT)
 	{
-		if(sInput.compare("Login Success!")==0)
+		//cout<<o_MsgParser->GetMessageType(sInput)<<endl;
+		//if this is a reply to the authentication request
+		if(o_MsgParser->GetMessageType(sInput) == AUTHENTICATION)
 		{
-			cout<<"Succesfully Logged in!"<<endl;
-			this->e_CurrentState=LOGGED_IN;
+			if(o_MsgParser->GetMessageContent(sInput).compare("success")==0)
+			{
+				cout<<"Successfully Logged in!"<<endl;
+				this->e_CurrentState=LOGGED_IN;
+			}
+			else
+			{
+				cout<<"Login Failed!"<<endl;
+				this->e_CurrentState=LOGIN_USERNAME_PENDING;
+				std::cout<<"Please Enter UserName: "<<std::endl;
+			}
 		}
-		else
-		{
-			cout<<"Login Failed!"<<endl;
-			this->e_CurrentState=LOGIN_USERNAME_PENDING;
-			std::cout<<"Please Enter UserName: "<<std::endl;
-		}
+
 	}
 	//if logged in
 	else if(this->e_CurrentState == LOGGED_IN)
 	{
-		cout<<"[CHAT] "<<sInput<<endl;
+		cout<<"[CHAT] "<<o_MsgParser->GetMessageContent(sInput)<<endl;
 	}
 
 }

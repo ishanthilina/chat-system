@@ -3,6 +3,7 @@
 
 #include <string>
 
+
 #include "MessageParser.h"
 #include "SocketOperator.h"
 
@@ -17,9 +18,9 @@ public:
 
 	enum ClientState
 	{
-		LOGIN_USERNAME_PENDING,
-		LOGIN_USERNAME_SENT,
-		LOGGED_IN
+		LOGIN_USERNAME_PENDING=0,
+		LOGIN_USERNAME_SENT=1,
+		LOGGED_IN=2
 	};
 
 protected:
