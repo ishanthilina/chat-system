@@ -75,6 +75,7 @@ void DeliveryController::processMessage(Message* o_Message)
 
 			sMsg.append(" : ");
 			sMsg.append(o_Message->GetMessage());
+			p_StringMsgBuilder->CreateChatMessage(&sMsg);
 
 			//send the message to all the recipients
 			Client * oClient1;

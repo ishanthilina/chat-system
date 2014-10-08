@@ -25,7 +25,22 @@ int StringMessageBuilder::CreateNotificationMessage( string * sMessageContent )
 
 int StringMessageBuilder::CreateChatMessage(string* sMessageContent)
 {
-	return 0;
+	//get the protocol string
+		string sProtocol(GetTextForEnum(DIRECT));
+
+		//get total message length
+		int iMsgLength = (*sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+3;
+		char zBuf[2];
+		sprintf(zBuf, "%d", iMsgLength);
+
+		string sNotifMsg=GetMessageHeader();
+		sNotifMsg.append(string(zBuf));
+		sNotifMsg.append("|");
+		sNotifMsg.append(sProtocol);
+		sNotifMsg.append(*sMessageContent);
+		sNotifMsg.append(GetMessageFooter());
+		(*sMessageContent)=sNotifMsg;
+		return 0;
 }
 
 string StringMessageBuilder::CreateAuthStatusMessage(bool bAuthStatus) {
