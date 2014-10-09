@@ -27,8 +27,11 @@ void MessageProcessor::ProcessUserInput( string sInput )
 	{
 		LogDebug("MessageProcessor.cpp - Current State : %s","LOGGED_IN");
 
+		//cout<<endl<<endl<<sInput<<endl<<endl;
 		//send as a message
 		int result=this->o_MsgParser->CreateChatMessage(&sInput);
+
+		//cout<<endl<<endl<<sInput<<endl<<endl;
 
 		if(result)
 		{

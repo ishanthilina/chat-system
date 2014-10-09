@@ -53,16 +53,16 @@ int EventListener::Listen(){
 			memset(buffer, 0, MAX_INPUT_BUFFER_SIZE);
 			int iReadValue=o_NetSockOperator->ReadFromSocket(buffer,MAX_INPUT_BUFFER_SIZE);
 			if(!iReadValue){
-				LogDebug("Server %s","Disconnected");
+				LogDebug("EventListener.cpp - Server %s","Disconnected");
 				return 0;
 			}
 
 			buffer[iReadValue]='\0';
 
-			LogDebug("Message Size : %d",iReadValue);
+			LogDebug("EventListener.cpp - Message Size : %d",iReadValue);
 			
 			std::string message(buffer);
-			LogDebug("Message : %s",message.c_str());
+			LogDebug("EventListener.cpp - Message : %s",message.c_str());
 
 			o_MessageFactory->CreateMessage(message.substr(0,message.find_first_of('\n')));
 
@@ -75,11 +75,12 @@ int EventListener::Listen(){
 			o_TerminalSocketOperator->ReadFromSocket(buffer,MAX_INPUT_BUFFER_SIZE);
 
 			std::string message(buffer);
+			LogDebug("EventListener.cpp - Message : %s",message.c_str());
 			o_MessageProcessor->ProcessUserInput(message.substr(0,message.find_first_of('\n')));
 
 		}
 		else{
-			LogDebug("Error-Incoming message from : %s"," unknown source");
+			LogDebug("EventListener.cpp - Error-Incoming message from : %s"," unknown source");
 		}
 
 	}
