@@ -3,20 +3,19 @@
 
 Message * MessageFactory::createMessage( int i_Sender, string s_Message, sockaddr_in o_SenderSockAddr)
 {
-	LogDebug("MessageFactory.cpp: Generating message for :: %s",s_Message.c_str());
-	//cout<<"MessageFactory::createMessage"<<endl;
+	LogDebug("MessageFactory.cpp: Generating message for :: %s (from %d)",s_Message.c_str(), i_Sender);
 	MessageType oMsgType=getMessageType(s_Message);
 
 	Message * oMessage;
 	//if this is a login message
 	if(oMsgType==LOGIN)
 	{
-		cout<<"MessageFactory::login msg"<<endl;
+		LogDebug("MessageFactory.cpp: Login Message from  %d",i_Sender);
 		oMessage=new Message(s_Message.substr(4),LOGIN,i_Sender,NULL,o_SenderSockAddr);
 	}
 	else if(oMsgType==DIRECT)
 	{
-		cout<<"MessageFactory::direct msg"<<endl;
+		LogDebug("MessageFactory.cpp: Direct Message from  %d",i_Sender);
 		//find the ending location of the receivers list in the message
 		int iReceiverListEndLoc=s_Message.substr(4).find_first_of(";")+4;
 
@@ -26,8 +25,6 @@ Message * MessageFactory::createMessage( int i_Sender, string s_Message, sockadd
 		while ((iPos = s_Message.find_first_of(",", iPrev)) != std::string::npos)
 		{
 			if ( iPos > iPrev){
-
-				//cout<<s_Message.substr(iPrev, iPos-iPrev)<<endl;
 				oReceivers->push_back(s_Message.substr(iPrev, iPos-iPrev));
 			}
 			iPrev = iPos+1;
@@ -38,8 +35,6 @@ Message * MessageFactory::createMessage( int i_Sender, string s_Message, sockadd
 		//fetch the last name also
 		if (iPrev < iReceiverListEndLoc)
 		{
-			
-			//cout<<s_Message.substr(iPrev, iReceiverListEndLoc-iPrev)<<endl;
 			oReceivers->push_back(s_Message.substr(iPrev, iReceiverListEndLoc-iPrev));
 		}
 
@@ -48,11 +43,12 @@ Message * MessageFactory::createMessage( int i_Sender, string s_Message, sockadd
 	}
 	else if(oMsgType==LOGOUT)
 		{
-		oMessage=new Message("Logout",LOGOUT,i_Sender,NULL,o_SenderSockAddr);
+			LogDebug("MessageFactory.cpp: Logout Message from  %d",i_Sender);
+			oMessage=new Message("Logout",LOGOUT,i_Sender,NULL,o_SenderSockAddr);
 		}
 	else		//else this is an invalid message
 	{	
-		cout<<"MessageFactory::ERROR msg"<<endl;
+		LogDebug("MessageFactory.cpp: Error Message from  %d",i_Sender);
 		oMessage=new Message(s_Message,ERROR,i_Sender,NULL,o_SenderSockAddr);
 	}
 

@@ -44,7 +44,7 @@ void Server::RunServer() {
 			 perror("bind failed");
 			 exit(EXIT_FAILURE);
 		 }
-		 //LogDebug("Listener on port %d \n", PORT);
+		 
 
 		 //try to specify maximum of 3 pending connections for the master socket
 		 if (listen(i_MasterSocket, 3) < 0)
@@ -55,7 +55,8 @@ void Server::RunServer() {
 
 		 //accept the incoming connection
 		 i_Addrlen = sizeof(o_Address);
-		 LogDebug("Server.cpp: %s","Waiting for connections ...");
+		 
+		 LogDebug("Server.cpp: Listening on port %d", PORT);
 
 		 SocketOperator * pSocketOperator = new SocketOperator();
 
@@ -120,7 +121,7 @@ void Server::RunServer() {
 					 {
 						 //Somebody disconnected , get his details and print
 						 getpeername(i_SocketDescriptor, (struct sockaddr*)&o_Address , (socklen_t*)&i_Addrlen);
-						 //printf("Host disconnected , ip %s , port %d \n" , inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
+						 LogDebug("%s","---------------------------------------------------------------------");
 						 LogDebug("Server.cpp: Host disconnected, ip %s , port %d",inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
 
 						 //remove the client info
@@ -149,11 +150,7 @@ void Server::RunServer() {
 						 //set the string terminating NULL byte on the end of the data read
 						 z_InputBuffer[i_ReadValue] = '\0';
 
-//						 Message * oMmessage=p_MsgFactory->createMessage(i_SocketDescriptor,string(z_InputBuffer),o_Address);
-//						 p_MsgProcessor->processMessage(oMmessage);
-//						 //cout<<"Server:: "<<oMmessage->GetMessage()<<endl;
-//						 delete oMmessage;
-
+						 LogDebug("%s","---------------------------------------------------------------------");
 						 LogDebug("Server.cpp: Incoming message from ip %s , port %d. Message : %s",inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port),z_InputBuffer);
 						 p_MsgBuffer->CreateMessage(i_SocketDescriptor,string(z_InputBuffer),o_Address);
 
@@ -186,18 +183,12 @@ Server::~Server() {
 int main()
 {
 	ClientRegistry * pClientRegistry= new ClientRegistry();
-	//Logger * pLogger = new  Logger();
-	//StringMessageBuilder * pStringMsgBuilder = new StringMessageBuilder();
-	//MessageFactory * pMsgFactory = new MessageFactory();
 
 	Server * pServer = new Server(pClientRegistry);
 	pServer->RunServer();
 
 
 	delete pClientRegistry;
-	//delete pLogger;
-	//delete pStringMsgBuilder;
-	//delete pMsgFactory;
 
 	return 0;
 }

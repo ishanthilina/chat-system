@@ -8,7 +8,6 @@
 #include "MessageBuffer.h"
 
 MessageBuffer::MessageBuffer(DeliveryController * pDeliveryController) {
-	// TODO Auto-generated constructor stub
 	p_BufferredMessages = new TintBMMap();
 	p_MsgFactory = new MessageFactory();
 
@@ -29,8 +28,9 @@ void MessageBuffer::CreateMessage(int iSocketDescriptor, string sNewMessage,
 		sockaddr_in oAddress)
 {
 
-	//remove any null characters or new lines at the end of the string
+	LogDebug("MessageBuffer.cpp : Socket Descriptor %d sent - %s",iSocketDescriptor,sNewMessage.c_str());
 
+	//remove any null characters or new lines at the end of the string
 	if(sNewMessage.compare(sNewMessage.length()-1,1,"\n") ==0)
 	{
 		sNewMessage=sNewMessage.substr(0,sNewMessage.size()-1);

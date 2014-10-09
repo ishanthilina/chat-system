@@ -17,9 +17,6 @@
 #include <errno.h>
 
 #include <arpa/inet.h>    //close, AF_INET
-//#include <sys/types.h>
-//#include <sys/socket.h>
-//#include <netinet/in.h>
 #include <unistd.h>   //defines read
 
 #include <vector>
@@ -39,7 +36,6 @@ public:
 	void RunServer();
 	virtual ~Server();
 private:
-	//int i_MasterSocket, i_Addrlen;
 	vector<int> * p_ClientDescriptors;
 	MessageBuffer * p_MsgBuffer;
 	DeliveryController * p_DeliveryController;

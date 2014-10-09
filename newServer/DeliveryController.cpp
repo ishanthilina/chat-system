@@ -16,45 +16,41 @@ void DeliveryController::processMessage(Message* o_Message)
 	//login message
 	if(o_Message->GetMessageType()==LOGIN)
 	{
-		cout<<"DeliveryController::login msg"<<endl;
+		LogDebug("DeliveryController.cpp : Login request from socket %d",o_Message->GetSenderSocket());
 
 		Client* oClient = new Client(o_Message->GetMessage(),o_Message->GetSenderSocket(),o_Message->GetSenderSockAddr());
 		int output=p_ClientRegistry->AddClient(oClient);
 		string sReplyMsg;
-		//TODO - Create AUTH message and send
-		if(!output){
-			LogDebug("Authentication success for %s",oClient->GetUserName().c_str());
+		if(!output){	//if adding new client was successful
+			LogDebug("DeliveryController.cpp : Authentication success for %s",oClient->GetUserName().c_str());
 			sReplyMsg=p_StringMsgBuilder->CreateAuthStatusMessage(true);
 		}
 		else{
-			LogDebug("Authentication failed for %s",oClient->GetUserName().c_str());
+			LogDebug("DeliveryController.cpp : Authentication failed for %s",oClient->GetUserName().c_str());
 			sReplyMsg=p_StringMsgBuilder->CreateAuthStatusMessage(false);
 		}
-		printf("%s",sReplyMsg.c_str());
+		LogDebug("DeliveryController.cpp : Sending reply to %s - %s",oClient->GetUserName().c_str(),sReplyMsg.c_str());
 		p_SocketOperator->WriteToSocket(o_Message->GetSenderSocket(),sReplyMsg,sReplyMsg.length());
 
 
 	}
 	else if(o_Message->GetMessageType()==DIRECT)
 	{
-		cout<<"DeliveryController::PTP msg"<<endl;
+		LogDebug("DeliveryController.cpp : Chat message from socket %d",o_Message->GetSenderSocket());
 
 			//Authenticate the message
 			Client * oClient;
 			oClient=p_ClientRegistry->GetClient(o_Message->GetSenderSocket());
 			if (oClient==NULL)
 			{
-				LogDebug("Authentication failure for socket %d. Please re-login ",o_Message->GetSenderSocket());
-				//TODO - send reply
-				//o_Server->SendMessage("Authentication failure!. Please re-login.",o_Message->GetSenderSocket());
+				LogDebug("DeliveryController.cpp :Authentication failure for socket %d.",o_Message->GetSenderSocket());
+				string sReplyMsg=p_StringMsgBuilder->CreateAuthStatusMessage(true);
+				p_SocketOperator->WriteToSocket(o_Message->GetSenderSocket(),sReplyMsg,sReplyMsg.length());
 				return;
 			}
 
-			//cout<<"DeliveryController::direct msg"<<endl;
-
 			//construct the message to be sent
 			string sMsg;
-			//cout<<oClient->GetSocket();  // SEGFAULT HERE
 			sMsg=oClient->GetUserName();
 			sMsg.append(" : ");
 
@@ -63,7 +59,7 @@ void DeliveryController::processMessage(Message* o_Message)
 			{
 				//check whether the receiver exists
 				if(!p_ClientRegistry->IsClientExists((*it))){
-					LogDebug("Invalid recipient %s",(*it).c_str());
+					LogDebug("DeliveryController.cpp :Invalid recipient %s in the message from %s.",(*it).c_str(),oClient->GetUserName().c_str());
 					//o_Server->SendMessage("Invalid recipient "+(*it),o_Message->GetSenderSocket());
 					return;
 				}
@@ -77,6 +73,9 @@ void DeliveryController::processMessage(Message* o_Message)
 			sMsg.append(o_Message->GetMessage());
 			p_StringMsgBuilder->CreateChatMessage(&sMsg);
 
+			LogDebug("DeliveryController.cpp :Sending message %s.",sMsg.c_str());
+			LogDebug("DeliveryController.cpp :Message length %d.",sMsg.length());
+
 			//send the message to all the recipients
 			Client * oClient1;
 			for(vector<string>::iterator it=oReceivers->begin();it!=oReceivers->end();++it)
@@ -84,17 +83,13 @@ void DeliveryController::processMessage(Message* o_Message)
 				oClient1=p_ClientRegistry->GetClient(*it);
 				if(oClient1!=NULL)
 				{
-					//p_SocketOperator->SendMessage(sMsg,oClient1->GetSocket());
+					LogDebug("DeliveryController.cpp :sending message to %s.",oClient1->GetUserName().c_str());
 					p_SocketOperator->WriteToSocket(oClient1->GetSocket(),sMsg,sMsg.length());
 				}
 
 			}
 
-			cout<<"Sent message: "<<sMsg<<endl;
-			cout<<"Sent message length: "<<sMsg.length()<<endl;
 			p_Logger->LogEvent(oClient,sMsg);
-			//cout<<sMsg<<endl;
-			//cout<<"End"<<endl;
 
 		}
 }
