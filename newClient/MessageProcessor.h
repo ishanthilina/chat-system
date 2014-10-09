@@ -6,13 +6,15 @@
 
 #include "MessageParser.h"
 #include "SocketOperator.h"
+#include "ScreenWriter.h"
+#include "Utils.h"
 
 using namespace std;
 
 class MessageProcessor
 {
 public:
-	MessageProcessor(MessageParser * oMsgParser, SocketOperator * oNetworkSocketOp, SocketOperator * oTerminalSocketOp);
+	MessageProcessor(MessageParser * oMsgParser, SocketOperator * oNetworkSocketOp, SocketOperator * oTerminalSocketOp,ScreenWriter * oScreenWriter);
 	void ProcessUserInput(string sInput);
 	void ProcessServerInput(string sInput);
 
@@ -29,6 +31,7 @@ private:
 	MessageParser * o_MsgParser;
 	SocketOperator * o_NetworkSocketOp;
 	SocketOperator * o_TerminalSocketOp;
+	ScreenWriter * o_ScreenWriter;
 };
 
 #endif	//_MESSAGE_PROCESSOR_HEADER_

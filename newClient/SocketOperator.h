@@ -18,6 +18,8 @@
 #include <netdb.h>
 #include <iostream>
 
+#include "Utils.h"
+
 
 
 class SocketOperator {

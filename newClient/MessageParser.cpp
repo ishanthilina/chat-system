@@ -15,14 +15,11 @@ const MessageType GetEnumFromString(string s_EnumStr){
 		{
 			oReturnType=static_cast<MessageType>(i);
 			bReturnTypeWasSet=true;
-			//cout<<i;
 			break;
 		}
-		//cout<<"No : "<<i<<":"<<s_EnumStr;
 	}
 	if (!bReturnTypeWasSet)
 	{
-		//cout<<"ErroR";
 		oReturnType=ERROR;
 	}
 
@@ -93,7 +90,6 @@ int MessageParser::CreateChatMessage( string* sMessageContent )
 		return 1;
 	}
 
-	cout<<(*sMessageContent).length()<<endl;
 	//get the protocol string
 	string sProtocol(GetTextForEnum(DIRECT));
 
@@ -110,16 +106,6 @@ int MessageParser::CreateChatMessage( string* sMessageContent )
 		sMsgLength.insert(0,"0");
 	}
 
-	//int iMsgLengthLength=string(zBuf).length();
-	//iMsgLength+=iMsgLengthLength;
-
-	//sprintf(zBuf, "%d", iMsgLength);
-	//int iNewMsgLengthLength=string(zBuf).length();
-	//if(iNewMsgLengthLength>iMsgLengthLength){
-	//	iMsgLength+=iNewMsgLengthLength-iMsgLengthLength;
-	//}
-
-	//sprintf(zBuf, "%d", iMsgLength);
 
 	string sNotifMsg=GetMessageHeader();
 	sNotifMsg.append(sMsgLength);

@@ -17,7 +17,8 @@ MessageFactory::MessageFactory(MessageProcessor * oMessageProcessor) {
 void MessageFactory::CreateMessage(string sNewMessage)
 {
 	// |;|7+4+2+5|LIN;ishan|;|
-	cout<<"MessageFactory - "<<sNewMessage<<endl;
+
+	LogDebug("MessageFactory.cpp - New Input : %s",sNewMessage.c_str());
 
 	if(this->i_CurrentMsgLength == 0)	//this is the begining of a new message
 	{
@@ -31,7 +32,9 @@ void MessageFactory::CreateMessage(string sNewMessage)
 		//get the length of the total message
 		const char* pzMsgLength=sNewMessage.substr(3,7).c_str();	
 		i_CurrentMsgLength=atoi(pzMsgLength);
-		//cout<<i_CurrentMsgLength<<endl;
+		
+
+		LogDebug("MessageFactory.cpp - Creating New Message");
 
 	}
 
@@ -41,6 +44,7 @@ void MessageFactory::CreateMessage(string sNewMessage)
 	//if the complete message is received
 	if (this->s_CurrentMessage.length() == i_CurrentMsgLength)
 	{
+		LogDebug("MessageFactory.cpp - Message Complete - %s",this->s_CurrentMessage.c_str());
 		o_MessageProcessor->ProcessServerInput(this->s_CurrentMessage.substr(GetTotalHeaderLength(),(this->s_CurrentMessage.length()-(GetTotalHeaderLength()+GetTotalFooterLength())) ));
 		this->i_CurrentMsgLength = 0;
 		this->s_CurrentMessage="";
@@ -49,8 +53,7 @@ void MessageFactory::CreateMessage(string sNewMessage)
 	}
 	else if(this->s_CurrentMessage.length() > i_CurrentMsgLength)	//if the message size has been exceeded
 	{
-		//TODO - show error
-		cout<<"Invalid incoming message - Exceeds defined length -"<<sNewMessage<<"  "<<s_CurrentMessage.length()<<"---"<<i_CurrentMsgLength<<endl;
+		LogDebug("MessageFactory.cpp - Invalid incoming message - Exceeds defined length . Expected: - %d . Current - %d",i_CurrentMsgLength,this->s_CurrentMessage.length());
 		this->i_CurrentMsgLength = 0;
 		this->s_CurrentMessage="";
 		return;

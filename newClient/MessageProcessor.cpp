@@ -2,16 +2,17 @@
 
 void MessageProcessor::ProcessUserInput( string sInput )
 {
-	//cout<<"UserInput"<<endl;
+	LogDebug("MessageProcessor.cpp - Processing User Input");
 	//if the user has not given any username yet
 	if(this->e_CurrentState == LOGIN_USERNAME_PENDING)
 	{
+		LogDebug("MessageProcessor.cpp - Current State : %s","LOGIN_USERNAME_PENDING");
 		//create the login message
 		this->o_MsgParser->CreateLoginMessage(&sInput);
 		int result=this->o_NetworkSocketOp->WriteToSocket(sInput.c_str(),sInput.length());
 		if(result)
 		{
-			cout<<"[INFO] Bad Input."<<endl;
+			o_ScreenWriter->WriteNotificationMessage("Bad Input.");
 			return;
 		}
 		this->e_CurrentState=LOGIN_USERNAME_SENT;
@@ -19,27 +20,19 @@ void MessageProcessor::ProcessUserInput( string sInput )
 	//if waiting for authentication after sending username
 	else if(this->e_CurrentState == LOGIN_USERNAME_SENT)
 	{
-		//		if(sInput.compare("Login Success!")==0)
-		//		{
-		//			cout<<"Succesfully Logged in!"<<endl;
-		//			this->e_CurrentState=LOGGED_IN;
-		//		}
-		//		else
-		//		{
-		//			cout<<"Login Failed!"<<endl;
-		//			this->e_CurrentState=LOGIN_USERNAME_PENDING;
-		//			std::cout<<"Please Enter UserName: "<<std::endl;
-		//		}
+		LogDebug("MessageProcessor.cpp - Current State : %s","LOGIN_USERNAME_SENT");
 	}
 	//if logged in
 	else if(this->e_CurrentState == LOGGED_IN)
 	{
+		LogDebug("MessageProcessor.cpp - Current State : %s","LOGGED_IN");
+
 		//send as a message
 		int result=this->o_MsgParser->CreateChatMessage(&sInput);
 
 		if(result)
 		{
-			cout<<"[INFO] Bad Input."<<endl;
+			o_ScreenWriter->WriteNotificationMessage("Bad Input.");
 			return;
 		}
 		this->o_NetworkSocketOp->WriteToSocket(sInput.c_str(),sInput.length());
@@ -50,34 +43,31 @@ void MessageProcessor::ProcessUserInput( string sInput )
 
 void MessageProcessor::ProcessServerInput( string sInput )
 {
-	//cout<<this->e_CurrentState<<endl;
-	cout<<sInput<<endl;
+	LogDebug("MessageProcessor.cpp - Processing Server Input");
 
 	//if the user has not given any username yet
 	if(this->e_CurrentState == LOGIN_USERNAME_PENDING)
 	{
-		//create the login message
-		//this->o_MsgParser->CreateLoginMessage(&sInput);
-		//this->o_NetworkSocketOp->WriteToSocket(sInput.c_str(),sInput.length());
-		//this->e_CurrentState=LOGIN_USERNAME_SENT;
+		LogDebug("MessageProcessor.cpp - Current State : %s","LOGIN_USERNAME_PENDING");
 	}
 	//if waiting for authentication after sending username
 	else if(this->e_CurrentState == LOGIN_USERNAME_SENT)
 	{
-		//cout<<o_MsgParser->GetMessageType(sInput)<<endl;
+		LogDebug("MessageProcessor.cpp - Current State : %s","LOGIN_USERNAME_SENT");
+
 		//if this is a reply to the authentication request
 		if(o_MsgParser->GetMessageType(sInput) == AUTHENTICATION)
 		{
 			if(o_MsgParser->GetMessageContent(sInput).compare("success")==0)
 			{
-				cout<<"Successfully Logged in!"<<endl;
+				o_ScreenWriter->WriteNotificationMessage("Successfully Logged in!");
 				this->e_CurrentState=LOGGED_IN;
 			}
 			else
 			{
-				cout<<"Login Failed!"<<endl;
+				o_ScreenWriter->WriteNotificationMessage("Login Failed!");
 				this->e_CurrentState=LOGIN_USERNAME_PENDING;
-				std::cout<<"Please Enter UserName: "<<std::endl;
+				o_ScreenWriter->WriteNotificationMessage("Please Re-Enter UserName: ");
 			}
 		}
 
@@ -85,16 +75,18 @@ void MessageProcessor::ProcessServerInput( string sInput )
 	//if logged in
 	else if(this->e_CurrentState == LOGGED_IN)
 	{
-		cout<<"[CHAT] "<<o_MsgParser->GetMessageContent(sInput)<<endl;
+		LogDebug("MessageProcessor.cpp - Current State : %s","LOGGED_IN");
+		o_ScreenWriter->WriteChatMessage(o_MsgParser->GetMessageContent(sInput));
 	}
 
 }
 
-MessageProcessor::MessageProcessor( MessageParser * oMsgParser, SocketOperator * oNetworkSocketOp, SocketOperator * oTerminalSocketOp )
+MessageProcessor::MessageProcessor( MessageParser * oMsgParser, SocketOperator * oNetworkSocketOp, SocketOperator * oTerminalSocketOp, ScreenWriter * oScreenWriter )
 {
 	this->o_MsgParser=oMsgParser;
 	this->o_NetworkSocketOp=oNetworkSocketOp;
 	this->o_TerminalSocketOp=oTerminalSocketOp;
+	this->o_ScreenWriter=oScreenWriter;
 
 	//set the initial client state
 	this->e_CurrentState=LOGIN_USERNAME_PENDING;

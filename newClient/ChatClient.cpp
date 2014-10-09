@@ -9,26 +9,14 @@
 
 
 ChatClient::ChatClient() {
-	// TODO Auto-generated constructor stub
 
 }
-
-
 
 int ChatClient::StartClient() {
 	int sockfd, portno, n;
 	struct sockaddr_in serv_addr;
 	struct hostent *server;
 
-
-
-
-	//,valread;
-
-//	if (argc < 3) {
-//		fprintf(stderr,"usage %s hostname port\n", argv[0]);
-//		return 0;
-//	}
 	portno = 8888;
 	/* Create a socket point */
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -61,25 +49,10 @@ int ChatClient::StartClient() {
 	SocketOperator * oNetSockOperator=new SocketOperator(sockfd);
 	SocketOperator * oTerminalSocketOperator=new SocketOperator(STDIN_FILENO);
 
-	//login
-//	std::string username;
-	std::cout<<"Please Enter UserName: "<<std::endl;
-//	std::cin>>username;
-//	std::string loginMessage="LIN;";
-//	loginMessage.append(username);
-//
-//	char *cstr = new char[loginMessage.length() + 1];
-//	strcpy(cstr, loginMessage.c_str());
-//
-//	oNetSockOperator->WriteToSocket(cstr,loginMessage.length());
-//	delete [] cstr;
-//	oNetSockOperator->ReadFromSocket(cstr,14);
-//	std::cout<<cstr;
-//
-//	//check the reply
 
 	MessageParser * oMsgParser=new MessageParser();
-	MessageProcessor * oEventHndler=new MessageProcessor(oMsgParser,oNetSockOperator,oTerminalSocketOperator);
+	ScreenWriter * oScreenWriter = new ScreenWriter();
+	MessageProcessor * oEventHndler=new MessageProcessor(oMsgParser,oNetSockOperator,oTerminalSocketOperator,oScreenWriter);
 
 	MessageFactory * oMessageFactory = new MessageFactory(oEventHndler);
 
@@ -94,6 +67,7 @@ int ChatClient::StartClient() {
 	delete oMessageFactory;
 	delete oEventHndler;
 	delete oMsgParser;
+	delete oScreenWriter;
 
 	return 0;
 

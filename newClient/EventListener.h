@@ -25,6 +25,7 @@
 #include "SocketOperator.h"
 #include "MessageProcessor.h"
 #include "MessageFactory.h"
+#include "Utils.h"
 
 #define MAX_INPUT_BUFFER_SIZE 1025
 
