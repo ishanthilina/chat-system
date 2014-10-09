@@ -56,7 +56,7 @@ void MessageBuffer::CreateMessage(int iSocketDescriptor, string sNewMessage,
 			//create message out of it
 			string sMsg=oBufferedMsg->GetFullMessage();
 			Message * pMessage = p_MsgFactory->createMessage(iSocketDescriptor,
-					sMsg.substr(6,(sMsg.length()-4) ),
+					sMsg.substr(GetTotalHeaderLength(),(sMsg.length()-(GetTotalHeaderLength()+GetTotalFooterLength())) ),
 					oAddress);
 
 			p_DeliveryController->processMessage(pMessage);
@@ -94,7 +94,7 @@ void MessageBuffer::CreateMessage(int iSocketDescriptor, string sNewMessage,
 			{
 				string sMsg=oBufferedMsg->GetFullMessage();
 				Message * pMessage = p_MsgFactory->createMessage(iSocketDescriptor,
-									sMsg.substr(6,(sMsg.length()-(3+6)) ),
+									sMsg.substr(GetTotalHeaderLength(),(sMsg.length()-(GetTotalHeaderLength()+GetTotalFooterLength())) ),
 									oAddress);
 
 				p_DeliveryController->processMessage(pMessage);

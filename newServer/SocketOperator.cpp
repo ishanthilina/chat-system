@@ -27,6 +27,7 @@ int SocketOperator::ReadFromSocket(int iSocket,char * buffer,int iBufferSize)
 int SocketOperator::WriteToSocket(int iSocket,string sBuffer,int iBufferSize)
 {
 	const char * zBuffer=sBuffer.c_str();
+	//cout<<zBuffer<<endl;
 	int iValWritten=0;
 	if ((iValWritten = write( iSocket , zBuffer, iBufferSize)) == 0)
 	{

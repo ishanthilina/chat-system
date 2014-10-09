@@ -90,6 +90,8 @@ void DeliveryController::processMessage(Message* o_Message)
 
 			}
 
+			cout<<"Sent message: "<<sMsg<<endl;
+			cout<<"Sent message length: "<<sMsg.length()<<endl;
 			p_Logger->LogEvent(oClient,sMsg);
 			//cout<<sMsg<<endl;
 			//cout<<"End"<<endl;

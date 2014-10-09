@@ -5,6 +5,7 @@
 #include <string>
 #include <stdio.h>
 #include <iostream>
+#include <cstring>
 
 
 using namespace std;
@@ -24,6 +25,8 @@ const MessageType GetEnumFromString(string);
 
 string GetMessageHeader();
 string GetMessageFooter();
+int GetTotalHeaderLength();
+int GetTotalFooterLength();
 
 class MessageParser
 {

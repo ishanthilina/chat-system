@@ -9,12 +9,19 @@ int StringMessageBuilder::CreateNotificationMessage( string * sMessageContent )
 	string sProtocol(GetTextForEnum(NOTIFICATION));
 
 	//get total message length
-	int iMsgLength = (*sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+3;
-	char zBuf[2];
+	int iMsgLength = (*sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+8;
+	char zBuf[4];
+	memset(zBuf, 0, 4);
 	sprintf(zBuf, "%d", iMsgLength);
+	string sMsgLength=string(zBuf);
+	while (sMsgLength.length()<7)	//set the length of message header items length constant
+	{
+		sMsgLength.insert(0,"0");
+	}
+
 
 	string sNotifMsg=GetMessageHeader();
-	sNotifMsg.append(string(zBuf));
+	sNotifMsg.append(sMsgLength);
 	sNotifMsg.append("|");
 	sNotifMsg.append(sProtocol);
 	sNotifMsg.append(*sMessageContent);
@@ -29,12 +36,24 @@ int StringMessageBuilder::CreateChatMessage(string* sMessageContent)
 		string sProtocol(GetTextForEnum(DIRECT));
 
 		//get total message length
-		int iMsgLength = (*sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+3;
-		char zBuf[2];
+		int iMsgLength = (*sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+8;
+		
+		//cout<<"1-"<<iMsgLength<<endl;
+		char zBuf[4];
+		memset(zBuf, 0, 4);
 		sprintf(zBuf, "%d", iMsgLength);
 
+		string sMsgLength=string(zBuf);
+		while (sMsgLength.length()<7)	//set the length of message header items length constant
+		{
+			sMsgLength.insert(0,"0");
+		}
+
+		//cout<<"2-"<<sMsgLength<<endl;
+
 		string sNotifMsg=GetMessageHeader();
-		sNotifMsg.append(string(zBuf));
+		sNotifMsg.append(sMsgLength);
+		//sNotifMsg.append(string(zBuf));
 		sNotifMsg.append("|");
 		sNotifMsg.append(sProtocol);
 		sNotifMsg.append(*sMessageContent);
@@ -57,12 +76,20 @@ string StringMessageBuilder::CreateAuthStatusMessage(bool bAuthStatus) {
 	}
 
 	//get total message length
-	int iMsgLength = (sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+3;
-	char zBuf[2];
+	int iMsgLength = (sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+8;
+	char zBuf[4];
+	memset(zBuf, 0, 4);
 	sprintf(zBuf, "%d", iMsgLength);
 
+	string sMsgLength=string(zBuf);
+	while (sMsgLength.length()<7)	//set the length of message header items length constant
+	{
+		sMsgLength.insert(0,"0");
+	}
+
+
 	string sMsg=GetMessageHeader();
-	sMsg.append(string(zBuf));
+	sMsg.append(sMsgLength);
 	sMsg.append("|");
 	sMsg.append(sProtocol);
 	sMsg.append(sMessageContent);

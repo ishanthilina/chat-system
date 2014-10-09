@@ -39,6 +39,16 @@ std::string GetMessageFooter()
 	return string("|;|");
 }
 
+int GetTotalHeaderLength()
+{
+	return 11;
+}
+
+int GetTotalFooterLength()
+{
+	return 3;
+}
+
 Message::Message(string s_Message, MessageType e_MessageType, int i_Sender, vector<string> * o_Receivers, sockaddr_in o_SenderSockAddr)
 {
 

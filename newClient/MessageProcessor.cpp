@@ -51,6 +51,8 @@ void MessageProcessor::ProcessUserInput( string sInput )
 void MessageProcessor::ProcessServerInput( string sInput )
 {
 	//cout<<this->e_CurrentState<<endl;
+	cout<<sInput<<endl;
+
 	//if the user has not given any username yet
 	if(this->e_CurrentState == LOGIN_USERNAME_PENDING)
 	{

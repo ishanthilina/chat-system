@@ -4,6 +4,8 @@
 
 #include <string>
 #include <stdio.h>
+#include <cstring>
+
 
 #include "Message.h"
 

@@ -39,6 +39,16 @@ std::string GetMessageFooter()
 	return string("|;|");
 }
 
+int GetTotalHeaderLength()
+{
+	return 11;
+}
+
+int GetTotalFooterLength()
+{
+	return 3;
+}
+
 int MessageParser::CreateLoginMessage( string* sMessageContent )
 {
 	//validate the string first
@@ -53,12 +63,18 @@ int MessageParser::CreateLoginMessage( string* sMessageContent )
 	string sProtocol(GetTextForEnum(LOGIN));
 
 	//get total message length
-	int iMsgLength = (*sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+3;
-	char zBuf[2];
+	int iMsgLength = (*sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+8;
+	char zBuf[4];
+	memset(zBuf, 0, 4);
 	sprintf(zBuf, "%d", iMsgLength);
+	string sMsgLength=string(zBuf);
+	while (sMsgLength.length()<7)	//set the length of message header items length constant
+	{
+		sMsgLength.insert(0,"0");
+	}
 
 	string sNotifMsg=GetMessageHeader();
-	sNotifMsg.append(string(zBuf));
+	sNotifMsg.append(sMsgLength);
 	sNotifMsg.append("|");
 	sNotifMsg.append(sProtocol);
 	sNotifMsg.append(*sMessageContent);
@@ -82,23 +98,31 @@ int MessageParser::CreateChatMessage( string* sMessageContent )
 	string sProtocol(GetTextForEnum(DIRECT));
 
 	//get total message length
-	int iMsgLength = (*sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+1; //+ the length of the number
+	int iMsgLength = (*sMessageContent).length()+GetMessageHeader().length()+GetMessageFooter().length()+sProtocol.length()+8; //+ the length of the number
 
 	char zBuf[64];
+	memset(zBuf, 0, 64);
 	sprintf(zBuf, "%d", iMsgLength);
-	int iMsgLengthLength=string(zBuf).length();
-	iMsgLength+=iMsgLengthLength;
 
-	sprintf(zBuf, "%d", iMsgLength);
-	int iNewMsgLengthLength=string(zBuf).length();
-	if(iNewMsgLengthLength>iMsgLengthLength){
-		iMsgLength+=iNewMsgLengthLength-iMsgLengthLength;
+	string sMsgLength=string(zBuf);
+	while (sMsgLength.length()<7)	//set the length of message header items length constant
+	{
+		sMsgLength.insert(0,"0");
 	}
 
-	sprintf(zBuf, "%d", iMsgLength);
+	//int iMsgLengthLength=string(zBuf).length();
+	//iMsgLength+=iMsgLengthLength;
+
+	//sprintf(zBuf, "%d", iMsgLength);
+	//int iNewMsgLengthLength=string(zBuf).length();
+	//if(iNewMsgLengthLength>iMsgLengthLength){
+	//	iMsgLength+=iNewMsgLengthLength-iMsgLengthLength;
+	//}
+
+	//sprintf(zBuf, "%d", iMsgLength);
 
 	string sNotifMsg=GetMessageHeader();
-	sNotifMsg.append(string(zBuf));
+	sNotifMsg.append(sMsgLength);
 	sNotifMsg.append("|");
 	sNotifMsg.append(sProtocol);
 	sNotifMsg.append(*sMessageContent);
@@ -113,5 +137,5 @@ MessageType MessageParser::GetMessageType(string sMessageContent) {
 }
 
 string MessageParser::GetMessageContent(string sMessageContent) {
-	return sMessageContent.substr(4,sMessageContent.length()-(4+3));
+	return sMessageContent.substr(4);
 }

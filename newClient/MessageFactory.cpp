@@ -17,6 +17,7 @@ MessageFactory::MessageFactory(MessageProcessor * oMessageProcessor) {
 void MessageFactory::CreateMessage(string sNewMessage)
 {
 	// |;|7+4+2+5|LIN;ishan|;|
+	cout<<"MessageFactory - "<<sNewMessage<<endl;
 
 	if(this->i_CurrentMsgLength == 0)	//this is the begining of a new message
 	{
@@ -28,8 +29,9 @@ void MessageFactory::CreateMessage(string sNewMessage)
 		}
 
 		//get the length of the total message
-		const char* pzMsgLength=sNewMessage.substr(3,2).c_str();	//todo - bug : cannot handle lengths greater than 99
+		const char* pzMsgLength=sNewMessage.substr(3,7).c_str();	
 		i_CurrentMsgLength=atoi(pzMsgLength);
+		//cout<<i_CurrentMsgLength<<endl;
 
 	}
 
@@ -39,7 +41,7 @@ void MessageFactory::CreateMessage(string sNewMessage)
 	//if the complete message is received
 	if (this->s_CurrentMessage.length() == i_CurrentMsgLength)
 	{
-		o_MessageProcessor->ProcessServerInput(this->s_CurrentMessage.substr(6,(this->s_CurrentMessage.length()-4) ));
+		o_MessageProcessor->ProcessServerInput(this->s_CurrentMessage.substr(GetTotalHeaderLength(),(this->s_CurrentMessage.length()-(GetTotalHeaderLength()+GetTotalFooterLength())) ));
 		this->i_CurrentMsgLength = 0;
 		this->s_CurrentMessage="";
 		return;

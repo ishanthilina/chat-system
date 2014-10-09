@@ -23,6 +23,9 @@ const MessageType GetEnumFromString(string);
 
 string GetMessageHeader();
 string GetMessageFooter();
+int GetTotalHeaderLength();
+int GetTotalFooterLength();
+
 
 
 class Message
