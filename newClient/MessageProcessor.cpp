@@ -2,6 +2,10 @@
 
 void MessageProcessor::ProcessUserInput( string sInput )
 {
+
+	//trim whitespace
+	TrimWhitespace(sInput);
+
 	LogDebug("MessageProcessor.cpp - Processing User Input");
 	//if the user has not given any username yet
 	if(this->e_CurrentState == LOGIN_USERNAME_PENDING)
@@ -103,4 +107,27 @@ MessageProcessor::MessageProcessor( MessageParser * oMsgParser, SocketOperator *
 
 	//set the initial client state
 	this->e_CurrentState=LOGIN_USERNAME_PENDING;
+}
+
+void MessageProcessor::SetClientState(enum ClientState eClientState)
+{
+	this->e_CurrentState = eClientState;
+}
+
+
+void MessageProcessor::TrimWhitespace(string& input) {
+	if(input.find_first_of(";")!=string::npos)
+	{
+		string str=input.substr(input.find_first_of(";")+1);
+		string::size_type pos = str.find_last_not_of(' ');
+		if(pos != string::npos) {
+			str.erase(pos + 1);
+			pos = str.find_first_not_of(' ');
+			if(pos != string::npos) str.erase(0, pos);
+		}
+		else str.erase(str.begin(), str.end());
+		input.erase(input.find_first_of(";")+1);
+		input.replace(input.find_first_of(";")+1,str.length(),str);
+	}
+
 }

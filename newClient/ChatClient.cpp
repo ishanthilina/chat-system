@@ -61,6 +61,7 @@ int ChatClient::StartClient() {
 	eventListener->Listen();
 
 
+
 	delete oNetSockOperator;
 	delete oTerminalSocketOperator;
 	delete eventListener;
@@ -82,6 +83,7 @@ int main()
 {
 	ChatClient * client=new ChatClient();
 	client->StartClient();
+	delete client;
 	return 0;
 }
 

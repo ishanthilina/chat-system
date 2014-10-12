@@ -27,6 +27,8 @@ int EventListener::Listen(){
 
 	while(1){
 
+		LogDebug("EventListener.cpp -  : %s","Clearing");
+
 		//clear the socket set
 		FD_ZERO(&readfds);
 
@@ -54,7 +56,10 @@ int EventListener::Listen(){
 			int iReadValue=o_NetSockOperator->ReadFromSocket(buffer,MAX_INPUT_BUFFER_SIZE);
 			if(!iReadValue){
 				LogDebug("EventListener.cpp - Server %s","Disconnected");
-				return 0;
+				o_MessageProcessor->SetClientState(LOGIN_USERNAME_PENDING);
+				close(sockfd);
+				break;
+
 			}
 
 			buffer[iReadValue]='\0';

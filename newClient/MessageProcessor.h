@@ -11,19 +11,23 @@
 
 using namespace std;
 
+enum ClientState
+		{
+			LOGIN_USERNAME_PENDING=0,
+			LOGIN_USERNAME_SENT=1,
+			LOGGED_IN=2
+		};
+
 class MessageProcessor
 {
 public:
+
 	MessageProcessor(MessageParser * oMsgParser, SocketOperator * oNetworkSocketOp, SocketOperator * oTerminalSocketOp,ScreenWriter * oScreenWriter);
 	void ProcessUserInput(string sInput);
 	void ProcessServerInput(string sInput);
+	void SetClientState(enum ClientState eClientState);
 
-	enum ClientState
-	{
-		LOGIN_USERNAME_PENDING=0,
-		LOGIN_USERNAME_SENT=1,
-		LOGGED_IN=2
-	};
+
 
 protected:
 private:
@@ -32,6 +36,8 @@ private:
 	SocketOperator * o_NetworkSocketOp;
 	SocketOperator * o_TerminalSocketOp;
 	ScreenWriter * o_ScreenWriter;
+
+	void TrimWhitespace(string& str);
 };
 
 #endif	//_MESSAGE_PROCESSOR_HEADER_
