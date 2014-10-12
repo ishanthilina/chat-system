@@ -26,3 +26,17 @@
 *.exe
 *.out
 *.app
+
+
+newServer/1-127.0.0.1
+newServer/12-127.0.0.1
+newServer/2-127.0.0.1
+newServer/ishan-127.0.0.1
+newServer/server
+server/1-127.0.0.1
+server/12-127.0.0.1
+server/2-127.0.0.1
+server/3-127.0.0.1
+server/Debug/
+server/chatServer
+client/client
