@@ -60,8 +60,13 @@ void DeliveryController::processMessage(Message* o_Message)
 				//check whether the receiver exists
 				if(!p_ClientRegistry->IsClientExists((*it))){
 					LogDebug("DeliveryController.cpp :Invalid recipient %s in the message from %s.",(*it).c_str(),oClient->GetUserName().c_str());
-					//o_Server->SendMessage("Invalid recipient "+(*it),o_Message->GetSenderSocket());
-					return;
+
+					string sReplyMsg("Invalid recipient "+(*it));
+					p_StringMsgBuilder->CreateNotificationMessage(&sReplyMsg);
+
+					p_SocketOperator->WriteToSocket(o_Message->GetSenderSocket(),sReplyMsg,sReplyMsg.length());
+
+					//return;
 				}
 				sMsg+=(*it);
 				sMsg+=",";

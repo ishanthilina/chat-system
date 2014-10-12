@@ -79,7 +79,17 @@ void MessageProcessor::ProcessServerInput( string sInput )
 	else if(this->e_CurrentState == LOGGED_IN)
 	{
 		LogDebug("MessageProcessor.cpp - Current State : %s","LOGGED_IN");
-		o_ScreenWriter->WriteChatMessage(o_MsgParser->GetMessageContent(sInput));
+
+		if(o_MsgParser->GetMessageType(sInput) == NOTIFICATION)
+		{
+			o_ScreenWriter->WriteNotificationMessage(o_MsgParser->GetMessageContent(sInput));
+		}
+		else
+		{
+			o_ScreenWriter->WriteChatMessage(o_MsgParser->GetMessageContent(sInput));
+		}
+
+
 	}
 
 }
