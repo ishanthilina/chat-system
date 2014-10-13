@@ -118,8 +118,16 @@ void MessageProcessor::SetClientState(enum ClientState eClientState)
 void MessageProcessor::TrimWhitespace(string& input) {
 	if(input.find_first_of(";")!=string::npos)
 	{
+		string::size_type pos = input.find_last_not_of(' ');
+		if(pos != string::npos) {
+			input.erase(pos + 1);
+			pos = input.find_first_not_of(' ');
+			if(pos != string::npos) input.erase(0, pos);
+		}
+		else input.erase(input.begin(), input.end());
+
 		string str=input.substr(input.find_first_of(";")+1);
-		string::size_type pos = str.find_last_not_of(' ');
+		pos = str.find_last_not_of(' ');
 		if(pos != string::npos) {
 			str.erase(pos + 1);
 			pos = str.find_first_not_of(' ');

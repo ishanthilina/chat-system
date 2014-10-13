@@ -85,7 +85,7 @@ int MessageParser::CreateChatMessage( string* sMessageContent )
 {
 	//validate the string first
 	std::size_t found = (*sMessageContent).find(";");
-	if (found==std::string::npos)
+	if (found==std::string::npos || found ==0)
 	{
 		return 1;
 	}
