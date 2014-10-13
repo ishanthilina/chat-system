@@ -35,6 +35,8 @@ public:
 	ChatClient();
 	int StartClient();
 	virtual ~ChatClient();
+private:
+	int Connect();
 };
 
 #endif /* CHATCLIENT_H_ */

@@ -26,6 +26,7 @@ int SocketOperator::ReadFromSocket(int iSocket,char * buffer,int iBufferSize)
 
 int SocketOperator::WriteToSocket(int iSocket,string sBuffer,int iBufferSize)
 {
+	LogDebug("SocketOperator.cpp - Sending Message - %s",sBuffer.c_str());
 	const char * zBuffer=sBuffer.c_str();
 	//cout<<zBuffer<<endl;
 	int iValWritten=0;

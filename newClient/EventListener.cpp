@@ -25,7 +25,9 @@ int EventListener::Listen(){
 
 		int activity;
 
-	while(1){
+		bool bRunLoop=true;
+
+	while(bRunLoop){
 
 		LogDebug("EventListener.cpp -  : %s","Clearing");
 
@@ -55,10 +57,11 @@ int EventListener::Listen(){
 			memset(buffer, 0, MAX_INPUT_BUFFER_SIZE);
 			int iReadValue=o_NetSockOperator->ReadFromSocket(buffer,MAX_INPUT_BUFFER_SIZE);
 			if(!iReadValue){
-				LogDebug("EventListener.cpp - Server %s","Disconnected");
 				o_MessageProcessor->SetClientState(LOGIN_USERNAME_PENDING);
 				close(sockfd);
-				break;
+				LogDebug("EventListener.cpp - Server %s","Disconnected");
+				//return 2;
+				//bRunLoop=false;
 
 			}
 
