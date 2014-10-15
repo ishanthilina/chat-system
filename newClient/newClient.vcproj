@@ -191,7 +191,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ScreenWriter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SocketOperator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Utils.cpp"
 				>
 			</File>
 		</Filter>
@@ -221,7 +229,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ScreenWriter.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SocketOperator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Utils.h"
 				>
 			</File>
 		</Filter>

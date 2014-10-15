@@ -21,7 +21,7 @@ int EventListener::Listen(){
 	//set of socket descriptors
 		fd_set readfds;
 
-		char buffer[256];
+		char buffer[MAX_INPUT_BUFFER_SIZE+1];
 
 		int activity;
 
