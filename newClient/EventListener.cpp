@@ -61,7 +61,7 @@ int EventListener::Listen(){
 				close(sockfd);
 				LogDebug("EventListener.cpp - Server %s","Disconnected");
 				//return 2;
-				//bRunLoop=false;
+				bRunLoop=false;
 
 			}
 
