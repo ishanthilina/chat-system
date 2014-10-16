@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 //#include "Utils.h"
+#include "Client.h"
 
 #include <iostream>
 
@@ -18,7 +19,8 @@ public:
 	User(string s_UserName, Client* pClient);
 	string GetUserName();
 	string GetLogName();
-	int GetClient();
+	Client* GetClient();
+	int SendMessage(string sMsg);
 protected:
 private:
 	string s_UserName;

@@ -26,7 +26,13 @@ std::string User::GetLogName()
 	return s_LogName;
 }
 
-int User::GetClient()
+Client* User::GetClient()
 {
 	return this->p_Client;
 }
+
+int User::SendMessage(string sMsg)
+{
+	return this->p_Client->SendMessage(sMsg);
+}
+

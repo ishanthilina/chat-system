@@ -1,4 +1,4 @@
-#include "ClientRegistry.h"
+#include "UserRegistry.h"
 
 UserRegistry::UserRegistry()
 {
@@ -42,7 +42,7 @@ int UserRegistry::RemoveUser( User * o_User )
 	//remove from the clients list also
 	for(vector<User*>::iterator it1=o_Users->begin();it1!=o_Users->end();++it1)
 	{
-		if ((*it1)->GetSocket()==o_User->GetSocket())
+		if ((*it1)==o_User)
 		{
 			delete *it1;
 			o_Users->erase(it1);
@@ -72,26 +72,26 @@ bool UserRegistry::IsUserExists( string username )
 }
 
 
-User * UserRegistry::GetUser( int i_socket )
-{
-	for(vector<User*>::iterator it=o_Users->begin();it!=o_Users->end();++it)
-	{
-		//cout<<username<<"-"<<(*it)->GetUserName()<<endl;
-
-		if (i_socket==(*it)->GetSocket())
-		{
-			//oClient = new Client((*it)->GetUserName(),(*it)->GetSocket(),(*it)->GetAddressStruct());
-			//cout<<"-"<<(*it)->GetUserName()<<endl;
-
-			return (*it);
-
-			//return 0;
-		}
-
-	}
-
-	return NULL;
-}
+//User * UserRegistry::GetUser( int i_socket )
+//{
+//	for(vector<User*>::iterator it=o_Users->begin();it!=o_Users->end();++it)
+//	{
+//		//cout<<username<<"-"<<(*it)->GetUserName()<<endl;
+//
+//		if (i_socket==(*it)->GetSocket())
+//		{
+//			//oClient = new Client((*it)->GetUserName(),(*it)->GetSocket(),(*it)->GetAddressStruct());
+//			//cout<<"-"<<(*it)->GetUserName()<<endl;
+//
+//			return (*it);
+//
+//			//return 0;
+//		}
+//
+//	}
+//
+//	return NULL;
+//}
 
 
 
@@ -115,4 +115,25 @@ User * UserRegistry::GetUser( string username )
 
 	return NULL;
 
+}
+
+User* UserRegistry::GetUser(Client* pClient)
+{
+	for(vector<User*>::iterator it=o_Users->begin();it!=o_Users->end();++it)
+		{
+			//cout<<username<<"-"<<(*it)->GetUserName()<<endl;
+
+			if (pClient == (*it)->GetClient())
+			{
+				//oClient = new Client((*it)->GetUserName(),(*it)->GetSocket(),(*it)->GetAddressStruct());
+				//cout<<"-"<<(*it)->GetUserName()<<endl;
+
+				return (*it);
+
+				//return 0;
+			}
+
+		}
+
+		return NULL;
 }

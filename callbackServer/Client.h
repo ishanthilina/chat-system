@@ -23,7 +23,7 @@ public:
 	Client(int iSocketFd);
 	virtual ~Client();
 
-	void SendMessage(string sMessage);
+	int SendMessage(string sMessage);
 	int GetSocket();
 private:
 	int i_SocketFd;

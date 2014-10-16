@@ -15,16 +15,14 @@
 
 class SCallBack {
 public:
-	SCallBack();
-	virtual ~SCallBack();
 
-	void OnConnect(Server* pServer, Client* pClient);
-	void OnDisconnect(Server* pServer, Client* pClient);
-	void OnData(Server* pServer, Client* pClient, string sData);
+	virtual void OnConnect(Server* pServer, Client* pClient)=0;
+	virtual void OnDisconnect(Server* pServer, Client* pClient)=0;
+	virtual void OnData(Server* pServer, Client* pClient, string sData)=0;
 
-	void OnConnect(Client* pClient);
-	void OnDisconnect(Client* pClient);
-	void OnData(Client* pClient, string sData);
+	virtual void OnConnect(Client* pClient)=0;
+	virtual void OnDisconnect(Client* pClient)=0;
+	virtual void OnData(Client* pClient, string sData)=0;
 
 private:
 	

@@ -2,10 +2,12 @@
 #define _SERVER_SIDE_CALL_BACK_HEADER
 
 #include "SCallBack.h"
+#include "MessageBuffer.h"
+#include "Utils.h"
 
-class ServerSideCallBack : SCallBack {
+class ServerSideCallBack : public SCallBack {
 public:
-	ServerSideCallBack();
+	ServerSideCallBack(MessageBuffer* pMessageBuffer);
 	virtual ~ServerSideCallBack();
 
 	void OnConnect(Server* pServer, Client* pClient);
@@ -17,6 +19,7 @@ public:
 	void OnData(Client* pClient, string sData);
 
 private:
+	MessageBuffer* p_MessageBuffer;
 
 
 };

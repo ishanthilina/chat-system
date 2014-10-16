@@ -11,9 +11,10 @@
 #include <string>
 
 #include "Client.h"
+#include "Server.h"
 #include "UserRegistry.h"
 #include "Message.h"
-#include "Logger.h"
+//#include "Logger.h"
 #include "User.h"
 #include "MessageFactory.h"
 #include "Utils.h"
@@ -22,12 +23,12 @@ using namespace std;
 
 class DeliveryController {
 public:
-	DeliveryController(ClientRegistry * pClientRegistry, MessageFactory* pMessageFactory);
+	DeliveryController(UserRegistry * pUserRegistry, MessageFactory* pMessageFactory);
 	void processMessage( Message * oMessage );
 	virtual ~DeliveryController();
 private:
 	UserRegistry * p_UserRegistry;
-	Logger * p_Logger;
+	//Logger * p_Logger;
 	MessageFactory* p_MessageFactory;
 
 };

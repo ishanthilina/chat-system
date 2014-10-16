@@ -54,16 +54,11 @@ int GetMessageLengthSectionLength()
 	return 8;
 }
 
-Message::Message(string s_Message, MessageType e_MessageType, int i_Sender, vector<string> * o_Receivers, sockaddr_in o_SenderSockAddr)
+int GetProtocolLength()
 {
-
-	this->s_Message = s_Message;
-	this->e_MessageType = e_MessageType;
-	this->o_Receivers = o_Receivers;
-	this->i_SenderSocket = i_Sender;
-	this->o_SenderSockAddr=o_SenderSockAddr;
-
+	return 4;
 }
+
 
 string Message::GetMessage()
 {
@@ -83,12 +78,6 @@ vector<string> * Message::getReceivers()
 }
 
 
-Message::Message(string sEncodedMessage, Server* pServer, Client* pClient)
-{
-	this->s_EncodedMessage = sEncodedMessage;
-	this->p_Client=pClient;
-	this->p_Server=pServer;
-}
 
 bool Message::IsMessageComplete()
 {
@@ -100,25 +89,71 @@ bool Message::IsMessageComplete()
 	return false;
 }
 
-int Message::SendMessage()
-{
-	return 0;
-}
 
-int Message::SendMessage()
+bool Message::SendMessage()
 {
 	//send the message to all the recipients
-	Client * oClient1;
-	for(vector<string>::iterator it=oReceivers->begin();it!=oReceivers->end();++it)
+	int iRetVal;
+	bool bSendSuccess=true;
+	for(vector<User*>::iterator it=p_TargetUsers->begin();it!=p_TargetUsers->end();++it)
 	{
-		oClient1=p_ClientRegistry->GetClient(*it);
-		if(oClient1!=NULL)
+		LogDebug("Message.cpp :sending message to %s.",(*it)->GetUserName().c_str());
+		iRetVal=(*it)->SendMessage(this->s_EncodedMessage);
+
+
+		if(iRetVal)
 		{
-			LogDebug("DeliveryController.cpp :sending message to %s.",oClient1->GetUserName().c_str());
-			p_SocketOperator->WriteToSocket(oClient1->GetSocket(),sMsg,sMsg.length());
+			LogDebug("Message.cpp :Message successfully sent to %s.",(*it)->GetUserName().c_str());
+		}
+		else
+		{
+			bSendSuccess = false;
+			LogDebug("Message.cpp :Message send failed to %s.",(*it)->GetUserName().c_str());
 		}
 
 	}
+
+	return bSendSuccess;
+
+}
+
+Message::Message(string sEncodedMessage, string sMessage, Server* pServer,
+		Client* pClient, vector<User*>* pTargetUsers)
+{
+	LogDebug("Message.cpp : Creating message using the string : %s", sEncodedMessage.c_str());
+	this->s_EncodedMessage = sEncodedMessage;
+	this->s_Message = sMessage;
+	this->p_Server = pServer;
+	this->p_Client = pClient;
+	this->p_TargetUsers = pTargetUsers;
+}
+
+Message::Message(string sEncodedMessage, Server* pServer, Client* pClient)
+{
+	LogDebug("Message.cpp : Creating message using the string : %s", sEncodedMessage.c_str());
+	this->s_EncodedMessage = sEncodedMessage;
+	this->p_Server = pServer;
+	this->p_Client = pClient;
+
+	//set the expected message length
+	string sMsgLength = sEncodedMessage.substr(GetMessageHeader().length(),GetMessageLengthSectionLength()-1);
+	const char* pzMsgLength=sMsgLength.c_str();
+	this->i_MsgLength=atoi(pzMsgLength);
+
+	//set the message type
+	//LogDebug("ss %s", sEncodedMessage.substr(GetMessageHeader().length()+GetMessageLengthSectionLength(), 3).c_str());
+	this->e_MessageType = GetEnumFromString(sEncodedMessage.substr(GetMessageHeader().length()+GetMessageLengthSectionLength(), GetProtocolLength()));
+
+
+
+	//if the message is complete, extract the message content
+	if(IsMessageComplete())
+	{
+		int iMsgStartLocation = GetMessageHeader().length()+GetMessageLengthSectionLength()+ GetProtocolLength();
+			this->s_Message = this->s_EncodedMessage.substr(iMsgStartLocation, sEncodedMessage.length()-(iMsgStartLocation+ GetMessageFooter().length()));
+	}
+
+	this->b_ValidMessage=true;
 
 }
 
@@ -137,12 +172,19 @@ void Message::FillMessage(string sMessage)
 		this->s_EncodedMessage.append(sMessage);
 	}
 
+	//if the message is complete, extract the message content
+	if(IsMessageComplete())
+	{
+		int iMsgStartLocation = GetMessageHeader().length()+GetMessageLengthSectionLength()+ GetProtocolLength();
+		this->s_Message = this->s_EncodedMessage.substr(iMsgStartLocation, s_EncodedMessage.length()-(iMsgStartLocation+ GetMessageFooter().length()));
+	}
+
 
 }
 
-string BufferredMessage::GetEncodedMessage()
+string Message::GetEncodedMessage()
 {
-	return s_Message;
+	return s_EncodedMessage;
 }
 
 Client* Message::GetClient()

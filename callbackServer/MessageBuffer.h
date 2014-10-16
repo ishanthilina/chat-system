@@ -25,7 +25,7 @@ typedef std::map<Client*, Message*> TPClientMsgMap;
 
 class MessageBuffer {
 public:
-	MessageBuffer(DeliveryController * pDeliveryController, MessageFactory* pMessageFactory);
+	MessageBuffer(DeliveryController * pDeliveryController);
 	virtual ~MessageBuffer();
 	void CreateMessage(Server* pServer, Client* pClient,string sNewMessage);
 private:

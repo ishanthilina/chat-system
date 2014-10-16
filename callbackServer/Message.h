@@ -6,6 +6,12 @@
 #include <vector>
 #include <netinet/in.h>	//for sockaddr_in
 
+#include "Client.h"
+#include "Server.h"
+#include "User.h"
+#include "Utils.h"
+
+
 using namespace std;
 
 enum MessageType
@@ -26,20 +32,21 @@ string GetMessageFooter();
 int GetTotalHeaderLength();
 int GetTotalFooterLength();
 int GetMessageLengthSectionLength();
+int GetProtocolLength();
 
 
 
 class Message
 {
 public:
-	Message(string s_Message, MessageType e_MessageType, int i_Sender, vector<string> * o_Receivers, sockaddr_in o_SenderSockAddr);
 	string GetMessage();
 	MessageType GetMessageType();
 	vector<string> * getReceivers();
 	Client * GetClient();
 	Server* GetServer();
-	int SendMessage();
+	bool SendMessage();
 
+	Message(string sEncodedMessage, string sMessage, Server* pServer, Client* pClient, vector<User*> *pTargetUsers);
 	Message(string sEncodedMessage, Server* pServer, Client* pClient);
 	bool IsMessageComplete();
 	void FillMessage(string sMessage);
@@ -53,10 +60,12 @@ private:
 
 	Server* p_Server;
 	Client* p_Client;
+	vector<User*> *p_TargetUsers;
 
 	int i_MsgLength;
 	bool b_ValidMessage;
 	string s_EncodedMessage;
+
 };
 
 

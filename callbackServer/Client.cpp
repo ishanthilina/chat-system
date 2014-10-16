@@ -21,7 +21,7 @@ int Client::GetSocket()
 	return this->i_SocketFd;
 }
 
-void Client::SendMessage( string sMessage )
+int Client::SendMessage(string sMessage)
 {
 	LogDebug("Client.cpp: Sending %s",sMessage.c_str());
 
@@ -29,10 +29,9 @@ void Client::SendMessage( string sMessage )
 	if ((iValWritten = write( i_SocketFd , sMessage.c_str(), sMessage.length())) == 0)
 	{
 		LogDebug("Client.cpp: %s","Error writing to socket");
-		//return 1;
-		return;
+
 	}
-	//return 0;
+	return iValWritten;
 }
 
 

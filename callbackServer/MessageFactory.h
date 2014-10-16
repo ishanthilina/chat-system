@@ -5,8 +5,10 @@
 #include <iostream>
 #include <vector>
 #include <netinet/in.h>	//for sockaddr_in
+
 #include "Message.h"
 #include "Utils.h"
+#include "UserRegistry.h"
 
 using namespace std;
 
@@ -15,12 +17,13 @@ class MessageFactory
 public:
 	Message * createChatMessage(string sMessage, Server* pReceivedServer, Client* pClient, vector<string>* pReceivers);
 	Message* CreateAuthStatusMessage(bool bAuthStatus,Server* pReceivedServer, Client* pClient);
-	MessageFactory();
+	MessageFactory(UserRegistry* pUserRegistry);
 protected:
 private:
 	MessageType getMessageType(string s_Message);
 	string CreateEncodedMessageString(MessageType eMessageType,string s_Message);
-	UserRegistry* pUserRegistry;
+
+	UserRegistry* p_UserRegistry;
 
 	char c_MessageSeperator;
 };
