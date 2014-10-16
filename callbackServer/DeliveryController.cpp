@@ -35,7 +35,7 @@ void DeliveryController::processMessage(Message* o_Message)
 		}
 		LogDebug("DeliveryController.cpp : Sending reply to %s - %s",pUser->GetUserName().c_str(),pReplyMsg->GetEncodedMessage().c_str());
 		//p_SocketOperator->WriteToSocket(o_Message->GetSenderSocket(),sReplyMsg,sReplyMsg.length());
-		output=pReplyMsg->SendMessage();
+		output=pReplyMsg->SendMessageToReceivers();
 
 
 	}
@@ -44,17 +44,24 @@ void DeliveryController::processMessage(Message* o_Message)
 		LogDebug("DeliveryController.cpp : Chat message from socket %d",o_Message->GetClient()->GetSocket());
 
 			//Authenticate the message
-			/*Client * oClient;
-			oClient=p_ClientRegistry->GetClient(o_Message->GetSenderSocket());
-			if (oClient==NULL)
+			User * pUser;
+			pUser=p_UserRegistry->GetUser(o_Message->GetClient());
+			if (pUser==NULL)
 			{
-				LogDebug("DeliveryController.cpp :Authentication failure for socket %d.",o_Message->GetSenderSocket());
-				string sReplyMsg=p_StringMsgBuilder->CreateAuthStatusMessage(true);
-				p_SocketOperator->WriteToSocket(o_Message->GetSenderSocket(),sReplyMsg,sReplyMsg.length());
+				LogDebug("DeliveryController.cpp :Authentication failure for socket %d.",o_Message->GetClient()->GetSocket());
+				Message* pReplyMsg;
+				pReplyMsg = p_MessageFactory->CreateAuthStatusMessage(false,o_Message->GetServer(),o_Message->GetClient());
+				pReplyMsg->sendMessageToClient();
+				delete pReplyMsg;
 				return;
-			}*/
+			}
 
 			//create the message using message factory
+			Message* pReplyMsg;
+
+			pReplyMsg = this->p_MessageFactory->createChatMessage(o_Message->GetMessage(),o_Message->GetServer(), o_Message->GetClient(), o_Message->GetReceivers());
+			pReplyMsg->SendMessageToReceivers();
+
 
 		//log event
 		//p_Logger->LogEvent(oClient,sMsg);

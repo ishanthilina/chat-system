@@ -41,10 +41,11 @@ class Message
 public:
 	string GetMessage();
 	MessageType GetMessageType();
-	vector<string> * getReceivers();
+	vector<string> * GetReceivers();
 	Client * GetClient();
 	Server* GetServer();
-	bool SendMessage();
+	bool SendMessageToReceivers();
+	bool sendMessageToClient();
 
 	Message(string sEncodedMessage, string sMessage, Server* pServer, Client* pClient, vector<User*> *pTargetUsers);
 	Message(string sEncodedMessage, Server* pServer, Client* pClient);
@@ -65,6 +66,8 @@ private:
 	int i_MsgLength;
 	bool b_ValidMessage;
 	string s_EncodedMessage;
+
+	void ProcessMessage();
 
 };
 

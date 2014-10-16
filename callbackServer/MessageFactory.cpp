@@ -74,10 +74,12 @@ MessageType MessageFactory::getMessageType( string s_Message )
 
 Message * MessageFactory::createChatMessage( string sMessage, Server* pReceivedServer, Client* pClient, vector<string>* pReceivers )
 {
+	//LogDebug("%s", sMessage.c_str());
 
 	//set the message content (sender name + receiver names+ message)
 	string sMsg;
 	sMsg=p_UserRegistry->GetUser(pClient)->GetUserName();
+	//LogDebug("%s", sMsg.c_str());
 	sMsg.append(" : ");
 
 	vector<User*> *pTargetUsers = new vector<User*>();
@@ -106,6 +108,7 @@ Message * MessageFactory::createChatMessage( string sMessage, Server* pReceivedS
 	sMsg.erase(sMsg.length()-1);
 
 	sMsg.append(" : ");
+	LogDebug("%s", sMsg.c_str());
 	sMsg.append(sMessage);
 //	LogDebug("DeliveryController.cpp :Sending message %s.",sMsg.c_str());
 //	LogDebug("DeliveryController.cpp :Message length %d.",sMsg.length());
@@ -113,6 +116,7 @@ Message * MessageFactory::createChatMessage( string sMessage, Server* pReceivedS
 
 	//call an internal function and build the encoded message
 	string sEncodedMsg = CreateEncodedMessageString(DIRECT, sMsg);
+	//LogDebug("%s", sMsg.c_str());
 
 	Message* pMsg = new Message(sEncodedMsg, sMsg, pReceivedServer, pClient, pTargetUsers);
 

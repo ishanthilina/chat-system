@@ -72,7 +72,7 @@ MessageType Message::GetMessageType()
 }
 
 
-vector<string> * Message::getReceivers()
+vector<string> * Message::GetReceivers()
 {
 	return o_Receivers;
 }
@@ -90,7 +90,7 @@ bool Message::IsMessageComplete()
 }
 
 
-bool Message::SendMessage()
+bool Message::SendMessageToReceivers()
 {
 	//send the message to all the recipients
 	int iRetVal;
@@ -149,11 +149,33 @@ Message::Message(string sEncodedMessage, Server* pServer, Client* pClient)
 	//if the message is complete, extract the message content
 	if(IsMessageComplete())
 	{
-		int iMsgStartLocation = GetMessageHeader().length()+GetMessageLengthSectionLength()+ GetProtocolLength();
-			this->s_Message = this->s_EncodedMessage.substr(iMsgStartLocation, sEncodedMessage.length()-(iMsgStartLocation+ GetMessageFooter().length()));
+		this->ProcessMessage();
 	}
 
 	this->b_ValidMessage=true;
+
+}
+
+bool Message::sendMessageToClient()
+{
+	int iRetVal;
+	bool bSendSuccess=true;
+
+	iRetVal=p_Client->SendMessage(this->s_EncodedMessage);
+
+
+	if(iRetVal)
+	{
+		LogDebug("Message.cpp :Sent to Client : %s.",this->s_EncodedMessage.c_str());
+	}
+	else
+	{
+		bSendSuccess = false;
+		LogDebug("Message.cpp :Error sending to Client : %s.",this->s_EncodedMessage.c_str());
+	}
+
+	return bSendSuccess;
+
 
 }
 
@@ -175,8 +197,7 @@ void Message::FillMessage(string sMessage)
 	//if the message is complete, extract the message content
 	if(IsMessageComplete())
 	{
-		int iMsgStartLocation = GetMessageHeader().length()+GetMessageLengthSectionLength()+ GetProtocolLength();
-		this->s_Message = this->s_EncodedMessage.substr(iMsgStartLocation, s_EncodedMessage.length()-(iMsgStartLocation+ GetMessageFooter().length()));
+		this->ProcessMessage();
 	}
 
 
@@ -195,4 +216,41 @@ Client* Message::GetClient()
 Server* Message::GetServer()
 {
 	return this->p_Server;
+}
+
+void Message::ProcessMessage()
+{
+
+	if(this->e_MessageType == DIRECT)
+	{
+		int iMsgStartLocation = GetMessageHeader().length()+GetMessageLengthSectionLength()+ GetProtocolLength();
+
+				//find the ending location of the receivers list in the message
+				int iReceiverListEndLoc=this->s_EncodedMessage.substr(iMsgStartLocation).find_first_of(";");
+				//get all the receiver names
+				this->o_Receivers = new vector<string>;
+				std::size_t iPrev = iMsgStartLocation, iPos;
+				while ((iPos = this->s_EncodedMessage.find_first_of(",", iPrev)) != std::string::npos)
+				{
+					if ( iPos > iPrev){
+						o_Receivers->push_back(this->s_EncodedMessage.substr(iPrev, iPos-iPrev));
+					}
+					iPrev = iPos+1;
+
+
+				}
+
+				//fetch the last name also
+				if (iPrev < iReceiverListEndLoc)
+				{
+					o_Receivers->push_back(this->s_EncodedMessage.substr(iPrev, iReceiverListEndLoc-iPrev));
+				}
+
+
+
+				this->s_Message = this->s_EncodedMessage.substr(iReceiverListEndLoc+1, s_EncodedMessage.length()-(iReceiverListEndLoc+1+ GetMessageFooter().length()));
+				LogDebug("%s", s_Message.c_str());
+
+	}
+
 }
