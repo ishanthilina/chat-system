@@ -40,10 +40,10 @@ void DeliveryController::processMessage(Message* o_Message)
 	}
 	else if(o_Message->GetMessageType()==DIRECT)
 	{
-		LogDebug("DeliveryController.cpp : Chat message from socket %d",o_Message->GetSenderSocket());
+		LogDebug("DeliveryController.cpp : Chat message from socket %d",o_Message->GetClient()->GetSocket());
 
 			//Authenticate the message
-			Client * oClient;
+			/*Client * oClient;
 			oClient=p_ClientRegistry->GetClient(o_Message->GetSenderSocket());
 			if (oClient==NULL)
 			{
@@ -51,54 +51,12 @@ void DeliveryController::processMessage(Message* o_Message)
 				string sReplyMsg=p_StringMsgBuilder->CreateAuthStatusMessage(true);
 				p_SocketOperator->WriteToSocket(o_Message->GetSenderSocket(),sReplyMsg,sReplyMsg.length());
 				return;
-			}
+			}*/
 
-			//construct the message to be sent
-			string sMsg;
-			sMsg=oClient->GetUserName();
-			sMsg.append(" : ");
+			//create the message using message factory
 
-			vector<string> * oReceivers=o_Message->getReceivers();
-			for(vector<string>::iterator it=oReceivers->begin();it!=oReceivers->end();++it)
-			{
-				//check whether the receiver exists
-				if(!p_ClientRegistry->IsClientExists((*it))){
-					LogDebug("DeliveryController.cpp :Invalid recipient %s in the message from %s.",(*it).c_str(),oClient->GetUserName().c_str());
-
-					string sReplyMsg("Invalid recipient "+(*it));
-					p_StringMsgBuilder->CreateNotificationMessage(&sReplyMsg);
-
-					p_SocketOperator->WriteToSocket(o_Message->GetSenderSocket(),sReplyMsg,sReplyMsg.length());
-
-					//return;
-				}
-				sMsg+=(*it);
-				sMsg+=",";
-			}
-			//delete the final ,
-			sMsg.erase(sMsg.length()-1);
-
-			sMsg.append(" : ");
-			sMsg.append(o_Message->GetMessage());
-			p_StringMsgBuilder->CreateChatMessage(&sMsg);
-
-			LogDebug("DeliveryController.cpp :Sending message %s.",sMsg.c_str());
-			LogDebug("DeliveryController.cpp :Message length %d.",sMsg.length());
-
-			//send the message to all the recipients
-			Client * oClient1;
-			for(vector<string>::iterator it=oReceivers->begin();it!=oReceivers->end();++it)
-			{
-				oClient1=p_ClientRegistry->GetClient(*it);
-				if(oClient1!=NULL)
-				{
-					LogDebug("DeliveryController.cpp :sending message to %s.",oClient1->GetUserName().c_str());
-					p_SocketOperator->WriteToSocket(oClient1->GetSocket(),sMsg,sMsg.length());
-				}
-
-			}
-
-			p_Logger->LogEvent(oClient,sMsg);
+		//log event
+		//p_Logger->LogEvent(oClient,sMsg);
 
 		}
 }

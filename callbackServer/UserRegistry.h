@@ -15,7 +15,7 @@ public:
 	int AddUser(User * o_User);
 	int RemoveUser(User * o_User);
 	bool IsUserExists(string username);
-	User * GetUser(int i_socket);
+	User * GetUser(Client* pClient);
 	User * GetUser(string username);
 protected:
 private:

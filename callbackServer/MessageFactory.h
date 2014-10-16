@@ -19,6 +19,8 @@ public:
 protected:
 private:
 	MessageType getMessageType(string s_Message);
+	string CreateEncodedMessageString(MessageType eMessageType,string s_Message);
+	UserRegistry* pUserRegistry;
 
 	char c_MessageSeperator;
 };

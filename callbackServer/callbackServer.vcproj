@@ -175,7 +175,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DeliveryController.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\EventManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Message.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MessageBuffer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MessageFactory.cpp"
 				>
 			</File>
 			<File
@@ -209,7 +225,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DeliveryController.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EventManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Message.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MessageBuffer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MessageFactory.h"
 				>
 			</File>
 			<File

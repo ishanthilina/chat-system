@@ -25,6 +25,7 @@ string GetMessageHeader();
 string GetMessageFooter();
 int GetTotalHeaderLength();
 int GetTotalFooterLength();
+int GetMessageLengthSectionLength();
 
 
 

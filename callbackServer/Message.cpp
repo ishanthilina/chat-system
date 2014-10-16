@@ -49,6 +49,11 @@ int GetTotalFooterLength()
 	return 3;
 }
 
+int GetMessageLengthSectionLength()
+{
+	return 8;
+}
+
 Message::Message(string s_Message, MessageType e_MessageType, int i_Sender, vector<string> * o_Receivers, sockaddr_in o_SenderSockAddr)
 {
 
@@ -98,6 +103,23 @@ bool Message::IsMessageComplete()
 int Message::SendMessage()
 {
 	return 0;
+}
+
+int Message::SendMessage()
+{
+	//send the message to all the recipients
+	Client * oClient1;
+	for(vector<string>::iterator it=oReceivers->begin();it!=oReceivers->end();++it)
+	{
+		oClient1=p_ClientRegistry->GetClient(*it);
+		if(oClient1!=NULL)
+		{
+			LogDebug("DeliveryController.cpp :sending message to %s.",oClient1->GetUserName().c_str());
+			p_SocketOperator->WriteToSocket(oClient1->GetSocket(),sMsg,sMsg.length());
+		}
+
+	}
+
 }
 
 bool Message::IsValidMessage() {
