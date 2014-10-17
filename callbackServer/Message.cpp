@@ -224,20 +224,24 @@ void Message::ProcessMessage()
 	if(this->e_MessageType == DIRECT)
 	{
 		int iMsgStartLocation = GetMessageHeader().length()+GetMessageLengthSectionLength()+ GetProtocolLength();
-		LogDebug("iMsgStartLocation %d",iMsgStartLocation);
+		//LogDebug("iMsgStartLocation %d",iMsgStartLocation);
 
 		//|;|0000028|PTP;12;wwwwwww|;|
 
 				//find the ending location of the receivers list in the message
 				int iReceiverListEndLoc=this->s_EncodedMessage.substr(iMsgStartLocation).find_first_of(";");
-				LogDebug("iReceiverListEndLoc %d",iReceiverListEndLoc);
+				//LogDebug("iReceiverListEndLoc %d",iReceiverListEndLoc);
+				string sReceivers = this->s_EncodedMessage.substr(iMsgStartLocation,iReceiverListEndLoc);
+				//LogDebug("Receivers: %s",sReceivers.c_str());
 				//get all the receiver names
 				this->o_Receivers = new vector<string>;
-				std::size_t iPrev = iMsgStartLocation, iPos;
-				while ((iPos = this->s_EncodedMessage.find_first_of(",", iPrev)) != std::string::npos)
+				std::size_t iPrev = 0, iPos;
+				while ((iPos = sReceivers.find_first_of(",", iPrev)) != std::string::npos)
 				{
+				//	LogDebug("Found , at : %d", iPos);
 					if ( iPos > iPrev){
-						o_Receivers->push_back(this->s_EncodedMessage.substr(iPrev, iPos-iPrev));
+						LogDebug("Adding Receiver: %s",sReceivers.substr(iPrev, iPos-iPrev).c_str());
+						o_Receivers->push_back(sReceivers.substr(iPrev, iPos-iPrev));
 					}
 					iPrev = iPos+1;
 
@@ -247,7 +251,8 @@ void Message::ProcessMessage()
 				//fetch the last name also
 				if (iPrev < iReceiverListEndLoc)
 				{
-					o_Receivers->push_back(this->s_EncodedMessage.substr(iPrev, iReceiverListEndLoc-iPrev));
+					LogDebug("Adding Receiver: %s",sReceivers.substr(iPrev, iReceiverListEndLoc-iPrev).c_str());
+					o_Receivers->push_back(sReceivers.substr(iPrev, iReceiverListEndLoc-iPrev));
 				}
 
 
