@@ -120,7 +120,7 @@ bool Message::SendMessageToReceivers()
 Message::Message(string sEncodedMessage, string sMessage, Server* pServer,
 		Client* pClient, vector<User*>* pTargetUsers)
 {
-	LogDebug("Message.cpp : Creating message using the string : %s", sEncodedMessage.c_str());
+	LogDebug("Message.cpp : Creating message(with target users) using the string : %s", sEncodedMessage.c_str());
 	this->s_EncodedMessage = sEncodedMessage;
 	this->s_Message = sMessage;
 	this->p_Server = pServer;
@@ -224,9 +224,13 @@ void Message::ProcessMessage()
 	if(this->e_MessageType == DIRECT)
 	{
 		int iMsgStartLocation = GetMessageHeader().length()+GetMessageLengthSectionLength()+ GetProtocolLength();
+		LogDebug("iMsgStartLocation %d",iMsgStartLocation);
+
+		//|;|0000028|PTP;12;wwwwwww|;|
 
 				//find the ending location of the receivers list in the message
 				int iReceiverListEndLoc=this->s_EncodedMessage.substr(iMsgStartLocation).find_first_of(";");
+				LogDebug("iReceiverListEndLoc %d",iReceiverListEndLoc);
 				//get all the receiver names
 				this->o_Receivers = new vector<string>;
 				std::size_t iPrev = iMsgStartLocation, iPos;
@@ -248,8 +252,21 @@ void Message::ProcessMessage()
 
 
 
-				this->s_Message = this->s_EncodedMessage.substr(iReceiverListEndLoc+1, s_EncodedMessage.length()-(iReceiverListEndLoc+1+ GetMessageFooter().length()));
-				LogDebug("%s", s_Message.c_str());
+				this->s_Message = this->s_EncodedMessage.substr(iReceiverListEndLoc+iMsgStartLocation+1, this->s_EncodedMessage.substr(iReceiverListEndLoc+iMsgStartLocation+1).find_first_of("|"));
+				//LogDebug("%s", s_Message.c_str());
+
+	}
+	else if (this->e_MessageType == LOGIN)
+	{
+		//get the senders login name
+		//|;|0000019|LIN;1|;|
+
+		//find the starting location of the senders username
+		int iMsgStartLocation = GetMessageHeader().length()+GetMessageLengthSectionLength()+ GetProtocolLength();
+		int iSenderNameEndLoc=this->s_EncodedMessage.substr(iMsgStartLocation).find_first_of("|");
+		//LogDebug("%d",iMsgStartLocation);
+		//LogDebug("%d",iSenderNameEndLoc);
+		this->s_Message = this->s_EncodedMessage.substr(iMsgStartLocation, iSenderNameEndLoc);
 
 	}
 

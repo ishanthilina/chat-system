@@ -74,7 +74,7 @@ MessageType MessageFactory::getMessageType( string s_Message )
 
 Message * MessageFactory::createChatMessage( string sMessage, Server* pReceivedServer, Client* pClient, vector<string>* pReceivers )
 {
-	//LogDebug("%s", sMessage.c_str());
+	LogDebug("MessageFactory.cpp : Creating chat message out of : %s", sMessage.c_str());
 
 	//set the message content (sender name + receiver names+ message)
 	string sMsg;
