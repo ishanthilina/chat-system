@@ -9,7 +9,7 @@
 
 Server::Server(int iSocketFd) {
 	this->i_SocketFd=iSocketFd;
-	//this->p_Clients=new vector<Client*>();
+	this->p_Clients=new vector<Client*>();
 
 }
 
@@ -26,10 +26,10 @@ int Server::GetSocket()
 
 void Server::AddClient( Client* pClient )
 {
-		this->p_Clients.push_back(pClient);
+		(*this->p_Clients).push_back(pClient);
 }
 
-vector<Client*> Server::GetClients()
+vector<Client*>* Server::GetClients()
 {
 	return p_Clients;
 }

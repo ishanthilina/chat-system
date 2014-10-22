@@ -145,10 +145,12 @@ int EventManager::Run()
 				 if(i_SocketDescriptor > i_MaxSocketDescriptor)
 					 i_MaxSocketDescriptor = i_SocketDescriptor;
 
-				 vector<Client*> pClients=oServerIter->second->GetClients();
+				 vector<Client*>* pClients=oServerIter->second->GetClients();
+				 //LogDebug("ss");
 				 std:: vector<Client*>::iterator oServerClientIter;
-				 for (oServerClientIter = pClients.begin(); oServerClientIter != pClients.end(); ++oServerClientIter) 
+				 for (oServerClientIter = (*pClients).begin(); oServerClientIter != (*pClients).end(); ++oServerClientIter) 
 				 {
+					// LogDebug("ssss");
 					 i_SocketDescriptor = (*oServerClientIter)->GetSocket();
 					 FD_SET( i_SocketDescriptor , &o_ReadFds);
 					 //highest file descriptor number, need it for the select function
@@ -218,11 +220,13 @@ int EventManager::Run()
 				 }
 
 				 //check for IO operations from the clients of this server
-				 vector<Client*> pClients=oServerIter->second->GetClients();
+				 vector<Client*>* pClients=oServerIter->second->GetClients();
 				 std:: vector<Client*>::iterator oServerClientIter;
-				 for (oServerClientIter = pClients.begin(); oServerClientIter != pClients.end(); ++oServerClientIter) 
+				 for (oServerClientIter = (*pClients).begin(); oServerClientIter != (*pClients).end(); ++oServerClientIter) 
 				 {
+					 
 					 i_SocketDescriptor = (*oServerClientIter)->GetSocket();
+					
 					 if (FD_ISSET(i_SocketDescriptor, &o_ReadFds))
 					 {
 						 LogDebug("EventManager.cpp: Receiving Message from %s","Client");
@@ -232,12 +236,15 @@ int EventManager::Run()
 							 //Somebody disconnected , get his details and print
 							 getpeername(i_SocketDescriptor, (struct sockaddr*)&o_Address , (socklen_t*)&i_Addrlen);
 							 LogDebug("%s","---------------------------------------------------------------------");
-							 LogDebug("EventManager: Host disconnected, ip %s , port %d",inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
+							 LogDebug("EventManager: Client disconnected, ip %s , port %d",inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
 
 							 this->p_CallBackHandler->OnDisconnect(&(*oServerIter->second),(*oServerClientIter));
+							 
 
 							 //remove from the servers clients as well
-							 pClients.erase(oServerClientIter);
+							 (*pClients).erase(oServerClientIter);
+							 
+							 break;
 
 
 						}
@@ -248,6 +255,7 @@ int EventManager::Run()
 							 LogDebug("EventManager: Incoming message from ip %s , port %d. Message : %s",inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port),z_InputBuffer);
 							 this->p_CallBackHandler->OnData(&(*oServerIter->second),(*oServerClientIter),string(z_InputBuffer));
 						 }
+						 //LogDebug("ssaa");
 
 					 }
 

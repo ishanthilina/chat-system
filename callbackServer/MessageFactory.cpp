@@ -95,14 +95,20 @@ Message * MessageFactory::createChatMessage( string sMessage, Server* pReceivedS
 			//p_StringMsgBuilder->CreateNotificationMessage(&sReplyMsg);
 
 			//p_SocketOperator->WriteToSocket(o_Message->GetSenderSocket(),sReplyMsg,sReplyMsg.length());
+			pClient->SendMessage(sReplyMsg);
 
-			//return;
+			//break;
 		}
 		sMsg+=(*it);
 		sMsg+=",";
 
 		//set the target users
-		pTargetUsers->push_back(p_UserRegistry->GetUser(*it));
+		User* pUser =p_UserRegistry->GetUser(*it);
+		if (pUser != NULL)
+		{
+			pTargetUsers->push_back(pUser);
+		}
+		
 	}
 	//delete the final ,
 	sMsg.erase(sMsg.length()-1);

@@ -46,6 +46,7 @@ public:
 	Server* GetServer();
 	bool SendMessageToReceivers();
 	bool sendMessageToClient();
+	bool sendMessageToClient(string sMsg);
 
 	Message(string sEncodedMessage, string sMessage, Server* pServer, Client* pClient, vector<User*> *pTargetUsers);
 	Message(string sEncodedMessage, Server* pServer, Client* pClient);

@@ -179,6 +179,27 @@ bool Message::sendMessageToClient()
 
 }
 
+bool Message::sendMessageToClient( string sMsg )
+{
+	int iRetVal;
+	bool bSendSuccess=true;
+
+	iRetVal=p_Client->SendMessage(sMsg);
+
+
+	if(iRetVal)
+	{
+		LogDebug("Message.cpp :Sent to Client : %s.",this->s_EncodedMessage.c_str());
+	}
+	else
+	{
+		bSendSuccess = false;
+		LogDebug("Message.cpp :Error sending to Client : %s.",this->s_EncodedMessage.c_str());
+	}
+
+	return bSendSuccess;
+}
+
 bool Message::IsValidMessage() {
 
 	if(this->s_EncodedMessage.length()>this->i_MsgLength){
