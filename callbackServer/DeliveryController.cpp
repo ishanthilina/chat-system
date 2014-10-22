@@ -11,9 +11,6 @@
 
 void DeliveryController::processMessage(Message* o_Message)
 {
-
-	//LogDebug("ss %d", o_Message->GetMessageType());
-
 	//login message
 	if(o_Message->GetMessageType()==LOGIN)
 	{
@@ -21,20 +18,17 @@ void DeliveryController::processMessage(Message* o_Message)
 
 		User* pUser = new User(o_Message->GetMessage(),o_Message->GetClient());
 		int output=p_UserRegistry->AddUser(pUser);
-		//std::string sReplyMsg;
+
 		Message* pReplyMsg;
 		if(!output){	//if adding new client was successful
 			LogDebug("DeliveryController.cpp : Authentication success for %s",pUser->GetUserName().c_str());
-			//sReplyMsg=p_StringMsgBuilder->CreateAuthStatusMessage(true);
 			pReplyMsg = p_MessageFactory->CreateAuthStatusMessage(true,o_Message->GetServer(),o_Message->GetClient());
 		}
 		else{
 			LogDebug("DeliveryController.cpp : Authentication failed for %s",pUser->GetUserName().c_str());
-			//sReplyMsg=p_StringMsgBuilder->CreateAuthStatusMessage(false);
 			pReplyMsg = p_MessageFactory->CreateAuthStatusMessage(false,o_Message->GetServer(),o_Message->GetClient());
 		}
 		LogDebug("DeliveryController.cpp : Sending reply to %s - %s",pUser->GetUserName().c_str(),pReplyMsg->GetEncodedMessage().c_str());
-		//p_SocketOperator->WriteToSocket(o_Message->GetSenderSocket(),sReplyMsg,sReplyMsg.length());
 		output=pReplyMsg->sendMessageToClient();
 
 
@@ -64,7 +58,7 @@ void DeliveryController::processMessage(Message* o_Message)
 
 
 		//log event
-		//p_Logger->LogEvent(oClient,sMsg);
+		p_Logger->LogEvent(pUser,pReplyMsg->GetEncodedMessage());
 
 		}
 }
@@ -74,11 +68,12 @@ DeliveryController::DeliveryController(UserRegistry* pUserRegistry,
 {
 	this->p_UserRegistry = pUserRegistry;
 	this-> p_MessageFactory = pMessageFactory;
+	this->p_Logger = new Logger();
 
 }
 
 DeliveryController::~DeliveryController() {
-	//delete p_Logger;
-	//delete p_StringMsgBuilder;
+	delete p_Logger;
+
 }
 

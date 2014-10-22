@@ -81,6 +81,7 @@ vector<string> * Message::GetReceivers()
 
 bool Message::IsMessageComplete()
 {
+	//LogDebug("sxxxxxxxxx");
 	if(this->s_EncodedMessage.length()==this->i_MsgLength)
 	{
 		return true;
@@ -140,10 +141,14 @@ Message::Message(string sEncodedMessage, Server* pServer, Client* pClient)
 	const char* pzMsgLength=sMsgLength.c_str();
 	this->i_MsgLength=atoi(pzMsgLength);
 
+	//LogDebug("sssssssss");
+	
+
 	//set the message type
 	//LogDebug("ss %s", sEncodedMessage.substr(GetMessageHeader().length()+GetMessageLengthSectionLength(), 3).c_str());
 	this->e_MessageType = GetEnumFromString(sEncodedMessage.substr(GetMessageHeader().length()+GetMessageLengthSectionLength(), GetProtocolLength()));
 
+	
 
 
 	//if the message is complete, extract the message content
@@ -152,6 +157,7 @@ Message::Message(string sEncodedMessage, Server* pServer, Client* pClient)
 		this->ProcessMessage();
 	}
 
+	
 	this->b_ValidMessage=true;
 
 }

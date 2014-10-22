@@ -14,7 +14,7 @@
 #include "Server.h"
 #include "UserRegistry.h"
 #include "Message.h"
-//#include "Logger.h"
+#include "Logger.h"
 #include "User.h"
 #include "MessageFactory.h"
 #include "Utils.h"
@@ -28,7 +28,7 @@ public:
 	virtual ~DeliveryController();
 private:
 	UserRegistry * p_UserRegistry;
-	//Logger * p_Logger;
+	Logger * p_Logger;
 	MessageFactory* p_MessageFactory;
 
 };
