@@ -16,7 +16,7 @@ Server::Server(int iSocketFd) {
 
 
 Server::~Server() {
-	// TODO Auto-generated destructor stub
+
 }
 
 int Server::GetSocket()

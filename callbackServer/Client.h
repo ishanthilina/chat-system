@@ -5,8 +5,8 @@
  *      Author: ishan
  */
 
-#ifndef CLIENT_H_
-#define CLIENT_H_
+#ifndef _CLIENT_HEADER_
+#define _CLIENT_HEADER_
 
 #include <string>
  #include <sys/socket.h>
@@ -29,4 +29,4 @@ private:
 	int i_SocketFd;
 };
 
-#endif /* CLIENT_H_ */
+#endif /* _CLIENT_HEADER_ */

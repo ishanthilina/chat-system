@@ -5,8 +5,8 @@
  *      Author: ishan
  */
 
-#ifndef SCALLBACK_H_
-#define SCALLBACK_H_
+#ifndef _SCALLBACK_HEADER_
+#define _SCALLBACK_HEADER_
 
 #include "Utils.h"
 #include "Server.h"
@@ -29,4 +29,4 @@ private:
 
 };
 
-#endif /* SCALLBACK_H_ */
+#endif /* _SCALLBACK_HEADER_ */

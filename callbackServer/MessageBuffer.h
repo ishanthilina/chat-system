@@ -5,8 +5,8 @@
  *      Author: ishan
  */
 
-#ifndef MESSAGEBUFFER_H_
-#define MESSAGEBUFFER_H_
+#ifndef _MESSAGEBUFFER_HEADER_
+#define _MESSAGEBUFFER_HEADER_
 
 #include <netinet/in.h>	//sockaddr_in
 
@@ -35,4 +35,4 @@ private:
 
 };
 
-#endif /* MESSAGEBUFFER_H_ */
+#endif /* _MESSAGEBUFFER_HEADER_ */

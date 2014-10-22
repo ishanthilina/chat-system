@@ -8,12 +8,12 @@
 #include "EventManager.h"
 
 EventManager::EventManager() {
-	// TODO Auto-generated constructor stub
+
 
 }
 
 EventManager::~EventManager() {
-	// TODO Auto-generated destructor stub
+
 }
 
 Server* EventManager::CreateServer(int iPort, SCallBack* pCallBack)
@@ -76,12 +76,12 @@ Client* EventManager::CreateClient(char* zHost, int iPort,
 	if (sockfd < 0)
 	{
 		perror("ERROR opening socket");
-		//return 1;
+		exit(EXIT_FAILURE);
 	}
 	server = gethostbyname(zHost);
 	if (server == NULL) {
 		fprintf(stderr,"ERROR, no such host\n");
-		//return 0;
+		exit(EXIT_FAILURE);
 	}
 
 	bzero((char *) &serv_addr, sizeof(serv_addr));
@@ -95,7 +95,7 @@ Client* EventManager::CreateClient(char* zHost, int iPort,
 	if (connect(sockfd,(sockaddr*)&serv_addr,sizeof(serv_addr)) < 0)
 	{
 		perror("ERROR connecting");
-		//return 1;
+		exit(EXIT_FAILURE);
 	}
 
 	Client * pClient=new Client(sockfd);
@@ -119,8 +119,6 @@ int EventManager::Run()
 
 			 //add STDIN to set
 			 FD_SET(STDIN_FILENO, &o_ReadFds);
-
-			 LogDebug("EventManager.cpp: Refreshing listening socket %s","descriptors");
 
 			 i_MaxSocketDescriptor= 0;
 			 //itetrate all the clients
@@ -159,7 +157,6 @@ int EventManager::Run()
 				 }
 
 			 }
-			 LogDebug("EventManager.cpp: Refreshing listening socket %s","descriptors - done");
 			
 
 			 //wait for an activity on one of the sockets , timeout is NULL , so wait indefinitely
@@ -182,7 +179,7 @@ int EventManager::Run()
 				 }
 				 else{
 					 z_InputBuffer[i_ReadValue] = '\0';
-					LogDebug("Terminal input: %s",z_InputBuffer);
+					LogDebug("EventManager.cpp: Terminal input: %s",z_InputBuffer);
 					
 					for (oClientIter = mClients.begin(); oClientIter != mClients.end(); ++oClientIter) 
 					{

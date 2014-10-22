@@ -1,5 +1,5 @@
-#ifndef _CLIENT_HEADER_
-#define _CLIENT_HEADER_
+#ifndef _USER_HEADER_
+#define _USER_HEADER_
 
 #include <algorithm>
 #include <string>
@@ -28,4 +28,4 @@ private:
 	Client* p_Client;
 };
 
-#endif	//_CLIENT_HEADER_
+#endif	//_USER_HEADER_

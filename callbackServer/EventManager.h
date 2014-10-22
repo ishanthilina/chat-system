@@ -5,8 +5,8 @@
  *      Author: ishan
  */
 
-#ifndef EVENTMANAGER_H_
-#define EVENTMANAGER_H_
+#ifndef _EVENTMANAGER_HEADER_
+#define _EVENTMANAGER_HEADER_
 
 #include <string>
 #include <string.h>   //strlen
@@ -51,4 +51,4 @@ private:
 
 };
 
-#endif /* EVENTMANAGER_H_ */
+#endif /* _EVENTMANAGER_HEADER_ */

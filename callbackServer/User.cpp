@@ -12,8 +12,7 @@ User::User(string s_UserName, Client* pClient)
 
 
 	this->s_LogName = s_UserName;
-		//+"-"+string(inet_ntoa(o_address.sin_addr));
-			//+"-"+string(s_Port);
+
 }
 
 std::string User::GetUserName()

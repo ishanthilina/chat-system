@@ -13,7 +13,7 @@ Client::Client(int iSocketFd) {
 }
 
 Client::~Client() {
-	// TODO Auto-generated destructor stub
+
 }
 
 int Client::GetSocket()

@@ -5,8 +5,8 @@
  *      Author: ishan
  */
 
-#ifndef DELIVERYCONTROLLER_H_
-#define DELIVERYCONTROLLER_H_
+#ifndef _DELIVERYCONTROLLER_HEADER_
+#define _DELIVERYCONTROLLER_HEADER_
 
 #include <string>
 
@@ -33,4 +33,4 @@ private:
 
 };
 
-#endif /* DELIVERYCONTROLLER_H_ */
+#endif /* _DELIVERYCONTROLLER_HEADER_ */

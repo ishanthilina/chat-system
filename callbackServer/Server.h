@@ -5,8 +5,8 @@
  *      Author: ishan
  */
 
-#ifndef SERVER_H_
-#define SERVER_H_
+#ifndef _SERVER_HEADER_
+#define _SERVER_HEADER_
 
 #include <string>
 #include <vector>
@@ -32,4 +32,4 @@ private:
 
 };
 
-#endif /* SERVER_H_ */
+#endif /* _SERVER_HEADER_ */

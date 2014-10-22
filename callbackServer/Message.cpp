@@ -15,14 +15,12 @@ const MessageType GetEnumFromString(string s_EnumStr){
 		{
 			oReturnType=static_cast<MessageType>(i);
 			bReturnTypeWasSet=true;
-			//cout<<i;
 			break;
 		}
-		//cout<<"No : "<<i<<":"<<s_EnumStr;
+
 	}
 	if (!bReturnTypeWasSet)
 	{
-		//cout<<"ErroR";
 		oReturnType=ERROR;
 	}
 
@@ -81,7 +79,6 @@ vector<string> * Message::GetReceivers()
 
 bool Message::IsMessageComplete()
 {
-	//LogDebug("sxxxxxxxxx");
 	if(this->s_EncodedMessage.length()==this->i_MsgLength)
 	{
 		return true;
@@ -141,14 +138,9 @@ Message::Message(string sEncodedMessage, Server* pServer, Client* pClient)
 	const char* pzMsgLength=sMsgLength.c_str();
 	this->i_MsgLength=atoi(pzMsgLength);
 
-	//LogDebug("sssssssss");
-	
 
 	//set the message type
-	//LogDebug("ss %s", sEncodedMessage.substr(GetMessageHeader().length()+GetMessageLengthSectionLength(), 3).c_str());
 	this->e_MessageType = GetEnumFromString(sEncodedMessage.substr(GetMessageHeader().length()+GetMessageLengthSectionLength(), GetProtocolLength()));
-
-	
 
 
 	//if the message is complete, extract the message content
@@ -245,27 +237,23 @@ Server* Message::GetServer()
 	return this->p_Server;
 }
 
+//|;|0000028|PTP;12;wwwwwww|;|
 void Message::ProcessMessage()
 {
 
 	if(this->e_MessageType == DIRECT)
 	{
 		int iMsgStartLocation = GetMessageHeader().length()+GetMessageLengthSectionLength()+ GetProtocolLength();
-		//LogDebug("iMsgStartLocation %d",iMsgStartLocation);
-
-		//|;|0000028|PTP;12;wwwwwww|;|
 
 				//find the ending location of the receivers list in the message
 				int iReceiverListEndLoc=this->s_EncodedMessage.substr(iMsgStartLocation).find_first_of(";");
 				//LogDebug("iReceiverListEndLoc %d",iReceiverListEndLoc);
 				string sReceivers = this->s_EncodedMessage.substr(iMsgStartLocation,iReceiverListEndLoc);
-				//LogDebug("Receivers: %s",sReceivers.c_str());
 				//get all the receiver names
 				this->o_Receivers = new vector<string>;
 				std::size_t iPrev = 0, iPos;
 				while ((iPos = sReceivers.find_first_of(",", iPrev)) != std::string::npos)
 				{
-				//	LogDebug("Found , at : %d", iPos);
 					if ( iPos > iPrev){
 						LogDebug("Adding Receiver: %s",sReceivers.substr(iPrev, iPos-iPrev).c_str());
 						o_Receivers->push_back(sReceivers.substr(iPrev, iPos-iPrev));
@@ -288,16 +276,16 @@ void Message::ProcessMessage()
 				//LogDebug("%s", s_Message.c_str());
 
 	}
+	//|;|0000019|LIN;1|;|
 	else if (this->e_MessageType == LOGIN)
 	{
 		//get the senders login name
-		//|;|0000019|LIN;1|;|
+		
 
 		//find the starting location of the senders username
 		int iMsgStartLocation = GetMessageHeader().length()+GetMessageLengthSectionLength()+ GetProtocolLength();
 		int iSenderNameEndLoc=this->s_EncodedMessage.substr(iMsgStartLocation).find_first_of("|");
-		//LogDebug("%d",iMsgStartLocation);
-		//LogDebug("%d",iSenderNameEndLoc);
+
 		this->s_Message = this->s_EncodedMessage.substr(iMsgStartLocation, iSenderNameEndLoc);
 
 	}
