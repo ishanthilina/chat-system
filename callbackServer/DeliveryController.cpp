@@ -35,7 +35,7 @@ void DeliveryController::processMessage(Message* o_Message)
 		}
 		LogDebug("DeliveryController.cpp : Sending reply to %s - %s",pUser->GetUserName().c_str(),pReplyMsg->GetEncodedMessage().c_str());
 		//p_SocketOperator->WriteToSocket(o_Message->GetSenderSocket(),sReplyMsg,sReplyMsg.length());
-		output=pReplyMsg->SendMessageToReceivers();
+		output=pReplyMsg->sendMessageToClient();
 
 
 	}
