@@ -14,11 +14,22 @@ ChatClient::ChatClient() {
 
 int ChatClient::StartClient() {
 	
-	int sockfd=this->Connect();
+	
 	bool bShouldRun=true;
 	do 
 	{
-		cout<<"Run"<<endl;
+		//cout<<"Run"<<endl;
+		int sockfd=this->Connect();
+
+		if(sockfd <0)
+		{
+			//wait before reconnecting
+			usleep(SLEEP_TIME);	//sleep 1 second
+			continue;
+
+		}
+
+		
 		//create the socket operators
 		SocketOperator * oNetSockOperator=new SocketOperator(sockfd);
 		SocketOperator * oTerminalSocketOperator=new SocketOperator(STDIN_FILENO);
@@ -33,9 +44,10 @@ int ChatClient::StartClient() {
 		//event listener
 		EventListener * eventListener=new EventListener(sockfd,oNetSockOperator,oTerminalSocketOperator,oEventHndler,oMessageFactory);
 		int iExitStatus=eventListener->Listen();
-		cout<<"BEFORE"<<endl;
-		while (iExitStatus!=2)
+		//cout<<"BEFORE"<<endl;
+		if (iExitStatus!=2)
 		{
+			//cout<<"in"<<endl;
 			bShouldRun=false;
 
 		}
@@ -51,7 +63,7 @@ int ChatClient::StartClient() {
 		delete oScreenWriter;
 
 		//wait before reconnecting
-		usleep(1000000);	//sleep 1 second
+		usleep(SLEEP_TIME);	//sleep 1 second
 	} while (bShouldRun);
 
 	

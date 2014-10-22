@@ -42,12 +42,14 @@ int EventListener::Listen(){
 
 		int max_sd= STDIN_FILENO > sockfd ? STDIN_FILENO : sockfd;
 
+		
 
 		activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL);
 
 		if ((activity < 0) && (errno!=EINTR))
 		{
 			printf("select error");
+			return 2;
 		}
 
 		if (FD_ISSET(sockfd, &readfds)) {
@@ -60,8 +62,8 @@ int EventListener::Listen(){
 				o_MessageProcessor->SetClientState(LOGIN_USERNAME_PENDING);
 				close(sockfd);
 				LogDebug("EventListener.cpp - Server %s","Disconnected");
-				//return 2;
-				bRunLoop=false;
+				return 2;
+				//bRunLoop=false;
 
 			}
 

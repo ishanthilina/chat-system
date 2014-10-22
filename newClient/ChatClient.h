@@ -29,6 +29,7 @@
 #include "Utils.h"
 #include "ScreenWriter.h"
 
+#define SLEEP_TIME 1000000
 
 class ChatClient {
 public:
