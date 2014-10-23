@@ -22,7 +22,7 @@ class MessageProcessor
 {
 public:
 
-	MessageProcessor(MessageParser * oMsgParser, SocketOperator * oNetworkSocketOp, SocketOperator * oTerminalSocketOp,ScreenWriter * oScreenWriter);
+	MessageProcessor(MessageParser * pMsgParser, SocketOperator * pNetworkSocketOp, SocketOperator * pTerminalSocketOp,ScreenWriter * pScreenWriter);
 	void ProcessUserInput(string sInput);
 	void ProcessServerInput(string sInput);
 	void SetClientState(enum ClientState eClientState);
@@ -32,12 +32,12 @@ public:
 protected:
 private:
 	ClientState e_CurrentState;
-	MessageParser * o_MsgParser;
-	SocketOperator * o_NetworkSocketOp;
-	SocketOperator * o_TerminalSocketOp;
-	ScreenWriter * o_ScreenWriter;
+	MessageParser * p_MsgParser;
+	SocketOperator * p_NetworkSocketOp;
+	SocketOperator * p_TerminalSocketOp;
+	ScreenWriter * p_ScreenWriter;
 
-	void TrimWhitespace(string& str);
+	void TrimWhitespace(string& sString);
 };
 
 #endif	//_MESSAGE_PROCESSOR_HEADER_

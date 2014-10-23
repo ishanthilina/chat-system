@@ -5,8 +5,8 @@
  *      Author: ishan
  */
 
-#ifndef MESSAGEFACTORY_H_
-#define MESSAGEFACTORY_H_
+#ifndef _MESSAGE_FACTORY_HEADER_
+#define _MESSAGE_FACTORY_HEADER_
 
 #include <string>
 #include <stdlib.h>     /* atoi */
@@ -17,15 +17,14 @@ using namespace std;
 
 class MessageFactory {
 public:
-	MessageFactory(MessageProcessor * oMessageProcessor);
+	MessageFactory(MessageProcessor * pMessageProcessor);
 	void CreateMessage(string sNewMessage);
 	virtual ~MessageFactory();
 private:
 	int i_CurrentMsgLength;
 	string s_CurrentMessage;
-	MessageProcessor * o_MessageProcessor;
+	MessageProcessor * p_MessageProcessor;
 };
 
-#endif /* MESSAGEFACTORY_H_ */
+#endif /* _MESSAGE_FACTORY_HEADER_ */
 
-// |;|7+4+2+5|LIN;ishan|;|

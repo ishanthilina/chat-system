@@ -9,23 +9,23 @@
 
 bool gb_IsDebugOn = true;
 
-void LogDebug(const char* format, ...)
+void LogDebug(const char* zpFormat, ...)
 {
 	if (gb_IsDebugOn)
 	{
 		//append a new line
-		size_t len = strlen(format);
-		char* ret = new char[len+2];
-		strcpy(ret, format);
-		ret[len] = '\n';
-		ret[len+1] = '\0';
+		size_t iLen = strlen(zpFormat);
+		char* zpRet = new char[iLen+2];
+		strcpy(zpRet, zpFormat);
+		zpRet[iLen] = '\n';
+		zpRet[iLen+1] = '\0';
 
-		va_list arglist;
+		va_list sArglist;
 
-		va_start( arglist, ret );
+		va_start( sArglist, zpRet );
 		printf("[DEBUG] ");
-		vprintf( ret, arglist );
-		va_end( arglist );
+		vprintf( zpRet, sArglist );
+		va_end( sArglist );
 	}
 }
 

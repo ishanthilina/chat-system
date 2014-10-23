@@ -7,23 +7,24 @@
 
 #include "MessageFactory.h"
 
-MessageFactory::MessageFactory(MessageProcessor * oMessageProcessor) {
+MessageFactory::MessageFactory(MessageProcessor * pMessageProcessor) 
+{
 	this->i_CurrentMsgLength = 0;
 	this->s_CurrentMessage="";
-	this->o_MessageProcessor=oMessageProcessor;
+	this->p_MessageProcessor=pMessageProcessor;
 
 }
 
 void MessageFactory::CreateMessage(string sNewMessage)
 {
-	// |;|7+4+2+5|LIN;ishan|;|
 
 	LogDebug("MessageFactory.cpp - New Input : %s",sNewMessage.c_str());
 
-	if(this->i_CurrentMsgLength == 0)	//this is the begining of a new message
+	if(this->i_CurrentMsgLength == 0)	//this is the beginning of a new message
 	{
 		//check for the beginning signature of the message
-		if(sNewMessage.substr(0,3).compare("|;|")!=0){
+		if(sNewMessage.substr(0,3).compare("|;|")!=0)
+		{
 			this->i_CurrentMsgLength = 0;
 			this->s_CurrentMessage="";
 			return;
@@ -45,7 +46,7 @@ void MessageFactory::CreateMessage(string sNewMessage)
 	if (this->s_CurrentMessage.length() == i_CurrentMsgLength)
 	{
 		LogDebug("MessageFactory.cpp - Message Complete - %s",this->s_CurrentMessage.c_str());
-		o_MessageProcessor->ProcessServerInput(this->s_CurrentMessage.substr(GetTotalHeaderLength(),(this->s_CurrentMessage.length()-(GetTotalHeaderLength()+GetTotalFooterLength())) ));
+		p_MessageProcessor->ProcessServerInput(this->s_CurrentMessage.substr(GetTotalHeaderLength(),(this->s_CurrentMessage.length()-(GetTotalHeaderLength()+GetTotalFooterLength())) ));
 		this->i_CurrentMsgLength = 0;
 		this->s_CurrentMessage="";
 		return;
@@ -61,7 +62,7 @@ void MessageFactory::CreateMessage(string sNewMessage)
 
 }
 
-MessageFactory::~MessageFactory() {
-	// TODO Auto-generated destructor stub
+MessageFactory::~MessageFactory() 
+{
 }
 

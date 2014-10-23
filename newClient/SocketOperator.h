@@ -5,8 +5,8 @@
  *      Author: ishan
  */
 
-#ifndef SOCKETOPERATOR_H_
-#define SOCKETOPERATOR_H_
+#ifndef _SOCKET_OPERATOR_HEADER_
+#define _SOCKET_OPERATOR_HEADER_
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -25,12 +25,12 @@
 class SocketOperator {
 public:
 	SocketOperator(int iSocket);
-	int ReadFromSocket(char * buffer,int iBufferSize);
-	int WriteToSocket(const char * buffer,int iBufferSize);
+	int ReadFromSocket(char * zBuffer,int iBufferSize);
+	int WriteToSocket(const char * zBuffer,int iBufferSize);
 
 	virtual ~SocketOperator();
 private:
 	int i_Socket;
 };
 
-#endif /* SOCKETOPERATOR_H_ */
+#endif /* _SOCKET_OPERATOR_HEADER_ */

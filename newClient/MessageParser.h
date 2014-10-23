@@ -31,8 +31,8 @@ int GetTotalFooterLength();
 class MessageParser
 {
 public:
-	int CreateLoginMessage(string * sMessageContent);
-	int CreateChatMessage(string * sMessageContent);
+	int CreateLoginMessage(string * spMessageContent);
+	int CreateChatMessage(string * spMessageContent);
 	MessageType GetMessageType(string sMessageContent);
 	string GetMessageContent(string sMessageContent);
 protected:

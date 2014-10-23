@@ -8,7 +8,8 @@
 #include "ChatClient.h"
 
 
-ChatClient::ChatClient() {
+ChatClient::ChatClient() 
+{
 
 }
 
@@ -18,52 +19,49 @@ int ChatClient::StartClient() {
 	bool bShouldRun=true;
 	do 
 	{
-		//cout<<"Run"<<endl;
-		int sockfd=this->Connect();
+		int iSockFD=this->Connect();
 
-		if(sockfd <0)
+		if(iSockFD <0)
 		{
 			//wait before reconnecting
-			usleep(SLEEP_TIME);	//sleep 1 second
+			usleep(SLEEP_TIME);	
 			continue;
-
 		}
 
 		
 		//create the socket operators
-		SocketOperator * oNetSockOperator=new SocketOperator(sockfd);
-		SocketOperator * oTerminalSocketOperator=new SocketOperator(STDIN_FILENO);
+		SocketOperator * pNetSockOperator=new SocketOperator(iSockFD);
+		SocketOperator * pTerminalSocketOperator=new SocketOperator(STDIN_FILENO);
 
 
-		MessageParser * oMsgParser=new MessageParser();
-		ScreenWriter * oScreenWriter = new ScreenWriter();
-		MessageProcessor * oEventHndler=new MessageProcessor(oMsgParser,oNetSockOperator,oTerminalSocketOperator,oScreenWriter);
+		MessageParser * pMsgParser=new MessageParser();
+		ScreenWriter * pScreenWriter = new ScreenWriter();
+		MessageProcessor * pEventHndler=new MessageProcessor(pMsgParser,pNetSockOperator,pTerminalSocketOperator,pScreenWriter);
 
-		MessageFactory * oMessageFactory = new MessageFactory(oEventHndler);
+		MessageFactory * pMessageFactory = new MessageFactory(pEventHndler);
 
 		//event listener
-		EventListener * eventListener=new EventListener(sockfd,oNetSockOperator,oTerminalSocketOperator,oEventHndler,oMessageFactory);
-		int iExitStatus=eventListener->Listen();
-		//cout<<"BEFORE"<<endl;
+		EventListener * pEventListener=new EventListener(iSockFD,pNetSockOperator,pTerminalSocketOperator,pEventHndler,pMessageFactory);
+		int iExitStatus=pEventListener->Listen();
+		//if not a server disconnect exit
 		if (iExitStatus!=2)
 		{
-			//cout<<"in"<<endl;
 			bShouldRun=false;
 
 		}
 
 
 
-		delete oNetSockOperator;
-		delete oTerminalSocketOperator;
-		delete eventListener;
-		delete oMessageFactory;
-		delete oEventHndler;
-		delete oMsgParser;
-		delete oScreenWriter;
+		delete pNetSockOperator;
+		delete pTerminalSocketOperator;
+		delete pEventListener;
+		delete pMessageFactory;
+		delete pEventHndler;
+		delete pMsgParser;
+		delete pScreenWriter;
 
 		//wait before reconnecting
-		usleep(SLEEP_TIME);	//sleep 1 second
+		usleep(SLEEP_TIME);	
 	} while (bShouldRun);
 
 	
@@ -73,45 +71,45 @@ int ChatClient::StartClient() {
 
 }
 
-ChatClient::~ChatClient() {
-	// TODO Auto-generated destructor stub
+ChatClient::~ChatClient() 
+{
 }
 
 int ChatClient::Connect()
 {
-	int sockfd, portno, n;
-	struct sockaddr_in serv_addr;
-	struct hostent *server;
+	int iSockFD, iPortNo;
+	struct sockaddr_in sServAddr;
+	struct hostent *psServer;
 
-	portno = 8888;
+	iPortNo = 8888;
 	/* Create a socket point */
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd < 0)
+	iSockFD = socket(AF_INET, SOCK_STREAM, 0);
+	if (iSockFD < 0)
 	{
 		perror("ERROR opening socket");
 		return -1;
 	}
-	server = gethostbyname("127.0.0.1");
-	if (server == NULL) {
+	psServer = gethostbyname("127.0.0.1");
+	if (psServer == NULL) {
 		fprintf(stderr,"ERROR, no such host\n");
 		return -1;
 	}
 
-	bzero((char *) &serv_addr, sizeof(serv_addr));
-	serv_addr.sin_family = AF_INET;
-	bcopy((char *)server->h_addr,
-		(char *)&serv_addr.sin_addr.s_addr,
-		server->h_length);
-	serv_addr.sin_port = htons(portno);
+	bzero((char *) &sServAddr, sizeof(sServAddr));
+	sServAddr.sin_family = AF_INET;
+	bcopy((char *)psServer->h_addr,
+		(char *)&sServAddr.sin_addr.s_addr,
+		psServer->h_length);
+	sServAddr.sin_port = htons(iPortNo);
 
 	/* Now connect to the server */
-	if (connect(sockfd,(sockaddr*)&serv_addr,sizeof(serv_addr)) < 0)
+	if (connect(iSockFD,(sockaddr*)&sServAddr,sizeof(sServAddr)) < 0)
 	{
 		perror("ERROR connecting");
 		return -1;
 	}
 
-	return sockfd;
+	return iSockFD;
 }
 
 int main()

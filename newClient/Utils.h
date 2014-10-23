@@ -5,8 +5,8 @@
  *      Author: ishan
  */
 
-#ifndef UTILS_H_
-#define UTILS_H_
+#ifndef _UTILS_HEADER_
+#define _UTILS_HEADER_
 
 
 #include <stdarg.h>
@@ -14,7 +14,7 @@
 #include <cstring>
 
 
-void LogDebug(const char* format, ...);
+void LogDebug(const char* zpFormat, ...);
 
 
-#endif /* UTILS_H_ */
+#endif /* _UTILS_HEADER_ */

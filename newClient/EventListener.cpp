@@ -7,89 +7,94 @@
 
 #include "EventListener.h"
 
-EventListener::EventListener(int sockfd,SocketOperator * oNetSockOperator, SocketOperator * oTerminalSocketOperator,MessageProcessor * oMsgProcessor,MessageFactory * oMessageFactory) {
-	this->sockfd=sockfd;
-	this->o_NetSockOperator=oNetSockOperator;
-	this->o_TerminalSocketOperator=oTerminalSocketOperator;
-	this->o_MessageProcessor=oMsgProcessor;
-	this->o_MessageFactory=oMessageFactory;
+EventListener::EventListener(int iSockFD,SocketOperator * pNetSockOperator, SocketOperator * pTerminalSocketOperator,MessageProcessor * pMsgProcessor,MessageFactory * pMessageFactory) 
+{
+	this->i_SockFD=iSockFD;
+	this->p_NetSockOperator=pNetSockOperator;
+	this->p_TerminalSocketOperator=pTerminalSocketOperator;
+	this->p_MessageProcessor=pMsgProcessor;
+	this->p_MessageFactory=pMessageFactory;
 
 }
 
-int EventListener::Listen(){
+int EventListener::Listen()
+{
 
 	//set of socket descriptors
-		fd_set readfds;
+		fd_set sReadFDs;
 
-		char buffer[MAX_INPUT_BUFFER_SIZE+1];
+		char zBuffer[MAX_INPUT_BUFFER_SIZE+1];
 
-		int activity;
+		int iActivity;
 
 		bool bRunLoop=true;
 
-	while(bRunLoop){
+	while(bRunLoop)
+	{
 
 		LogDebug("EventListener.cpp -  : %s","Clearing");
 
 		//clear the socket set
-		FD_ZERO(&readfds);
+		FD_ZERO(&sReadFDs);
 
 		//add server socket to set
-		FD_SET(sockfd, &readfds);
+		FD_SET(i_SockFD, &sReadFDs);
 
 		//add stdin to set
-		FD_SET(STDIN_FILENO, &readfds);
+		FD_SET(STDIN_FILENO, &sReadFDs);
 
-		int max_sd= STDIN_FILENO > sockfd ? STDIN_FILENO : sockfd;
+		int max_sd= STDIN_FILENO > i_SockFD ? STDIN_FILENO : i_SockFD;
 
 		
 
-		activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL);
+		iActivity = select( max_sd + 1 , &sReadFDs , NULL , NULL , NULL);
 
-		if ((activity < 0) && (errno!=EINTR))
+		if ((iActivity < 0) && (errno!=EINTR))
 		{
 			printf("select error");
 			return 2;
 		}
 
-		if (FD_ISSET(sockfd, &readfds)) {
+		if (FD_ISSET(i_SockFD, &sReadFDs)) 
+		{
 
 			LogDebug("%s","-----------------------------------------------------------------------------");
 			LogDebug("Incoming message from %s","server");
-			memset(buffer, 0, MAX_INPUT_BUFFER_SIZE);
-			int iReadValue=o_NetSockOperator->ReadFromSocket(buffer,MAX_INPUT_BUFFER_SIZE);
+			memset(zBuffer, 0, MAX_INPUT_BUFFER_SIZE);
+			int iReadValue=p_NetSockOperator->ReadFromSocket(zBuffer,MAX_INPUT_BUFFER_SIZE);
 			if(!iReadValue){
-				o_MessageProcessor->SetClientState(LOGIN_USERNAME_PENDING);
-				close(sockfd);
+				p_MessageProcessor->SetClientState(LOGIN_USERNAME_PENDING);
+				close(i_SockFD);
 				LogDebug("EventListener.cpp - Server %s","Disconnected");
 				return 2;
-				//bRunLoop=false;
 
 			}
 
-			buffer[iReadValue]='\0';
+			zBuffer[iReadValue]='\0';
 
 			LogDebug("EventListener.cpp - Message Size : %d",iReadValue);
 			
-			std::string message(buffer);
+			std::string message(zBuffer);
 			LogDebug("EventListener.cpp - Message : %s",message.c_str());
 
-			o_MessageFactory->CreateMessage(message.substr(0,message.find_first_of('\n')));
+			p_MessageFactory->CreateMessage(message.substr(0,message.find_first_of('\n')));
 
 		}
 
-		else if(FD_ISSET(STDIN_FILENO, &readfds)){
+		else if(FD_ISSET(STDIN_FILENO, &sReadFDs))
+		{
 
 			LogDebug("%s","-----------------------------------------------------------------------------");
-			memset(buffer, 0, MAX_INPUT_BUFFER_SIZE);
-			o_TerminalSocketOperator->ReadFromSocket(buffer,MAX_INPUT_BUFFER_SIZE);
+			memset(zBuffer, 0, MAX_INPUT_BUFFER_SIZE);
+			p_TerminalSocketOperator->ReadFromSocket(zBuffer,MAX_INPUT_BUFFER_SIZE);
 
-			std::string message(buffer);
+			std::string message(zBuffer);
 			LogDebug("EventListener.cpp - Message : %s",message.c_str());
-			o_MessageProcessor->ProcessUserInput(message.substr(0,message.find_first_of('\n')));
+			p_MessageProcessor->ProcessUserInput(message.substr(0,message.find_first_of('\n')));
 
 		}
-		else{
+		else
+		{
 			LogDebug("EventListener.cpp - Error-Incoming message from : %s"," unknown source");
 		}
 
@@ -98,7 +103,8 @@ int EventListener::Listen(){
 	return 0;
 }
 
-EventListener::~EventListener() {
-	// TODO Auto-generated destructor stub
+EventListener::~EventListener() 
+{
+	
 }
 

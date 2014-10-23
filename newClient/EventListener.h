@@ -5,8 +5,8 @@
  *      Author: ishan
  */
 
-#ifndef EVENTLISTENER_H_
-#define EVENTLISTENER_H_
+#ifndef _EVENT_LISTENER_HEADER_
+#define _EVENT_LISTENER_HEADER_
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -31,15 +31,15 @@
 
 class EventListener {
 public:
-	EventListener(int sockfd, SocketOperator * oNetSockOperator, SocketOperator * oTerminalSocketOperator,MessageProcessor * oMsgProcessor,MessageFactory * oMessageFactory);
+	EventListener(int iSockFD, SocketOperator * pNetSockOperator, SocketOperator * pTerminalSocketOperator,MessageProcessor * pMsgProcessor,MessageFactory * pMessageFactory);
 	int Listen();
 	virtual ~EventListener();
 private:
-	int sockfd;
-	SocketOperator * o_NetSockOperator;
-	SocketOperator * o_TerminalSocketOperator;
-	MessageProcessor * o_MessageProcessor;
-	MessageFactory * o_MessageFactory;
+	int i_SockFD;
+	SocketOperator * p_NetSockOperator;
+	SocketOperator * p_TerminalSocketOperator;
+	MessageProcessor * p_MessageProcessor;
+	MessageFactory * p_MessageFactory;
 };
 
-#endif /* EVENTLISTENER_H_ */
+#endif /* _EVENT_LISTENER_HEADER_ */

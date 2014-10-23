@@ -13,10 +13,10 @@ SocketOperator::SocketOperator(int iSocket)
 
 }
 
-int SocketOperator::ReadFromSocket(char * buffer,int iBufferSize)
+int SocketOperator::ReadFromSocket(char * zBuffer,int iBufferSize)
 {
 	int iValRead=0;
-	if ((iValRead = read( i_Socket , buffer, iBufferSize)) == 0)
+	if ((iValRead = read( i_Socket , zBuffer, iBufferSize)) == 0)
 	{
 		LogDebug("SocketOperator.cpp - Server %s","Disconnected");
 		return 0;
@@ -24,11 +24,11 @@ int SocketOperator::ReadFromSocket(char * buffer,int iBufferSize)
 	return iValRead;
 }
 
-int SocketOperator::WriteToSocket(const char * buffer,int iBufferSize)
+int SocketOperator::WriteToSocket(const char * zBuffer,int iBufferSize)
 {
-	LogDebug("SocketOperator.cpp - Sending Message - %s",buffer);
+	LogDebug("SocketOperator.cpp - Sending Message - %s",zBuffer);
 	int iValWritten=0;
-	if ((iValWritten = write( i_Socket , buffer, iBufferSize)) == 0)
+	if ((iValWritten = write( i_Socket , zBuffer, iBufferSize)) == 0)
 	{
 
 		LogDebug("SocketOperator.cpp - Error writing to  %s","socket");
@@ -40,6 +40,6 @@ int SocketOperator::WriteToSocket(const char * buffer,int iBufferSize)
 
 SocketOperator::~SocketOperator()
 {
-	// TODO Auto-generated destructor stub
+
 }
 

@@ -5,8 +5,8 @@
  *      Author: ishan
  */
 
-#ifndef CHATCLIENT_H_
-#define CHATCLIENT_H_
+#ifndef _CHAT_CLIENT_HEADER_
+#define _CHAT_CLIENT_HEADER_
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -40,4 +40,4 @@ private:
 	int Connect();
 };
 
-#endif /* CHATCLIENT_H_ */
+#endif /* _CHAT_CLIENT_HEADER_ */
