@@ -1,12 +1,12 @@
 #include "MessageFactory.h"
 
 
-MessageType MessageFactory::getMessageType( string s_Message )
+MessageType MessageFactory::getMessageType( string sMessage )
 {
-	if(s_Message.length()<2){
+	if(sMessage.length()<2){
 		return ERROR;
 	}
-	string sType = s_Message.substr(0,4);
+	string sType = sMessage.substr(0,4);
 
 	return GetEnumFromString(sType);
 
@@ -37,7 +37,6 @@ Message * MessageFactory::createChatMessage( string sMessage, Server* pReceivedS
 
 			pClient->SendMessage(sReplyMsg);
 
-			//break;
 		}
 		sMsg+=(*it);
 		sMsg+=",";

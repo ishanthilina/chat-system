@@ -2,39 +2,39 @@
 
 UserRegistry::UserRegistry()
 {
-	o_Users = new vector<User*>;
+	p_Users = new vector<User*>;
 }
 
 
-int UserRegistry::AddUser( User * o_User )
+int UserRegistry::AddUser( User * pUser )
 {
 	//check if the username is unique
-	for(vector<User*>::iterator it=o_Users->begin();it!=o_Users->end();++it)
+	for(vector<User*>::iterator it=p_Users->begin();it!=p_Users->end();++it)
 	{
 
-		if (o_User->GetUserName().compare((*it)->GetUserName())==0)
+		if (pUser->GetUserName().compare((*it)->GetUserName())==0)
 		{
 			return 1;
 		}
 
 	}
 
-	o_Users->push_back(o_User);
+	p_Users->push_back(pUser);
 
 	return 0;
 }
 
 
-int UserRegistry::RemoveUser( User * o_User )
+int UserRegistry::RemoveUser( User * pUser )
 {
 
 	//remove from the clients list also
-	for(vector<User*>::iterator it1=o_Users->begin();it1!=o_Users->end();++it1)
+	for(vector<User*>::iterator it1=p_Users->begin();it1!=p_Users->end();++it1)
 	{
-		if ((*it1)==o_User)
+		if ((*it1)==pUser)
 		{
 			delete *it1;
-			o_Users->erase(it1);
+			p_Users->erase(it1);
 			break;
 		}
 	}
@@ -43,13 +43,13 @@ int UserRegistry::RemoveUser( User * o_User )
 }
 
 
-bool UserRegistry::IsUserExists( string username )
+bool UserRegistry::IsUserExists( string sUsername )
 {
 	//check if the username is unique
-	for(vector<User*>::iterator it=o_Users->begin();it!=o_Users->end();++it)
+	for(vector<User*>::iterator it=p_Users->begin();it!=p_Users->end();++it)
 	{
 
-		if (username.compare((*it)->GetUserName())==0)
+		if (sUsername.compare((*it)->GetUserName())==0)
 		{
 			return true;
 		}
@@ -62,13 +62,13 @@ bool UserRegistry::IsUserExists( string username )
 
 
 
-User * UserRegistry::GetUser( string username )
+User * UserRegistry::GetUser( string sUsername )
 {
-	for(vector<User*>::iterator it=o_Users->begin();it!=o_Users->end();++it)
+	for(vector<User*>::iterator it=p_Users->begin();it!=p_Users->end();++it)
 	{
 
 
-		if (username.compare((*it)->GetUserName())==0)
+		if (sUsername.compare((*it)->GetUserName())==0)
 		{
 
 
@@ -84,7 +84,7 @@ User * UserRegistry::GetUser( string username )
 
 User* UserRegistry::GetUser(Client* pClient)
 {
-	for(vector<User*>::iterator it=o_Users->begin();it!=o_Users->end();++it)
+	for(vector<User*>::iterator it=p_Users->begin();it!=p_Users->end();++it)
 		{
 
 			if (pClient == (*it)->GetClient())

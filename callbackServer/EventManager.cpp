@@ -19,7 +19,7 @@ EventManager::~EventManager() {
 Server* EventManager::CreateServer(int iPort, SCallBack* pCallBack)
 {
 	int iMasterSocket,      iOption=1;
-	struct sockaddr_in o_Address;
+	struct sockaddr_in oAddress;
 
 	//create a master socket
 	if( (iMasterSocket = socket(AF_INET , SOCK_STREAM , 0)) == 0)
@@ -36,12 +36,12 @@ Server* EventManager::CreateServer(int iPort, SCallBack* pCallBack)
 	}
 
 	//type of socket created
-	o_Address.sin_family = AF_INET;
-	o_Address.sin_addr.s_addr = INADDR_ANY;
-	o_Address.sin_port = htons( iPort );
+	oAddress.sin_family = AF_INET;
+	oAddress.sin_addr.s_addr = INADDR_ANY;
+	oAddress.sin_port = htons( iPort );
 
 	//bind the socket to localhost port 8888
-	if (bind(iMasterSocket, (struct sockaddr *)&o_Address, sizeof(o_Address))<0)
+	if (bind(iMasterSocket, (struct sockaddr *)&oAddress, sizeof(oAddress))<0)
 	{
 		perror("bind failed");
 		exit(EXIT_FAILURE);
@@ -66,40 +66,40 @@ Server* EventManager::CreateServer(int iPort, SCallBack* pCallBack)
 Client* EventManager::CreateClient(char* zHost, int iPort,
 		SCallBack* pCallBack)
 {
-	int sockfd;
+	int iSockFD;
 	struct sockaddr_in serv_addr;
-	struct hostent *server;
+	struct hostent *poServer;
 
 
 	/* Create a socket point */
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd < 0)
+	iSockFD = socket(AF_INET, SOCK_STREAM, 0);
+	if (iSockFD < 0)
 	{
 		perror("ERROR opening socket");
 		exit(EXIT_FAILURE);
 	}
-	server = gethostbyname(zHost);
-	if (server == NULL) {
+	poServer = gethostbyname(zHost);
+	if (poServer == NULL) {
 		fprintf(stderr,"ERROR, no such host\n");
 		exit(EXIT_FAILURE);
 	}
 
 	bzero((char *) &serv_addr, sizeof(serv_addr));
 	serv_addr.sin_family = AF_INET;
-	bcopy((char *)server->h_addr,
+	bcopy((char *)poServer->h_addr,
 			(char *)&serv_addr.sin_addr.s_addr,
-			server->h_length);
+			poServer->h_length);
 	serv_addr.sin_port = htons(iPort);
 
 	/* Now connect to the server */
-	if (connect(sockfd,(sockaddr*)&serv_addr,sizeof(serv_addr)) < 0)
+	if (connect(iSockFD,(sockaddr*)&serv_addr,sizeof(serv_addr)) < 0)
 	{
 		perror("ERROR connecting");
 		exit(EXIT_FAILURE);
 	}
 
-	Client * pClient=new Client(sockfd);
-	this->mClients.insert ( std::pair<int,Client*>(sockfd,pClient) );
+	Client * pClient=new Client(iSockFD);
+	this->mClients.insert ( std::pair<int,Client*>(iSockFD,pClient) );
 	return pClient;
 }
 
@@ -108,28 +108,28 @@ Client* EventManager::CreateClient(char* zHost, int iPort,
 
 int EventManager::Run()
 {
-	char z_InputBuffer[MAX_INPUT_BUFFER_SIZE];  //input data buffer
-	int i_MaxSocketDescriptor, i_SocketDescriptor,i_SocketActivity,i_NewSocket,i_Addrlen,i_ReadValue;
-	struct sockaddr_in o_Address;
+	char zInputBuffer[MAX_INPUT_BUFFER_SIZE];  //input data buffer
+	int iMaxSocketDescriptor, iSocketDescriptor,iSocketActivity,iNewSocket,iAddrlen,iReadValue;
+	struct sockaddr_in oAddress;
 
 	 while(true)
 		 {
 			 //clear the socket set
-			 FD_ZERO(&o_ReadFds);
+			 FD_ZERO(&oReadFds);
 
 			 //add STDIN to set
-			 FD_SET(STDIN_FILENO, &o_ReadFds);
+			 FD_SET(STDIN_FILENO, &oReadFds);
 
-			 i_MaxSocketDescriptor= 0;
+			 iMaxSocketDescriptor= 0;
 			 //itetrate all the clients
 			 std::map<int, Client*>::iterator oClientIter;
 			 for (oClientIter = mClients.begin(); oClientIter != mClients.end(); ++oClientIter) 
 			 {
-				 i_SocketDescriptor = oClientIter->second->GetSocket();
-				 FD_SET( i_SocketDescriptor , &o_ReadFds);
+				 iSocketDescriptor = oClientIter->second->GetSocket();
+				 FD_SET( iSocketDescriptor , &oReadFds);
 				 //highest file descriptor number, need it for the select function
-				 if(i_SocketDescriptor > i_MaxSocketDescriptor)
-					 i_MaxSocketDescriptor = i_SocketDescriptor;
+				 if(iSocketDescriptor > iMaxSocketDescriptor)
+					 iMaxSocketDescriptor = iSocketDescriptor;
 
 			 }
 
@@ -137,32 +137,30 @@ int EventManager::Run()
 			 std::map<int, Server*>::iterator  oServerIter;
 			 for (oServerIter = mServers.begin(); oServerIter != mServers.end(); ++oServerIter) 
 			 {
-				 i_SocketDescriptor = oServerIter->second->GetSocket();
-				 FD_SET( i_SocketDescriptor , &o_ReadFds);
+				 iSocketDescriptor = oServerIter->second->GetSocket();
+				 FD_SET( iSocketDescriptor , &oReadFds);
 				 //highest file descriptor number, need it for the select function
-				 if(i_SocketDescriptor > i_MaxSocketDescriptor)
-					 i_MaxSocketDescriptor = i_SocketDescriptor;
+				 if(iSocketDescriptor > iMaxSocketDescriptor)
+					 iMaxSocketDescriptor = iSocketDescriptor;
 
 				 vector<Client*>* pClients=oServerIter->second->GetClients();
-				 //LogDebug("ss");
 				 std:: vector<Client*>::iterator oServerClientIter;
 				 for (oServerClientIter = (*pClients).begin(); oServerClientIter != (*pClients).end(); ++oServerClientIter) 
 				 {
-					// LogDebug("ssss");
-					 i_SocketDescriptor = (*oServerClientIter)->GetSocket();
-					 FD_SET( i_SocketDescriptor , &o_ReadFds);
+					 iSocketDescriptor = (*oServerClientIter)->GetSocket();
+					 FD_SET( iSocketDescriptor , &oReadFds);
 					 //highest file descriptor number, need it for the select function
-					 if(i_SocketDescriptor > i_MaxSocketDescriptor)
-						 i_MaxSocketDescriptor = i_SocketDescriptor;
+					 if(iSocketDescriptor > iMaxSocketDescriptor)
+						 iMaxSocketDescriptor = iSocketDescriptor;
 				 }
 
 			 }
 			
 
 			 //wait for an activity on one of the sockets , timeout is NULL , so wait indefinitely
-			 i_SocketActivity = select( i_MaxSocketDescriptor + 1 , &o_ReadFds , NULL , NULL , NULL);
+			 iSocketActivity = select( iMaxSocketDescriptor + 1 , &oReadFds , NULL , NULL , NULL);
 
-			 if ((i_SocketActivity < 0) && (errno!=EINTR))
+			 if ((iSocketActivity < 0) && (errno!=EINTR))
 			 {
 				 printf("select error");
 			 }
@@ -170,21 +168,21 @@ int EventManager::Run()
 			 LogDebug("EventManager.cpp: Receiving %s","Message");
 
 			 //check the STDIN
-			 if (FD_ISSET(STDIN_FILENO, &o_ReadFds))
+			 if (FD_ISSET(STDIN_FILENO, &oReadFds))
 			 {
-				 if ((i_ReadValue = read( STDIN_FILENO , z_InputBuffer, MAX_INPUT_BUFFER_SIZE-1)) == 0)
+				 if ((iReadValue = read( STDIN_FILENO , zInputBuffer, MAX_INPUT_BUFFER_SIZE-1)) == 0)
 				 {
 					 perror("accept");
 					 exit(EXIT_FAILURE);
 				 }
 				 else{
-					 z_InputBuffer[i_ReadValue] = '\0';
-					LogDebug("EventManager.cpp: Terminal input: %s",z_InputBuffer);
+					 zInputBuffer[iReadValue] = '\0';
+					LogDebug("EventManager.cpp: Terminal input: %s",zInputBuffer);
 					
 					for (oClientIter = mClients.begin(); oClientIter != mClients.end(); ++oClientIter) 
 					{
 
-						oClientIter->second->SendMessage(string(z_InputBuffer));
+						oClientIter->second->SendMessage(string(zInputBuffer));
 
 					}
 				 }
@@ -197,19 +195,19 @@ int EventManager::Run()
 			 for (oServerIter = mServers.begin(); oServerIter != mServers.end(); ++oServerIter) 
 			 {
 
-				 i_SocketDescriptor = oServerIter->second->GetSocket();
+				 iSocketDescriptor = oServerIter->second->GetSocket();
 				 //If something happened on a server socket , then its an incoming connection
-				 if (FD_ISSET(i_SocketDescriptor, &o_ReadFds))
+				 if (FD_ISSET(iSocketDescriptor, &oReadFds))
 				 {
 					 LogDebug("EventManager.cpp: Receiving Message from %s","Server");
-					 if ((i_NewSocket = accept(i_SocketDescriptor, (struct sockaddr *)&o_Address, (socklen_t*)&i_Addrlen))<0)
+					 if ((iNewSocket = accept(iSocketDescriptor, (struct sockaddr *)&oAddress, (socklen_t*)&iAddrlen))<0)
 					 {
 						 perror("accept");
 						 exit(EXIT_FAILURE);
 					 }
 
 					 //Create client and notify
-					 Client* pClient=new Client(i_NewSocket);
+					 Client* pClient=new Client(iNewSocket);
 					oServerIter->second->AddClient(pClient);
 					 this->p_CallBackHandler->OnConnect(&(*oServerIter->second),pClient);
 					
@@ -222,18 +220,18 @@ int EventManager::Run()
 				 for (oServerClientIter = (*pClients).begin(); oServerClientIter != (*pClients).end(); ++oServerClientIter) 
 				 {
 					 
-					 i_SocketDescriptor = (*oServerClientIter)->GetSocket();
+					 iSocketDescriptor = (*oServerClientIter)->GetSocket();
 					
-					 if (FD_ISSET(i_SocketDescriptor, &o_ReadFds))
+					 if (FD_ISSET(iSocketDescriptor, &oReadFds))
 					 {
 						 LogDebug("EventManager.cpp: Receiving Message from %s","Client");
 						 //Check if it was for closing , and also read the incoming message
-						 if ((i_ReadValue = read( i_SocketDescriptor , z_InputBuffer, MAX_INPUT_BUFFER_SIZE-1)) == 0)
+						 if ((iReadValue = read( iSocketDescriptor , zInputBuffer, MAX_INPUT_BUFFER_SIZE-1)) == 0)
 						 {
 							 //Somebody disconnected , get his details and print
-							 getpeername(i_SocketDescriptor, (struct sockaddr*)&o_Address , (socklen_t*)&i_Addrlen);
+							 getpeername(iSocketDescriptor, (struct sockaddr*)&oAddress , (socklen_t*)&iAddrlen);
 							 LogDebug("%s","---------------------------------------------------------------------");
-							 LogDebug("EventManager: Client disconnected, ip %s , port %d",inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
+							 LogDebug("EventManager: Client disconnected, ip %s , port %d",inet_ntoa(oAddress.sin_addr) , ntohs(oAddress.sin_port));
 
 							 this->p_CallBackHandler->OnDisconnect(&(*oServerIter->second),(*oServerClientIter));
 							 
@@ -246,13 +244,12 @@ int EventManager::Run()
 
 						}
 						 else{
-							 z_InputBuffer[i_ReadValue] = '\0';
+							 zInputBuffer[iReadValue] = '\0';
 
 							 LogDebug("%s","---------------------------------------------------------------------");
-							 LogDebug("EventManager: Incoming message from ip %s , port %d. Message : %s",inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port),z_InputBuffer);
-							 this->p_CallBackHandler->OnData(&(*oServerIter->second),(*oServerClientIter),string(z_InputBuffer));
+							 LogDebug("EventManager: Incoming message from ip %s , port %d. Message : %s",inet_ntoa(oAddress.sin_addr) , ntohs(oAddress.sin_port),zInputBuffer);
+							 this->p_CallBackHandler->OnData(&(*oServerIter->second),(*oServerClientIter),string(zInputBuffer));
 						 }
-						 //LogDebug("ssaa");
 
 					 }
 
@@ -266,17 +263,17 @@ int EventManager::Run()
 			 
 			 for (oClientIter = mClients.begin(); oClientIter != mClients.end(); ++oClientIter) 
 			 {
-				 i_SocketDescriptor = oClientIter->second->GetSocket();
-				 if (FD_ISSET(i_SocketDescriptor, &o_ReadFds))
+				 iSocketDescriptor = oClientIter->second->GetSocket();
+				 if (FD_ISSET(iSocketDescriptor, &oReadFds))
 				 {
 					LogDebug("EventManager.cpp: Receiving Message from %s","Server");
 
 					//Check if it was for closing , and also read the incoming message
-					if ((i_ReadValue = read( i_SocketDescriptor , z_InputBuffer, MAX_INPUT_BUFFER_SIZE-1)) == 0)
+					if ((iReadValue = read( iSocketDescriptor , zInputBuffer, MAX_INPUT_BUFFER_SIZE-1)) == 0)
 					{
 						
 						LogDebug("%s","---------------------------------------------------------------------");
-						LogDebug("EventManager: Server disconnected, ip %s , port %d",inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port));
+						LogDebug("EventManager: Server disconnected, ip %s , port %d",inet_ntoa(oAddress.sin_addr) , ntohs(oAddress.sin_port));
 
 						this->p_CallBackHandler->OnDisconnect((*oClientIter).second);
 
@@ -286,10 +283,10 @@ int EventManager::Run()
 
 					}
 					else{
-						z_InputBuffer[i_ReadValue] = '\0';
+						zInputBuffer[iReadValue] = '\0';
 
 						LogDebug("%s","---------------------------------------------------------------------");
-						LogDebug("EventManager: Incoming message from Server ip %s , port %d. Message : %s",inet_ntoa(o_Address.sin_addr) , ntohs(o_Address.sin_port),z_InputBuffer);
+						LogDebug("EventManager: Incoming message from Server ip %s , port %d. Message : %s",inet_ntoa(oAddress.sin_addr) , ntohs(oAddress.sin_port),zInputBuffer);
 						this->p_CallBackHandler->OnData((*oClientIter).second,"Server Data");
 					}
 

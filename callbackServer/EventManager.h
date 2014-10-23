@@ -43,7 +43,7 @@ public:
 
 private:
 	//set of socket descriptors
-	fd_set o_ReadFds;
+	fd_set oReadFds;
 	SCallBack * p_CallBackHandler;
 
 	map<int, Client* > mClients;

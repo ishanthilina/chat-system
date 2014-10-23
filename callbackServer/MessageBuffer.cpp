@@ -10,8 +10,6 @@
 MessageBuffer::MessageBuffer(DeliveryController * pDeliveryController) {
 	p_BufferredMessages = new TPClientMsgMap();
 	p_DeliveryController = pDeliveryController;
-
-
 }
 
 MessageBuffer::~MessageBuffer() {

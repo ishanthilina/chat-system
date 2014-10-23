@@ -2,16 +2,16 @@
 
 static const char * EnumStrings[] = { "LIN;", "PTP;", "LOU;", "NTF;", "AUT;" };
 
-const char * GetTextForEnum( int i_EnumVal )
+const char * GetTextForEnum( int iEnumVal )
 {
-	return EnumStrings[i_EnumVal];
+	return EnumStrings[iEnumVal];
 }
 
-const MessageType GetEnumFromString(string s_EnumStr){
+const MessageType GetEnumFromString(string sEnumStr){
 	MessageType oReturnType;
 	bool bReturnTypeWasSet=false;
 	for (int i=0; i<5;i++){
-		if (s_EnumStr.compare(EnumStrings[i])==0)
+		if (sEnumStr.compare(EnumStrings[i])==0)
 		{
 			oReturnType=static_cast<MessageType>(i);
 			bReturnTypeWasSet=true;
@@ -72,7 +72,7 @@ MessageType Message::GetMessageType()
 
 vector<string> * Message::GetReceivers()
 {
-	return o_Receivers;
+	return p_Receivers;
 }
 
 
@@ -237,10 +237,9 @@ Server* Message::GetServer()
 	return this->p_Server;
 }
 
-//|;|0000028|PTP;12;wwwwwww|;|
 void Message::ProcessMessage()
 {
-
+	//|;|0000028|PTP;12;wwwwwww|;|
 	if(this->e_MessageType == DIRECT)
 	{
 		int iMsgStartLocation = GetMessageHeader().length()+GetMessageLengthSectionLength()+ GetProtocolLength();
@@ -250,13 +249,13 @@ void Message::ProcessMessage()
 				//LogDebug("iReceiverListEndLoc %d",iReceiverListEndLoc);
 				string sReceivers = this->s_EncodedMessage.substr(iMsgStartLocation,iReceiverListEndLoc);
 				//get all the receiver names
-				this->o_Receivers = new vector<string>;
+				this->p_Receivers = new vector<string>;
 				std::size_t iPrev = 0, iPos;
 				while ((iPos = sReceivers.find_first_of(",", iPrev)) != std::string::npos)
 				{
 					if ( iPos > iPrev){
 						LogDebug("Adding Receiver: %s",sReceivers.substr(iPrev, iPos-iPrev).c_str());
-						o_Receivers->push_back(sReceivers.substr(iPrev, iPos-iPrev));
+						p_Receivers->push_back(sReceivers.substr(iPrev, iPos-iPrev));
 					}
 					iPrev = iPos+1;
 
@@ -267,7 +266,7 @@ void Message::ProcessMessage()
 				if (iPrev < iReceiverListEndLoc)
 				{
 					LogDebug("Adding Receiver: %s",sReceivers.substr(iPrev, iReceiverListEndLoc-iPrev).c_str());
-					o_Receivers->push_back(sReceivers.substr(iPrev, iReceiverListEndLoc-iPrev));
+					p_Receivers->push_back(sReceivers.substr(iPrev, iReceiverListEndLoc-iPrev));
 				}
 
 

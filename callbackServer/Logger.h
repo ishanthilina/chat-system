@@ -14,7 +14,7 @@ using namespace std;
 class Logger
 {
 public:
-	void LogEvent(User * pUser, string s_Message);
+	void LogEvent(User * pUser, string sMessage);
 protected:
 private:
 };

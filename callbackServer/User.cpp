@@ -1,17 +1,17 @@
 #include "User.h"
 
 
-User::User(string s_UserName, Client* pClient)
+User::User(string sUserName, Client* pClient)
 {
 
 	//remove the new line character from the string
-	s_UserName.erase(s_UserName.find_last_not_of(" \n\r\t")+1);
+	sUserName.erase(sUserName.find_last_not_of(" \n\r\t")+1);
 
-	this->s_UserName = s_UserName;
+	this->s_UserName = sUserName;
 	this->p_Client = pClient;
 
 
-	this->s_LogName = s_UserName;
+	this->s_LogName = sUserName;
 
 }
 

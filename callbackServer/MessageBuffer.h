@@ -14,7 +14,6 @@
 #include <map>
 #include <cstring>
 
-//#include "BufferredMessage.h"
 #include "MessageFactory.h"
 #include "Message.h"
 #include "DeliveryController.h"

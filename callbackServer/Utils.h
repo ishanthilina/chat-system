@@ -14,7 +14,7 @@
 #include <cstring>
 
 
-void LogDebug(const char* format, ...);
+void LogDebug(const char* zFormat, ...);
 
 
 #endif /* _UTILS_HEADER_ */

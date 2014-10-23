@@ -58,7 +58,7 @@ protected:
 private:
 	string s_Message;
 	MessageType e_MessageType;
-	vector<string> * o_Receivers;
+	vector<string> * p_Receivers;
 
 	Server* p_Server;
 	Client* p_Client;

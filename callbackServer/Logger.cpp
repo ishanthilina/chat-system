@@ -1,11 +1,11 @@
 #include "Logger.h"
 
-void Logger::LogEvent( User * pUser, string s_Message )
+void Logger::LogEvent( User * pUser, string sMessage )
 {
-	LogDebug("Logger.cpp - Logging message %s", s_Message.c_str());
-	ofstream myfile;
-	myfile.open (pUser->GetLogName().c_str(), ios::out | ios::app);
-	myfile << s_Message.c_str()<<endl;
-	myfile.close();
+	LogDebug("Logger.cpp - Logging message %s", sMessage.c_str());
+	ofstream oMyFile;
+	oMyFile.open (pUser->GetLogName().c_str(), ios::out | ios::app);
+	oMyFile << sMessage.c_str()<<endl;
+	oMyFile.close();
 
 }
