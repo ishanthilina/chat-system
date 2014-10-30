@@ -23,7 +23,7 @@ int Client::GetSocket()
 
 int Client::SendMessage(string sMessage)
 {
-	LogDebug("Client.cpp: Sending %s",sMessage.c_str());
+	LogDebug("Client.cpp: Sending to socket %d : %s",i_SocketFd,sMessage.c_str());
 
 	int iValWritten=0;
 	if ((iValWritten = write( i_SocketFd , sMessage.c_str(), sMessage.length())) == 0)//TODO: handle the buffering of the server socket.

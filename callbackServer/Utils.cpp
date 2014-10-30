@@ -13,19 +13,13 @@ void LogDebug(const char* zFormat, ...)
 {
 	if (gb_IsDebugOn)
 	{
-		//append a new line
-		size_t iLen = strlen(zFormat);
-		char* zRet = new char[iLen+2];
-		strcpy(zRet, zFormat);
-		zRet[iLen] = '\n';
-		zRet[iLen+1] = '\0';
-
 		va_list oArglist;
 
-		va_start( oArglist, zRet );
+		va_start( oArglist, zFormat );
 		printf("[DEBUG] ");
-		vprintf( zRet, oArglist );
+		vprintf( zFormat, oArglist );
 		va_end( oArglist );
+		printf("\n");
 	}
 }
 

@@ -30,12 +30,12 @@ Message * MessageFactory::createChatMessage( string sMessage, Server* pReceivedS
 	{
 		//check whether the receiver exists
 		if(!p_UserRegistry->IsUserExists((*it))){
-			LogDebug("DeliveryController.cpp :Invalid recipient %s in the message from %d.",(*it).c_str(),pClient->GetSocket());
+			LogDebug("MessageFactory.cpp :Invalid recipient %s in the message from %d.",(*it).c_str(),pClient->GetSocket());
 
 			string sReplyMsg("Invalid recipient "+(*it));
 			//send an error message
 
-			pClient->SendMessage(sReplyMsg);
+			pClient->SendMessage(CreateEncodedMessageString(NOTIFICATION,sReplyMsg));
 
 		}
 		sMsg+=(*it);
