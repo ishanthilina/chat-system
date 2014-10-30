@@ -24,7 +24,7 @@ using namespace std;
 class DeliveryController {
 public:
 	DeliveryController(UserRegistry * pUserRegistry, MessageFactory* pMessageFactory);
-	void processMessage( Message * oMessage );
+	void processMessage( Message * pMessage );
 	virtual ~DeliveryController();
 private:
 	UserRegistry * p_UserRegistry;

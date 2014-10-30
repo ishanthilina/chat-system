@@ -20,8 +20,8 @@ public:
 	MessageFactory(UserRegistry* pUserRegistry);
 protected:
 private:
-	MessageType getMessageType(string s_Message);
-	string CreateEncodedMessageString(MessageType eMessageType,string s_Message);
+	MessageType getMessageType(string sMessage);
+	string CreateEncodedMessageString(MessageType eMessageType,string sMessage);
 
 	UserRegistry* p_UserRegistry;
 

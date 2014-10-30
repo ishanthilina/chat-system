@@ -1,6 +1,6 @@
 #include "Logger.h"
 
-void Logger::LogEvent( User * pUser, string sMessage )
+void Logger::LogEvent( User * pUser, string sMessage )//TODO: use C style with variable arg handling support.
 {
 	LogDebug("Logger.cpp - Logging message %s", sMessage.c_str());
 	ofstream oMyFile;

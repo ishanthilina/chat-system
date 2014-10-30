@@ -7,7 +7,7 @@
 
 #include "Utils.h"
 
-bool gb_IsDebugOn = true;
+bool gb_IsDebugOn = false;
 
 void LogDebug(const char* zpFormat, ...)
 {

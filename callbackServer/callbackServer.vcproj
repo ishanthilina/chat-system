@@ -199,6 +199,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MyServer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Server.cpp"
 				>
 			</File>

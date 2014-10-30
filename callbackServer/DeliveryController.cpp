@@ -39,8 +39,8 @@ void DeliveryController::processMessage(Message* pMessage)
 
 			//Authenticate the message
 			User * pUser;
-			pUser=p_UserRegistry->GetUser(pMessage->GetClient());
-			if (pUser==NULL)
+			pUser = p_UserRegistry->GetUser(pMessage->GetClient());
+			if (pUser == NULL)
 			{
 				LogDebug("DeliveryController.cpp :Authentication failure for socket %d.",pMessage->GetClient()->GetSocket());
 				Message* pReplyMsg;
@@ -49,6 +49,8 @@ void DeliveryController::processMessage(Message* pMessage)
 				delete pReplyMsg;
 				return;
 			}
+
+			
 
 			//create the message using message factory
 			Message* pReplyMsg;
@@ -66,7 +68,7 @@ void DeliveryController::processMessage(Message* pMessage)
 DeliveryController::DeliveryController(UserRegistry* pUserRegistry,
 		MessageFactory* pMessageFactory)
 {
-	this->p_UserRegistry = pUserRegistry;
+	this->p_UserRegistry = pUserRegistry;//TODO: remove this
 	this-> p_MessageFactory = pMessageFactory;
 	this->p_Logger = new Logger();
 

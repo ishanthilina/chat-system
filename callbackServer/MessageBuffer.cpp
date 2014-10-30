@@ -50,7 +50,7 @@ void MessageBuffer::CreateMessage(Server* pServer, Client* pClient,
 			p_BufferredMessages->erase(it);
 
 			//delete pMessage;
-			delete oBufferedMsg;
+			delete oBufferedMsg;//TODO: better be handled at the processing party - remove from this layer
 			return;
 
 		}

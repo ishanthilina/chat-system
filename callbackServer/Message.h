@@ -60,6 +60,7 @@ private:
 	MessageType e_MessageType;
 	vector<string> * p_Receivers;
 
+	//TODO - ideally these should be in an extended message called chat msg.
 	Server* p_Server;
 	Client* p_Client;
 	vector<User*> *p_TargetUsers;

@@ -56,7 +56,7 @@ Server* EventManager::CreateServer(int iPort, SCallBack* pCallBack)
 	}
 
 	Server* pServer=new Server(iMasterSocket);
-	this->p_CallBackHandler=pCallBack;
+	this->p_CallBackHandler=pCallBack; //TODO remove this
 	this->mServers.insert ( std::pair<int,Server*>(iMasterSocket,pServer) );
 
 	return pServer;
@@ -203,7 +203,7 @@ int EventManager::Run()
 					 if ((iNewSocket = accept(iSocketDescriptor, (struct sockaddr *)&oAddress, (socklen_t*)&iAddrlen))<0)
 					 {
 						 perror("accept");
-						 exit(EXIT_FAILURE);
+						 exit(EXIT_FAILURE); //TODO: print serious error by getting the error id, string and continue
 					 }
 
 					 //Create client and notify
@@ -248,7 +248,7 @@ int EventManager::Run()
 
 							 LogDebug("%s","---------------------------------------------------------------------");
 							 LogDebug("EventManager: Incoming message from ip %s , port %d. Message : %s",inet_ntoa(oAddress.sin_addr) , ntohs(oAddress.sin_port),zInputBuffer);
-							 this->p_CallBackHandler->OnData(&(*oServerIter->second),(*oServerClientIter),string(zInputBuffer));
+							 this->p_CallBackHandler->OnData(&(*oServerIter->second),(*oServerClientIter),string(zInputBuffer));//TODO: use char*
 						 }
 
 					 }

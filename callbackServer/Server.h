@@ -23,11 +23,11 @@ public:
 
 	int GetSocket();
 	void AddClient(Client* pClient);
-	vector<Client*>* GetClients();
+	vector<Client*>* GetClients();//TODO: provide an iterator pattern
 
 private:
 	int i_SocketFd;
-	vector<Client*>* p_Clients;
+	vector<Client*>* p_Clients; //TODO should  ideally be a list
 
 
 };

@@ -46,7 +46,7 @@ private:
 	fd_set oReadFds;
 	SCallBack * p_CallBackHandler;
 
-	map<int, Client* > mClients;
+	map<int, Client* > mClients;//TODO: use correct prefix
 	map<int, Server* > mServers;
 
 };
