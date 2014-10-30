@@ -21,6 +21,7 @@
 
 #include <arpa/inet.h>    //close, AF_INET
 #include <unistd.h>   //defines read
+#include <errno.h>
 
 #include <map>
 

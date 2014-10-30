@@ -68,8 +68,8 @@ void DeliveryController::processMessage(Message* pMessage)
 DeliveryController::DeliveryController(UserRegistry* pUserRegistry,
 		MessageFactory* pMessageFactory)
 {
-	p_UserRegistry = pUserRegistry;//TODO: remove this
-	 p_MessageFactory = pMessageFactory;
+	p_UserRegistry = pUserRegistry;
+	p_MessageFactory = pMessageFactory;
 	p_Logger = new Logger();
 
 }

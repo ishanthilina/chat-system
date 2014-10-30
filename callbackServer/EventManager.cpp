@@ -24,14 +24,14 @@ Server* EventManager::CreateServer(int iPort, SCallBack* pCallBack)
 	//create a master socket
 	if( (iMasterSocket = socket(AF_INET , SOCK_STREAM , 0)) == 0)
 	{
-		perror("socket failed");
+		printf("EventManager.cpp: Error in creating socket. ErrorNo: %d , ErrorMsg: %s\n", errno,strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
 	//set master socket to allow multiple connections , this is just a good habit, it will work without this
 	if( setsockopt(iMasterSocket, SOL_SOCKET, SO_REUSEADDR, (char *)&iOption, sizeof(iOption)) < 0 )
 	{
-		perror("setsockopt");
+		printf("EventManager.cpp: Error in setting socket options. ErrorNo: %d , ErrorMsg: %s\n", errno,strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
@@ -43,7 +43,7 @@ Server* EventManager::CreateServer(int iPort, SCallBack* pCallBack)
 	//bind the socket to localhost port 8888
 	if (bind(iMasterSocket, (struct sockaddr *)&oAddress, sizeof(oAddress))<0)
 	{
-		perror("bind failed");
+		printf("EventManager.cpp: Error in binding socket. ErrorNo: %d , ErrorMsg: %s\n", errno,strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
@@ -51,12 +51,12 @@ Server* EventManager::CreateServer(int iPort, SCallBack* pCallBack)
 	//try to specify maximum of 3 pending connections for the master socket
 	if (listen(iMasterSocket, 3) < 0)
 	{
-		perror("listen");
+		printf("EventManager.cpp: Error in listening to socket. ErrorNo: %d , ErrorMsg: %s\n", errno,strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
 	Server* pServer=new Server(iMasterSocket);
-	p_CallBackHandler=pCallBack; //TODO remove this
+	p_CallBackHandler=pCallBack;
 	mServers.insert ( std::pair<int,Server*>(iMasterSocket,pServer) );
 
 	return pServer;
@@ -75,12 +75,12 @@ Client* EventManager::CreateClient(char* zHost, int iPort,
 	iSockFD = socket(AF_INET, SOCK_STREAM, 0);
 	if (iSockFD < 0)
 	{
-		perror("ERROR opening socket");
+		printf("EventManager.cpp: Error in opening socket. ErrorNo: %d , ErrorMsg: %s\n", errno,strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 	poServer = gethostbyname(zHost);
 	if (poServer == NULL) {
-		fprintf(stderr,"ERROR, no such host\n");
+		printf("EventManager.cpp: Error - No such host. ErrorNo: %d , ErrorMsg: %s\n", errno,strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
@@ -94,7 +94,7 @@ Client* EventManager::CreateClient(char* zHost, int iPort,
 	/* Now connect to the server */
 	if (connect(iSockFD,(sockaddr*)&serv_addr,sizeof(serv_addr)) < 0)
 	{
-		perror("ERROR connecting");
+		printf("EventManager.cpp: Error in connecting. ErrorNo: %d , ErrorMsg: %s\n", errno,strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 
@@ -162,7 +162,7 @@ int EventManager::Run()
 
 			 if ((iSocketActivity < 0) && (errno!=EINTR))
 			 {
-				 printf("select error");
+				 printf("EventManager.cpp: Error in select(). ErrorNo: %d , ErrorMsg: %s\n", errno,strerror(errno));
 			 }
 
 			 LogDebug("EventManager.cpp: Receiving %s","Message");
@@ -172,8 +172,7 @@ int EventManager::Run()
 			 {
 				 if ((iReadValue = read( STDIN_FILENO , zInputBuffer, MAX_INPUT_BUFFER_SIZE-1)) == 0)
 				 {
-					 perror("accept");
-					 exit(EXIT_FAILURE);
+					 printf("EventManager.cpp: Error in reading from command line. ErrorNo: %d , ErrorMsg: %s\n", errno,strerror(errno));
 				 }
 				 else{
 					 zInputBuffer[iReadValue] = '\0';
@@ -202,8 +201,7 @@ int EventManager::Run()
 					 LogDebug("EventManager.cpp: Receiving Message from %s","Server");
 					 if ((iNewSocket = accept(iSocketDescriptor, (struct sockaddr *)&oAddress, (socklen_t*)&iAddrlen))<0)
 					 {
-						 perror("accept");
-						 exit(EXIT_FAILURE); //TODO: print serious error by getting the error id, string and continue
+						 printf("EventManager.cpp: Error in accepting connection. ErrorNo: %d , ErrorMsg: %s", errno,strerror(errno));
 					 }
 
 					 //Create client and notify
