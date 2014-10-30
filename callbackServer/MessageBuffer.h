@@ -29,7 +29,6 @@ public:
 	void CreateMessage(Server* pServer, Client* pClient,string sNewMessage);
 private:
 	TPClientMsgMap* p_BufferredMessages;
-	MessageFactory * p_MsgFactory;
 	DeliveryController * p_DeliveryController;
 
 };
