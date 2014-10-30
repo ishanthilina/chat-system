@@ -8,8 +8,8 @@
 #include "Server.h"
 
 Server::Server(int iSocketFd) {
-	this->i_SocketFd=iSocketFd;
-	this->p_Clients=new vector<Client*>();
+	i_SocketFd=iSocketFd;
+	p_Clients=new vector<Client*>();
 
 }
 
@@ -21,12 +21,12 @@ Server::~Server() {
 
 int Server::GetSocket()
 {
-	return this->i_SocketFd;
+	return i_SocketFd;
 }
 
 void Server::AddClient( Client* pClient )
 {
-		(*this->p_Clients).push_back(pClient);
+		(*p_Clients).push_back(pClient);
 }
 
 vector<Client*>* Server::GetClients()

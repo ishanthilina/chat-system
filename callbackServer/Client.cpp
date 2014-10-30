@@ -8,7 +8,7 @@
 #include "Client.h"
 
 Client::Client(int iSocketFd) {
-	this->i_SocketFd=iSocketFd;
+	i_SocketFd=iSocketFd;
 
 }
 
@@ -18,7 +18,7 @@ Client::~Client() {
 
 int Client::GetSocket()
 {
-	return this->i_SocketFd;
+	return i_SocketFd;
 }
 
 int Client::SendMessage(string sMessage)

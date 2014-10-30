@@ -120,5 +120,5 @@ std::string MessageFactory::CreateEncodedMessageString( MessageType eMessageType
 
 MessageFactory::MessageFactory(UserRegistry* pUserRegistry)
 {
-	this->p_UserRegistry = pUserRegistry;
+	p_UserRegistry = pUserRegistry;
 }

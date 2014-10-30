@@ -55,7 +55,7 @@ void DeliveryController::processMessage(Message* pMessage)
 			//create the message using message factory
 			Message* pReplyMsg;
 
-			pReplyMsg = this->p_MessageFactory->createChatMessage(pMessage->GetMessage(),pMessage->GetServer(), pMessage->GetClient(), pMessage->GetReceivers());
+			pReplyMsg = p_MessageFactory->createChatMessage(pMessage->GetMessage(),pMessage->GetServer(), pMessage->GetClient(), pMessage->GetReceivers());
 			pReplyMsg->SendMessageToReceivers();
 
 
@@ -68,9 +68,9 @@ void DeliveryController::processMessage(Message* pMessage)
 DeliveryController::DeliveryController(UserRegistry* pUserRegistry,
 		MessageFactory* pMessageFactory)
 {
-	this->p_UserRegistry = pUserRegistry;//TODO: remove this
-	this-> p_MessageFactory = pMessageFactory;
-	this->p_Logger = new Logger();
+	p_UserRegistry = pUserRegistry;//TODO: remove this
+	 p_MessageFactory = pMessageFactory;
+	p_Logger = new Logger();
 
 }
 

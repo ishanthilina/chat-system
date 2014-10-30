@@ -2,7 +2,7 @@
 
 ServerSideCallBack::ServerSideCallBack(MessageBuffer* pMessageBuffer)
 {
-	this->p_MessageBuffer = pMessageBuffer;
+	p_MessageBuffer = pMessageBuffer;
 }
 
 ServerSideCallBack::~ServerSideCallBack()
@@ -23,7 +23,7 @@ void ServerSideCallBack::OnData(Server* pServer, Client* pClient,
 		string sData)
 {
 	LogDebug("ServerSideCallBack.cpp : Client on socket %d sent : %s", pClient->GetSocket(), sData.c_str());
-	this->p_MessageBuffer->CreateMessage(pServer, pClient, sData);
+	p_MessageBuffer->CreateMessage(pServer, pClient, sData);
 }
 
 void ServerSideCallBack::OnConnect(Client* pClient)

@@ -56,8 +56,8 @@ Server* EventManager::CreateServer(int iPort, SCallBack* pCallBack)
 	}
 
 	Server* pServer=new Server(iMasterSocket);
-	this->p_CallBackHandler=pCallBack; //TODO remove this
-	this->mServers.insert ( std::pair<int,Server*>(iMasterSocket,pServer) );
+	p_CallBackHandler=pCallBack; //TODO remove this
+	mServers.insert ( std::pair<int,Server*>(iMasterSocket,pServer) );
 
 	return pServer;
 
@@ -99,7 +99,7 @@ Client* EventManager::CreateClient(char* zHost, int iPort,
 	}
 
 	Client * pClient=new Client(iSockFD);
-	this->mClients.insert ( std::pair<int,Client*>(iSockFD,pClient) );
+	mClients.insert ( std::pair<int,Client*>(iSockFD,pClient) );
 	return pClient;
 }
 
@@ -209,7 +209,7 @@ int EventManager::Run()
 					 //Create client and notify
 					 Client* pClient=new Client(iNewSocket);
 					oServerIter->second->AddClient(pClient);
-					 this->p_CallBackHandler->OnConnect(&(*oServerIter->second),pClient);
+					 p_CallBackHandler->OnConnect(&(*oServerIter->second),pClient);
 					
 
 				 }
@@ -233,7 +233,7 @@ int EventManager::Run()
 							 LogDebug("%s","---------------------------------------------------------------------");
 							 LogDebug("EventManager: Client disconnected, ip %s , port %d",inet_ntoa(oAddress.sin_addr) , ntohs(oAddress.sin_port));
 
-							 this->p_CallBackHandler->OnDisconnect(&(*oServerIter->second),(*oServerClientIter));
+							 p_CallBackHandler->OnDisconnect(&(*oServerIter->second),(*oServerClientIter));
 							 
 
 							 //remove from the servers clients as well
@@ -248,7 +248,7 @@ int EventManager::Run()
 
 							 LogDebug("%s","---------------------------------------------------------------------");
 							 LogDebug("EventManager: Incoming message from ip %s , port %d. Message : %s",inet_ntoa(oAddress.sin_addr) , ntohs(oAddress.sin_port),zInputBuffer);
-							 this->p_CallBackHandler->OnData(&(*oServerIter->second),(*oServerClientIter),string(zInputBuffer));//TODO: use char*
+							 p_CallBackHandler->OnData(&(*oServerIter->second),(*oServerClientIter),string(zInputBuffer));//TODO: use char*
 						 }
 
 					 }
@@ -275,7 +275,7 @@ int EventManager::Run()
 						LogDebug("%s","---------------------------------------------------------------------");
 						LogDebug("EventManager: Server disconnected, ip %s , port %d",inet_ntoa(oAddress.sin_addr) , ntohs(oAddress.sin_port));
 
-						this->p_CallBackHandler->OnDisconnect((*oClientIter).second);
+						p_CallBackHandler->OnDisconnect((*oClientIter).second);
 
 						//remove from the servers clients as well
 						mClients.erase(oClientIter);
@@ -287,7 +287,7 @@ int EventManager::Run()
 
 						LogDebug("%s","---------------------------------------------------------------------");
 						LogDebug("EventManager: Incoming message from Server ip %s , port %d. Message : %s",inet_ntoa(oAddress.sin_addr) , ntohs(oAddress.sin_port),zInputBuffer);
-						this->p_CallBackHandler->OnData((*oClientIter).second,"Server Data");
+						p_CallBackHandler->OnData((*oClientIter).second,"Server Data");
 					}
 
 				 }

@@ -7,11 +7,11 @@ User::User(string sUserName, Client* pClient)
 	//remove the new line character from the string
 	sUserName.erase(sUserName.find_last_not_of(" \n\r\t")+1);
 
-	this->s_UserName = sUserName;
-	this->p_Client = pClient;
+	s_UserName = sUserName;
+	p_Client = pClient;
 
 
-	this->s_LogName = sUserName;
+	s_LogName = sUserName;
 
 }
 
@@ -27,11 +27,11 @@ std::string User::GetLogName()
 
 Client* User::GetClient()
 {
-	return this->p_Client;
+	return p_Client;
 }
 
 int User::SendMessage(string sMsg)
 {
-	return this->p_Client->SendMessage(sMsg);
+	return p_Client->SendMessage(sMsg);
 }
 
