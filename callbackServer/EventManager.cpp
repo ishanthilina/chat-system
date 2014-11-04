@@ -328,7 +328,7 @@ int EventManager::Run()
 					int iStatus= (*oClientIter).second->ProcessClientEvent();
 					if(iStatus == 1){
 						LogDebug("EventManager.cpp: Client socket %d disconnected.", iSocketDescriptor);
-						(mClients).erase(oClientIter);			//TODO get the proper iterator for deleting
+						(mClients).erase(oClientIter);			
 						break;
 					}
 

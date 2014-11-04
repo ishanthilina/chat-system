@@ -43,7 +43,7 @@ public:
 	bool IsNetworkMessage();
 	
 	Message(string sEncodedMessage, Server* pServer, Client* pClient);
-	Message(string sMessage);	//TODO - implement
+	Message(string sMessage);	
 
 protected:
 	void ProcessMessage();
