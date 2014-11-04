@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 //#include "Utils.h"
 #include "Client.h"
+#include "Message.h"
 
 #include <iostream>
 

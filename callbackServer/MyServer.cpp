@@ -1,7 +1,7 @@
 #include "UserRegistry.h"
 #include "MessageFactory.h"
 #include "DeliveryController.h"
-#include "MessageBuffer.h"
+//#include "MessageBuffer.h"
 #include "SCallBack.h"
 #include "ServerSideCallBack.h"
 #include "EventManager.h"
@@ -14,9 +14,9 @@ int main()
 
 	DeliveryController* pDeliveryController = new DeliveryController(pUserRegistry,pMessageFactory);
 
-	MessageBuffer* pMessageBuffer = new MessageBuffer(pDeliveryController);
+	//MessageBuffer* pMessageBuffer = new MessageBuffer(pDeliveryController);
 
-	ServerSideCallBack* pServerSideCallBack = new ServerSideCallBack(pMessageBuffer);
+	ServerSideCallBack* pServerSideCallBack = new ServerSideCallBack(pDeliveryController);
 	EventManager* pEventManager = new EventManager();
 
 	Server* pServer = pEventManager->CreateServer(8888, pServerSideCallBack);
@@ -25,7 +25,7 @@ int main()
 	delete pUserRegistry;
 	delete pMessageFactory;
 	delete pDeliveryController;
-	delete pMessageBuffer;
+	//delete pMessageBuffer;
 	delete pServerSideCallBack;
 	delete pEventManager;
 	delete pServer;

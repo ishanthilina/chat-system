@@ -52,7 +52,7 @@ void Server::ProcessServerEvent()
 	}
 
 	//Create client and notify
-	Client* pClient=new Client(iNewSocket);
+	Client* pClient=new Client(iNewSocket, p_SCallBack);
 	p_Clients->push_back(pClient);
 	p_SCallBack->OnConnect(this,pClient);
 }
@@ -64,7 +64,7 @@ void Server::DeleteClient( Client* pClient )
 	{
 		if ( pClient == (*oServerClientIter) )
 		{
-			LogDebug("Server.cpp:Deleting client of socket: %d",oServerClientIter->GetSocket());
+			LogDebug("Server.cpp:Deleting client of socket: %d",(*oServerClientIter)->GetSocket());
 			p_Clients->erase(oServerClientIter);
 			break;
 		}

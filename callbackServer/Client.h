@@ -16,6 +16,7 @@ class Server;
 #include <netdb.h>
 #include <sys/types.h>
 #include <unistd.h>   //defines read
+#include <errno.h>
 
 #include "Utils.h"
 #include "Message.h"

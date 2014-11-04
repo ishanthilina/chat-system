@@ -10,9 +10,11 @@
 
 #include <string>
 #include <vector>
+#include <errno.h>
 
 class SCallBack;
 class Client;
+class ServersClientIterator;
 
 #include "Utils.h"
 #include "Client.h"

@@ -32,7 +32,7 @@ Client* ServersClientIterator::CurrentItem()
 void ServersClientIterator::EraseItem()
 {
 	delete (*oServerClientIter);
-	p_Clients->erase((*oServerClientIter));
+	p_Clients->erase(oServerClientIter);
 	//reset the iterator as well
 	oServerClientIter = p_Clients->begin();
 }

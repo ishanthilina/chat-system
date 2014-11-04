@@ -32,6 +32,8 @@ Client* User::GetClient()
 
 int User::SendMessage(string sMsg)
 {
-	return p_Client->SendMessage(sMsg);
+	Message* pChatMsg = new Message(sMsg);
+	return p_Client->SendMessage(pChatMsg);
+	delete pChatMsg;
 }
 

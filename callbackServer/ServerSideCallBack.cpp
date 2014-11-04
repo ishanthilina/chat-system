@@ -1,6 +1,6 @@
 #include "ServerSideCallBack.h"
 
-ServerSideCallBack::ServerSideCallBack(DeliveryController pDeliveryController)
+ServerSideCallBack::ServerSideCallBack(DeliveryController* pDeliveryController)
 {
 	p_DeliveryController = pDeliveryController;
 }
