@@ -9,7 +9,7 @@
 #define _SERVER_HEADER_
 
 #include <string>
-#include <vector>
+#include <list>
 #include <errno.h>
 
 class SCallBack;
@@ -42,7 +42,7 @@ public:
 
 private:
 	int i_SocketFd;
-	vector<Client*>* p_Clients; //TODO should  ideally be a list
+	list<Client*>* p_Clients;
 	SCallBack* p_SCallBack;
 
 

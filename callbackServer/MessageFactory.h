@@ -3,7 +3,7 @@
 
 #include <string>
 #include <iostream>
-#include <vector>
+#include <list>
 #include <netinet/in.h>	//for sockaddr_in
 
 #include "Message.h"
@@ -16,7 +16,7 @@ using namespace std;
 class MessageFactory
 {
 public:
-	ChatMessage * createChatMessage(string sMessage, Server* pReceivedServer, Client* pClient, vector<string>* pReceivers);
+	ChatMessage * createChatMessage(string sMessage, Server* pReceivedServer, Client* pClient, list<string>* pReceivers);
 	ChatMessage* CreateAuthStatusMessage(bool bAuthStatus,Server* pReceivedServer, Client* pClient);
 	MessageFactory(UserRegistry* pUserRegistry);
 protected:

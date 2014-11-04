@@ -23,7 +23,7 @@
 #include <unistd.h>   //defines read
 #include <errno.h>
 
-#include <map>
+#include <list>
 
 #include "Server.h"
 #include "Client.h"
@@ -47,8 +47,8 @@ private:
 	fd_set oReadFds;
 	SCallBack * p_CallBackHandler;
 
-	map<int, Client* > mClients;//TODO: use correct prefix
-	map<int, Server* > mServers;
+	list<Client* > lst_Clients;
+	list<Server* > lst_Servers;
 
 };
 

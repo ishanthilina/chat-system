@@ -57,7 +57,7 @@ Server* EventManager::CreateServer(int iPort, SCallBack* pCallBack)
 
 	Server* pServer=new Server(iMasterSocket, pCallBack);
 	p_CallBackHandler=pCallBack;
-	mServers.insert ( std::pair<int,Server*>(iMasterSocket,pServer) );
+	lst_Servers.push_back( pServer);
 
 	return pServer;
 
@@ -99,7 +99,7 @@ Client* EventManager::CreateClient(char* zHost, int iPort,
 	}
 
 	Client * pClient=new Client(iSockFD, pCallBack);
-	mClients.insert ( std::pair<int,Client*>(iSockFD,pClient) );
+	lst_Clients.push_back ( pClient );
 	return pClient;
 }
 
@@ -123,10 +123,10 @@ int EventManager::Run()
 
 			 iMaxSocketDescriptor= 0;
 			 //itetrate all the clients
-			 std::map<int, Client*>::iterator oClientIter;
-			 for (oClientIter = mClients.begin(); oClientIter != mClients.end(); ++oClientIter) 
+			 std::list<Client*>::iterator oClientIter;
+			 for (oClientIter = lst_Clients.begin(); oClientIter != lst_Clients.end(); ++oClientIter) 
 			 {
-				 iSocketDescriptor = oClientIter->second->GetSocket();
+				 iSocketDescriptor = (*oClientIter)->GetSocket();
 				 FD_SET( iSocketDescriptor , &oReadFds);
 				 //highest file descriptor number, need it for the select function
 				 if(iSocketDescriptor > iMaxSocketDescriptor)
@@ -135,10 +135,10 @@ int EventManager::Run()
 			 }
 
 				//iterate the servers 
-			 std::map<int, Server*>::iterator  oServerIter;
-			 for (oServerIter = mServers.begin(); oServerIter != mServers.end(); ++oServerIter) 
+			 std::list< Server*>::iterator  oServerIter;
+			 for (oServerIter = lst_Servers.begin(); oServerIter != lst_Servers.end(); ++oServerIter) 
 			 {
-				 iSocketDescriptor = oServerIter->second->GetSocket();
+				 iSocketDescriptor = (*oServerIter)->GetSocket();
 				 FD_SET( iSocketDescriptor , &oReadFds);
 				 //highest file descriptor number, need it for the select function
 				 if(iSocketDescriptor > iMaxSocketDescriptor)
@@ -156,7 +156,7 @@ int EventManager::Run()
 					//	 iMaxSocketDescriptor = iSocketDescriptor;
 				 //}
 					
-				 ServersClientIterator* pServerClientIter = oServerIter->second->GetClientIterator();
+				 ServersClientIterator* pServerClientIter = (*oServerIter)->GetClientIterator();
 				while (!pServerClientIter->IsDone())
 				{
 					iSocketDescriptor = pServerClientIter->CurrentItem()->GetSocket();
@@ -194,10 +194,10 @@ int EventManager::Run()
 					 zInputBuffer[iReadValue] = '\0';
 					LogDebug("EventManager.cpp: Terminal input: %s",zInputBuffer);
 					
-					for (oClientIter = mClients.begin(); oClientIter != mClients.end(); ++oClientIter) 
+					for (oClientIter = lst_Clients.begin(); oClientIter != lst_Clients.end(); ++oClientIter) 
 					{
 						Message* pMsg = new Message(string(zInputBuffer));
-						oClientIter->second->SendMessage(pMsg);
+						(*oClientIter)->SendMessage(pMsg);
 						delete pMsg;
 
 					}
@@ -208,10 +208,10 @@ int EventManager::Run()
 
 			 //check the servers
 			 
-			 for (oServerIter = mServers.begin(); oServerIter != mServers.end(); ++oServerIter) 
+			 for (oServerIter = lst_Servers.begin(); oServerIter != lst_Servers.end(); ++oServerIter) 
 			 {
 
-				 iSocketDescriptor = oServerIter->second->GetSocket();
+				 iSocketDescriptor = (*oServerIter)->GetSocket();
 				 //If something happened on a server socket , then its an incoming connection
 				 if (FD_ISSET(iSocketDescriptor, &oReadFds))
 				 {
@@ -226,7 +226,7 @@ int EventManager::Run()
 					//oServerIter->second->AddClient(pClient);
 					// p_CallBackHandler->OnConnect(&(*oServerIter->second),pClient);
 					 LogDebug("EventManager.cpp: Processing event from server socket %d", iSocketDescriptor);
-					oServerIter->second->ProcessServerEvent();
+					(*oServerIter)->ProcessServerEvent();
 					
 
 
@@ -234,7 +234,7 @@ int EventManager::Run()
 
 				 //check for IO operations from the clients of this server
 				// vector<Client*>* pClients=oServerIter->second->GetClients();
-				 ServersClientIterator* pServerClientIter = oServerIter->second->GetClientIterator();
+				 ServersClientIterator* pServerClientIter = (*oServerIter)->GetClientIterator();
 				 //std:: vector<Client*>::iterator oServerClientIter;	
 				 //for (oServerClientIter = (*pClients).begin(); oServerClientIter != (*pClients).end(); ++oServerClientIter) 
 				 while (!pServerClientIter->IsDone())
@@ -263,7 +263,7 @@ int EventManager::Run()
 						 int iStatus= pServerClientIter->CurrentItem()->ProcessClientEvent();
 						 if(iStatus == 1){
 							 LogDebug("EventManager.cpp: Server's client socket %d disconnected.", iSocketDescriptor);
-							oServerIter->second->DeleteClient(pServerClientIter->CurrentItem());
+							(*oServerIter)->DeleteClient(pServerClientIter->CurrentItem());
 							delete pServerClientIter->CurrentItem();
 							break;
 						 }
@@ -278,7 +278,7 @@ int EventManager::Run()
 
 						//	 LogDebug("%s","---------------------------------------------------------------------");
 						//	 LogDebug("EventManager: Incoming message from ip %s , port %d. Message : %s",inet_ntoa(oAddress.sin_addr) , ntohs(oAddress.sin_port),zInputBuffer);
-						//	 p_CallBackHandler->OnData(&(*oServerIter->second),(*oServerClientIter),string(zInputBuffer));//TODO: use char*
+						//	 p_CallBackHandler->OnData(&(*oServerIter->second),(*oServerClientIter),string(zInputBuffer));
 						// }
 						
 
@@ -295,9 +295,9 @@ int EventManager::Run()
 
 			 //check for activity in the clients as well
 			 
-			 for (oClientIter = mClients.begin(); oClientIter != mClients.end(); ++oClientIter) 
+			 for (oClientIter = lst_Clients.begin(); oClientIter != lst_Clients.end(); ++oClientIter) 
 			 {
-				 iSocketDescriptor = oClientIter->second->GetSocket();
+				 iSocketDescriptor = (*oClientIter)->GetSocket();
 				 if (FD_ISSET(iSocketDescriptor, &oReadFds))
 				 {
 					LogDebug("EventManager.cpp: Receiving Message from %s","Server");
@@ -325,10 +325,10 @@ int EventManager::Run()
 					//}
 
 					LogDebug("EventManager.cpp: Processing event from client socket %d", iSocketDescriptor);
-					int iStatus= (*oClientIter).second->ProcessClientEvent();
+					int iStatus= (*oClientIter)->ProcessClientEvent();
 					if(iStatus == 1){
 						LogDebug("EventManager.cpp: Client socket %d disconnected.", iSocketDescriptor);
-						(mClients).erase(oClientIter);			
+						(lst_Clients).erase(oClientIter);			
 						break;
 					}
 

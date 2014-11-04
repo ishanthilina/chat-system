@@ -44,6 +44,8 @@ int Client::SendMessage(Message* pMessage)
 		LogDebug("Client.cpp: %s","Error writing to socket");
 
 	}
+
+
 	return iValWritten;
 }
 

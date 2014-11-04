@@ -2,14 +2,14 @@
 
 UserRegistry::UserRegistry()
 {
-	p_Users = new vector<User*>;
+	lst_Users = new list<User*>;
 }
 
 
 int UserRegistry::AddUser( User * pUser )
 {
 	//check if the username is unique
-	for(vector<User*>::iterator it=p_Users->begin();it!=p_Users->end();++it)
+	for(list<User*>::iterator it=lst_Users->begin();it!=lst_Users->end();++it)
 	{
 
 		if (pUser->GetUserName().compare((*it)->GetUserName())==0)
@@ -19,7 +19,7 @@ int UserRegistry::AddUser( User * pUser )
 
 	}
 
-	p_Users->push_back(pUser);
+	lst_Users->push_back(pUser);
 
 	return 0;
 }
@@ -29,12 +29,12 @@ int UserRegistry::RemoveUser( User * pUser )
 {
 
 	//remove from the clients list also
-	for(vector<User*>::iterator it1=p_Users->begin();it1!=p_Users->end();++it1)
+	for(list<User*>::iterator it1=lst_Users->begin();it1!=lst_Users->end();++it1)
 	{
 		if ((*it1)==pUser)
 		{
 			delete *it1;
-			p_Users->erase(it1);
+			lst_Users->erase(it1);
 			break;
 		}
 	}
@@ -46,7 +46,7 @@ int UserRegistry::RemoveUser( User * pUser )
 bool UserRegistry::IsUserExists( string sUsername )
 {
 	//check if the username is unique
-	for(vector<User*>::iterator it=p_Users->begin();it!=p_Users->end();++it)
+	for(list<User*>::iterator it=lst_Users->begin();it!=lst_Users->end();++it)
 	{
 
 		if (sUsername.compare((*it)->GetUserName())==0)
@@ -64,7 +64,7 @@ bool UserRegistry::IsUserExists( string sUsername )
 
 User * UserRegistry::GetUser( string sUsername )
 {
-	for(vector<User*>::iterator it=p_Users->begin();it!=p_Users->end();++it)
+	for(list<User*>::iterator it=lst_Users->begin();it!=lst_Users->end();++it)
 	{
 
 
@@ -84,7 +84,7 @@ User * UserRegistry::GetUser( string sUsername )
 
 User* UserRegistry::GetUser(Client* pClient)
 {
-	for(vector<User*>::iterator it=p_Users->begin();it!=p_Users->end();++it)
+	for(list<User*>::iterator it=lst_Users->begin();it!=lst_Users->end();++it)
 		{
 
 			if (pClient == (*it)->GetClient())

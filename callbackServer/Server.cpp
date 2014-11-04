@@ -10,7 +10,7 @@
 Server::Server(int iSocketFd, SCallBack* pSCallBack) {
 	i_SocketFd=iSocketFd;
 	p_SCallBack = pSCallBack;
-	p_Clients=new vector<Client*>();
+	p_Clients=new list<Client*>();
 
 }
 
@@ -59,7 +59,7 @@ void Server::ProcessServerEvent()
 
 void Server::DeleteClient( Client* pClient )
 {
-	std:: vector<Client*>::iterator oServerClientIter;	
+	std:: list<Client*>::iterator oServerClientIter;
 	for (oServerClientIter = (*p_Clients).begin(); oServerClientIter != (*p_Clients).end(); ++oServerClientIter)
 	{
 		if ( pClient == (*oServerClientIter) )

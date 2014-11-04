@@ -3,7 +3,6 @@
 
 #include <string>
 #include <iostream>
-#include <vector>
 #include <netinet/in.h>	//for sockaddr_in
 
 #include "Client.h"

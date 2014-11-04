@@ -1,6 +1,8 @@
 #ifndef _CHAT_MESSAGE_HEADER_
 #define _CHAT_MESSAGE_HEADER_
 
+#include <list>
+
 #include "Message.h"
 
 enum MessageType
@@ -22,20 +24,20 @@ class ChatMessage : public Message
 {
 public:
 	MessageType GetMessageType();
-	vector<string> * GetReceivers();
+	list<string> * GetReceivers();
 	bool SendMessageToReceivers();
 	bool sendMessageToClient();
 	bool sendMessageToClient(string sMsg);
 	
-	ChatMessage(string sEncodedMessage, string sMessage, Server* pServer, Client* pClient, vector<User*> *pTargetUsers);
+	ChatMessage(string sEncodedMessage, string sMessage, Server* pServer, Client* pClient, list<User*> *pTargetUsers);
 	ChatMessage(Message* pMessage);
 protected:
 	void ProcessMessage();
 private:
 
 	MessageType e_MessageType;
-	vector<string> * p_Receivers;
-	vector<User*> *p_TargetUsers;
+	list<string> * p_Receivers;
+	list<User*> *p_TargetUsers;
 
 };
 

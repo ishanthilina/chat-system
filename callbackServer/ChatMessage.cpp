@@ -39,7 +39,7 @@ void ChatMessage::ProcessMessage()
 		//LogDebug("iReceiverListEndLoc %d",iReceiverListEndLoc);
 		string sReceivers = s_EncodedMessage.substr(iMsgStartLocation,iReceiverListEndLoc);
 		//get all the receiver names
-		p_Receivers = new vector<string>;
+		p_Receivers = new list<string>;
 		std::size_t iPrev = 0, iPos;
 		while ((iPos = sReceivers.find_first_of(",", iPrev)) != std::string::npos)
 		{
@@ -134,7 +134,7 @@ bool ChatMessage::SendMessageToReceivers()
 	//send the message to all the recipients
 	int iRetVal;
 	bool bSendSuccess=true;
-	for(vector<User*>::iterator it=p_TargetUsers->begin();it!=p_TargetUsers->end();++it)
+	for(list<User*>::iterator it=p_TargetUsers->begin();it!=p_TargetUsers->end();++it)
 	{
 		LogDebug("ChatMessage.cpp :sending message to %s.",(*it)->GetUserName().c_str());
 		iRetVal=(*it)->SendMessage(s_EncodedMessage);
@@ -156,7 +156,7 @@ bool ChatMessage::SendMessageToReceivers()
 
 }
 
-vector<string> * ChatMessage::GetReceivers()
+list<string> * ChatMessage::GetReceivers()
 {
 	return p_Receivers;
 }
@@ -168,7 +168,7 @@ MessageType ChatMessage::GetMessageType()
 }
 
 ChatMessage::ChatMessage(string sEncodedMessage, string sMessage, Server* pServer,
-				 Client* pClient, vector<User*>* pTargetUsers)
+				 Client* pClient, list<User*>* pTargetUsers)
 				 :Message(sEncodedMessage,pServer,pClient)
 {
 	LogDebug("ChatMessage.cpp : Creating message(with target users) using the string : %s", sEncodedMessage.c_str());

@@ -15,7 +15,7 @@ MessageType MessageFactory::getMessageType( string sMessage )
 }
 
 
-ChatMessage * MessageFactory::createChatMessage( string sMessage, Server* pReceivedServer, Client* pClient, vector<string>* pReceivers )
+ChatMessage * MessageFactory::createChatMessage( string sMessage, Server* pReceivedServer, Client* pClient, list<string>* pReceivers )
 {
 	LogDebug("MessageFactory.cpp : Creating chat message out of : %s", sMessage.c_str());
 
@@ -24,9 +24,9 @@ ChatMessage * MessageFactory::createChatMessage( string sMessage, Server* pRecei
 	sMsg=p_UserRegistry->GetUser(pClient)->GetUserName();
 	sMsg.append(" : ");
 
-	vector<User*> *pTargetUsers = new vector<User*>();
+	list<User*> *pTargetUsers = new list<User*>();
 
-	for(vector<string>::iterator it=pReceivers->begin();it!=pReceivers->end();++it)
+	for(list<string>::iterator it=pReceivers->begin();it!=pReceivers->end();++it)
 	{
 		//check whether the receiver exists
 		if(!p_UserRegistry->IsUserExists((*it))){
@@ -82,7 +82,7 @@ ChatMessage* MessageFactory::CreateAuthStatusMessage(bool bAuthStatus,
 
 	string sEncodedMsg = CreateEncodedMessageString(AUTHENTICATION, sMessageContent);
 
-	vector<User*> *pTargetUsers = new vector<User*>();
+	list<User*> *pTargetUsers = new list<User*>();
 	pTargetUsers->push_back(p_UserRegistry->GetUser(pClient));
 
 	ChatMessage* pMsg = new ChatMessage(sEncodedMsg, sMessageContent, pReceivedServer, pClient, pTargetUsers);

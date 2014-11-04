@@ -1,7 +1,7 @@
 #ifndef _CLIENT_REGISTRY_HEADER_
 #define _CLIENT_REGISTRY_HEADER_
 
-#include <vector>
+#include <list>
 
 #include "User.h"
 
@@ -19,7 +19,7 @@ public:
 	User * GetUser(string sUsername);
 protected:
 private:
-	vector<User*> * p_Users;
+	list<User*> * lst_Users;
 };
 
 #endif	//_CLIENT_REGISTRY_HEADER_

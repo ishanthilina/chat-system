@@ -7,7 +7,7 @@ class Client;
 #include "Server.h"
 #include "Client.h"
 
-#include <vector>
+#include <list>
 
 using namespace std;
 
@@ -24,8 +24,8 @@ public:
 	ServersClientIterator(const Server* pServer);
 protected:
 private:
-	vector<Client*>* p_Clients;
-	std:: vector<Client*>::iterator oServerClientIter;
+	list<Client*>* p_Clients;
+	std:: list<Client*>::iterator oServerClientIter;
 };
 
 
