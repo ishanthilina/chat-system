@@ -89,6 +89,7 @@ Message::Message( string sMessage )
 bool Message::IsValidMessage() {
 
 	if(s_EncodedMessage.length()>i_MsgLength){
+		LogDebug("Message.cpp: Message is invalid. s_EncodedMessage.length: %d, i_MsgLength: %d",s_EncodedMessage.length(),i_MsgLength);
 		b_ValidMessage=false;
 	}
 

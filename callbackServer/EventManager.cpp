@@ -114,6 +114,7 @@ int EventManager::Run()
 
 	 while(true)
 		 {
+			 LogDebug("EventManager.cpp: Setting the set of sockets to listen to.");
 			 //clear the socket set
 			 FD_ZERO(&oReadFds);
 
@@ -159,6 +160,7 @@ int EventManager::Run()
 				while (!pServerClientIter->IsDone())
 				{
 					iSocketDescriptor = pServerClientIter->CurrentItem()->GetSocket();
+					 pServerClientIter->Next();
 					FD_SET( iSocketDescriptor , &oReadFds);
 					//highest file descriptor number, need it for the select function
 					if(iSocketDescriptor > iMaxSocketDescriptor)
@@ -170,6 +172,7 @@ int EventManager::Run()
 			 }
 			
 
+			 LogDebug("EventManager.cpp: Waiting for events...");
 			 //wait for an activity on one of the sockets , timeout is NULL , so wait indefinitely
 			 iSocketActivity = select( iMaxSocketDescriptor + 1 , &oReadFds , NULL , NULL , NULL);
 
@@ -222,7 +225,9 @@ int EventManager::Run()
 					// Client* pClient=new Client(iNewSocket);
 					//oServerIter->second->AddClient(pClient);
 					// p_CallBackHandler->OnConnect(&(*oServerIter->second),pClient);
+					 LogDebug("EventManager.cpp: Processing event from server socket %d", iSocketDescriptor);
 					oServerIter->second->ProcessServerEvent();
+					
 
 
 				 }
@@ -236,6 +241,7 @@ int EventManager::Run()
 				 {
 					 
 					 iSocketDescriptor = pServerClientIter->CurrentItem()->GetSocket();
+					 
 					
 					 if (FD_ISSET(iSocketDescriptor, &oReadFds))
 					 {
@@ -252,8 +258,11 @@ int EventManager::Run()
 						//	 
 
 						//	 //remove from the servers clients as well
+
+						 LogDebug("EventManager.cpp: Processing event from server's client socket %d", iSocketDescriptor);
 						 int iStatus= pServerClientIter->CurrentItem()->ProcessClientEvent();
 						 if(iStatus == 1){
+							 LogDebug("EventManager.cpp: Server's client socket %d disconnected.", iSocketDescriptor);
 							oServerIter->second->DeleteClient(pServerClientIter->CurrentItem());
 							delete pServerClientIter->CurrentItem();
 							break;
@@ -275,11 +284,13 @@ int EventManager::Run()
 
 
 					 }
+					 pServerClientIter->Next();
 
 				}
 
 			}
 
+			 
 			
 
 			 //check for activity in the clients as well
@@ -313,8 +324,10 @@ int EventManager::Run()
 					//	p_CallBackHandler->OnData((*oClientIter).second,"Server Data");
 					//}
 
+					LogDebug("EventManager.cpp: Processing event from client socket %d", iSocketDescriptor);
 					int iStatus= (*oClientIter).second->ProcessClientEvent();
 					if(iStatus == 1){
+						LogDebug("EventManager.cpp: Client socket %d disconnected.", iSocketDescriptor);
 						(mClients).erase(oClientIter);			//TODO get the proper iterator for deleting
 						break;
 					}

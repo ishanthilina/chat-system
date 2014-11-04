@@ -11,6 +11,7 @@ Client::Client(int iSocketFd, SCallBack* pSCallBack) {
 	i_SocketFd=iSocketFd;
 	p_SCallBack=pSCallBack;
 	b_IsServerSideClient = false;
+	p_Buffer=NULL;
 
 }
 
@@ -20,6 +21,7 @@ Client::Client( int iSocketFd, SCallBack* pSCallBack, Server* pServer )
 	p_SCallBack=pSCallBack;
 	p_Server=pServer;
 	b_IsServerSideClient = true;
+	p_Buffer=NULL;
 }
 
 Client::~Client() {
@@ -89,6 +91,7 @@ int Client::ProcessClientEvent()
 		//check if a message is already being built for this client
 		if (p_Buffer !=NULL)
 		{
+			LogDebug("Client.cpp: Going to fill the existing buffer on client socket %d",i_SocketFd); 
 			p_Buffer->FillMessage(sNewMessage);
 			//if the message is complete now
 			if(p_Buffer->IsMessageComplete())
@@ -97,6 +100,7 @@ int Client::ProcessClientEvent()
 				p_SCallBack->OnData(p_Server,this,p_Buffer);
 				
 				//delete pMessage;
+				p_Buffer =NULL;
 				delete p_Buffer;//TODO: better be handled at the processing party - remove from this layer
 				return 0;
 
@@ -106,6 +110,7 @@ int Client::ProcessClientEvent()
 			{
 				LogDebug("Client.cpp: Message from client socket %d is invalid, deleting.",i_SocketFd); 
 				//remove the message 
+				p_Buffer =NULL;
 				delete p_Buffer;
 				return 0;
 
@@ -127,6 +132,7 @@ int Client::ProcessClientEvent()
 
 					//p_DeliveryController->processMessage(oBufferedMsg);
 					p_SCallBack->OnData(p_Server,this,p_Buffer);
+					p_Buffer =NULL;
 					delete p_Buffer;
 					return 0;
 				}
@@ -136,6 +142,7 @@ int Client::ProcessClientEvent()
 			else	//if invalid message
 			{
 				LogDebug("Client.cpp: New message from client socket %d is invalid.",i_SocketFd);
+				p_Buffer =NULL;
 				delete p_Buffer;
 			}
 		}
