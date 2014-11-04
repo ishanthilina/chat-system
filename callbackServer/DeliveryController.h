@@ -13,18 +13,19 @@
 #include "Client.h"
 #include "Server.h"
 #include "UserRegistry.h"
-#include "Message.h"
+//#include "Message.h"
 #include "Logger.h"
 #include "User.h"
 #include "MessageFactory.h"
 #include "Utils.h"
+#include "ChatMessage.h"
 
 using namespace std;
 
 class DeliveryController {
 public:
 	DeliveryController(UserRegistry * pUserRegistry, MessageFactory* pMessageFactory);
-	void processMessage( Message * pMessage );
+	void processMessage( ChatMessage * pMessage );
 	virtual ~DeliveryController();
 private:
 	UserRegistry * p_UserRegistry;

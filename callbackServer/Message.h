@@ -14,25 +14,18 @@
 
 using namespace std;
 
-enum MessageType
-{
-	LOGIN = 0,
-	DIRECT=1,
-	LOGOUT=2,
-	NOTIFICATION=3,
-	AUTHENTICATION=4,
-	ERROR=5 //denotes a message type with an error
-};
+// Message format:
+// |;|Length of the message in 7 digits|Message content|;|
+// ex -
+// |;|0000019|LIN;1|;|
 
-const char * GetTextForEnum( int );
-const MessageType GetEnumFromString(string);
 
 string GetMessageHeader();
 string GetMessageFooter();
 int GetTotalHeaderLength();
 int GetTotalFooterLength();
 int GetMessageLengthSectionLength();
-int GetProtocolLength();
+
 
 
 
@@ -40,37 +33,35 @@ class Message
 {
 public:
 	string GetMessage();
-	MessageType GetMessageType();
-	vector<string> * GetReceivers();
+	string GetEncodedMessage();
+
 	Client * GetClient();
 	Server* GetServer();
-	bool SendMessageToReceivers();
-	bool sendMessageToClient();
-	bool sendMessageToClient(string sMsg);
-
-	Message(string sEncodedMessage, string sMessage, Server* pServer, Client* pClient, vector<User*> *pTargetUsers);
-	Message(string sEncodedMessage, Server* pServer, Client* pClient);
 	bool IsMessageComplete();
 	void FillMessage(string sMessage);
 	bool IsValidMessage();
-	string GetEncodedMessage();
-protected:
-private:
-	string s_Message;
-	MessageType e_MessageType;
-	vector<string> * p_Receivers;
+	bool IsNetworkMessage();
+	
+	Message(string sEncodedMessage, Server* pServer, Client* pClient);
+	Message(string sMessage);	//TODO - implement
 
-	//TODO - ideally these should be in an extended message called chat msg.
+protected:
+	void ProcessMessage();
+
+	string s_EncodedMessage;
+	string s_Message;
+
 	Server* p_Server;
 	Client* p_Client;
-	vector<User*> *p_TargetUsers;
+private:
+	
+	void EncodeMessage();
+	
 
 	int i_MsgLength;
 	bool b_ValidMessage;
-	string s_EncodedMessage;
-
-	void ProcessMessage();
-
+	bool b_NetworkMessage;
+	
 };
 
 

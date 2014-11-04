@@ -1,8 +1,8 @@
 #include "ServerSideCallBack.h"
 
-ServerSideCallBack::ServerSideCallBack(MessageBuffer* pMessageBuffer)
+ServerSideCallBack::ServerSideCallBack(DeliveryController pDeliveryController)
 {
-	p_MessageBuffer = pMessageBuffer;
+	p_DeliveryController = pDeliveryController;
 }
 
 ServerSideCallBack::~ServerSideCallBack()
@@ -20,10 +20,13 @@ void ServerSideCallBack::OnDisconnect(Server* pServer, Client* pClient)
 }
 
 void ServerSideCallBack::OnData(Server* pServer, Client* pClient,
-		string sData)
+		Message* pMessage)
 {
-	LogDebug("ServerSideCallBack.cpp : Client on socket %d sent : %s", pClient->GetSocket(), sData.c_str());
-	p_MessageBuffer->CreateMessage(pServer, pClient, sData);
+	LogDebug("ServerSideCallBack.cpp : Client on socket %d sent : %s", pClient->GetSocket(), pMessage->GetMessage().c_str());
+	//p_MessageBuffer->CreateMessage(pServer, pClient, sData);
+	ChatMessage* pChatMessage = new ChatMessage(pMessage);
+	p_DeliveryController->processMessage(pChatMessage);
+	delete pChatMessage;
 }
 
 void ServerSideCallBack::OnConnect(Client* pClient)
@@ -36,7 +39,7 @@ void ServerSideCallBack::OnDisconnect(Client* pClient)
 	LogDebug("ServerSideCallBack.cpp : Invalid callback - %s","Disconnect");
 }
 
-void ServerSideCallBack::OnData(Client* pClient, string sData)
+void ServerSideCallBack::OnData(Client* pClient, Message* pMessage)
 {
-	LogDebug("ServerSideCallBack.cpp : Invalid callback - %s : %s","Data", sData.c_str());
+	LogDebug("ServerSideCallBack.cpp : Invalid callback - %s : %s","Data", pMessage->GetMessage().c_str());
 }

@@ -9,7 +9,7 @@
 
 
 
-void DeliveryController::processMessage(Message* pMessage)
+void DeliveryController::processMessage(ChatMessage* pMessage)
 {
 	//login message
 	if(pMessage->GetMessageType()==LOGIN)
@@ -19,7 +19,7 @@ void DeliveryController::processMessage(Message* pMessage)
 		User* pUser = new User(pMessage->GetMessage(),pMessage->GetClient());
 		int output=p_UserRegistry->AddUser(pUser);
 
-		Message* pReplyMsg;
+		ChatMessage* pReplyMsg;
 		if(!output){	//if adding new client was successful
 			LogDebug("DeliveryController.cpp : Authentication success for %s",pUser->GetUserName().c_str());
 			pReplyMsg = p_MessageFactory->CreateAuthStatusMessage(true,pMessage->GetServer(),pMessage->GetClient());
@@ -43,7 +43,7 @@ void DeliveryController::processMessage(Message* pMessage)
 			if (pUser == NULL)
 			{
 				LogDebug("DeliveryController.cpp :Authentication failure for socket %d.",pMessage->GetClient()->GetSocket());
-				Message* pReplyMsg;
+				ChatMessage* pReplyMsg;
 				pReplyMsg = p_MessageFactory->CreateAuthStatusMessage(false,pMessage->GetServer(),pMessage->GetClient());
 				pReplyMsg->sendMessageToClient();
 				delete pReplyMsg;
@@ -53,7 +53,7 @@ void DeliveryController::processMessage(Message* pMessage)
 			
 
 			//create the message using message factory
-			Message* pReplyMsg;
+			ChatMessage* pReplyMsg;
 
 			pReplyMsg = p_MessageFactory->createChatMessage(pMessage->GetMessage(),pMessage->GetServer(), pMessage->GetClient(), pMessage->GetReceivers());
 			pReplyMsg->SendMessageToReceivers();

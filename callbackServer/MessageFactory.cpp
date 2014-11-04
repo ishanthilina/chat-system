@@ -15,7 +15,7 @@ MessageType MessageFactory::getMessageType( string sMessage )
 }
 
 
-Message * MessageFactory::createChatMessage( string sMessage, Server* pReceivedServer, Client* pClient, vector<string>* pReceivers )
+ChatMessage * MessageFactory::createChatMessage( string sMessage, Server* pReceivedServer, Client* pClient, vector<string>* pReceivers )
 {
 	LogDebug("MessageFactory.cpp : Creating chat message out of : %s", sMessage.c_str());
 
@@ -35,7 +35,8 @@ Message * MessageFactory::createChatMessage( string sMessage, Server* pReceivedS
 			string sReplyMsg("Invalid recipient "+(*it));
 			//send an error message
 
-			pClient->SendMessage(CreateEncodedMessageString(NOTIFICATION,sReplyMsg));
+			Message* pMsg = new Message(CreateEncodedMessageString(NOTIFICATION,sReplyMsg));
+			pClient->SendMessage(pMsg);
 
 		}
 		sMsg+=(*it);
@@ -58,7 +59,7 @@ Message * MessageFactory::createChatMessage( string sMessage, Server* pReceivedS
 	//call an internal function and build the encoded message
 	string sEncodedMsg = CreateEncodedMessageString(DIRECT, sMsg);
 
-	Message* pMsg = new Message(sEncodedMsg, sMsg, pReceivedServer, pClient, pTargetUsers);
+	ChatMessage* pMsg = new ChatMessage(sEncodedMsg, sMsg, pReceivedServer, pClient, pTargetUsers);
 
 
 	return pMsg;
@@ -68,7 +69,7 @@ Message * MessageFactory::createChatMessage( string sMessage, Server* pReceivedS
 }
 
 
-Message* MessageFactory::CreateAuthStatusMessage(bool bAuthStatus,
+ChatMessage* MessageFactory::CreateAuthStatusMessage(bool bAuthStatus,
 		Server* pReceivedServer, Client* pClient)
 {
 	string sMessageContent;
@@ -84,7 +85,7 @@ Message* MessageFactory::CreateAuthStatusMessage(bool bAuthStatus,
 	vector<User*> *pTargetUsers = new vector<User*>();
 	pTargetUsers->push_back(p_UserRegistry->GetUser(pClient));
 
-	Message* pMsg = new Message(sEncodedMsg, sMessageContent, pReceivedServer, pClient, pTargetUsers);
+	ChatMessage* pMsg = new ChatMessage(sEncodedMsg, sMessageContent, pReceivedServer, pClient, pTargetUsers);
 
 	return pMsg;
 
@@ -94,6 +95,8 @@ Message* MessageFactory::CreateAuthStatusMessage(bool bAuthStatus,
 
 std::string MessageFactory::CreateEncodedMessageString( MessageType eMessageType,string s_Message )
 {
+	//TODO - should not add headers and footers, they should be managed by the message class
+
 	//get the protocol string
 	string sProtocol(GetTextForEnum(eMessageType));
 

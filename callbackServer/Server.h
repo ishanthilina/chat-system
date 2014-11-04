@@ -11,23 +11,38 @@
 #include <string>
 #include <vector>
 
+class SCallBack;
+class Client;
+
 #include "Utils.h"
 #include "Client.h"
+#include "ServersClientIterator.h"
+#include "SCallBack.h"
 
 using namespace std;
 
+
+
 class Server {
 public:
-	Server(int iSocketFd);
+	Server(int iSocketFd, SCallBack* pSCallBack);
 	virtual ~Server();
 
 	int GetSocket();
 	void AddClient(Client* pClient);
-	vector<Client*>* GetClients();//TODO: provide an iterator pattern
+	void ProcessServerEvent();
+	ServersClientIterator* GetClientIterator();
+	//void ProcessServerEvent();
+	void DeleteClient(Client* pClient);
+
+	friend class ServersClientIterator;
+	
 
 private:
 	int i_SocketFd;
 	vector<Client*>* p_Clients; //TODO should  ideally be a list
+	SCallBack* p_SCallBack;
+
 
 
 };

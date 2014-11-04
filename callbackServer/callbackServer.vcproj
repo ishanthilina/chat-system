@@ -171,6 +171,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\ChatMessage.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Client.cpp"
 				>
 			</File>
@@ -207,6 +211,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ServersClientIterator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ServerSideCallBack.cpp"
 				>
 			</File>
@@ -228,6 +236,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\ChatMessage.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Client.h"
 				>
@@ -265,6 +277,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ServersClientIterator.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ServerSideCallBack.h"
 				>
 			</File>
@@ -286,6 +302,10 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\Makefile"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

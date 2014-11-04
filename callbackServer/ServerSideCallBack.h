@@ -2,24 +2,26 @@
 #define _SERVER_SIDE_CALL_BACK_HEADER
 
 #include "SCallBack.h"
-#include "MessageBuffer.h"
+//#include "MessageBuffer.h"
 #include "Utils.h"
+#include "DeliveryController.h"
 
 class ServerSideCallBack : public SCallBack {
 public:
-	ServerSideCallBack(MessageBuffer* pMessageBuffer);
+	ServerSideCallBack(DeliveryController* pDeliveryController);
 	virtual ~ServerSideCallBack();
 
 	void OnConnect(Server* pServer, Client* pClient);
 	void OnDisconnect(Server* pServer, Client* pClient);
-	void OnData(Server* pServer, Client* pClient, string sData);
+	void OnData(Server* pServer, Client* pClient, Message* pMessage);
 
 	void OnConnect(Client* pClient);
 	void OnDisconnect(Client* pClient);
-	void OnData(Client* pClient, string sData);
+	void OnData(Client* pClient, Message* pMessage);
 
 private:
-	MessageBuffer* p_MessageBuffer;
+	//MessageBuffer* p_MessageBuffer;
+	DeliveryController* p_DeliveryController;
 
 
 };

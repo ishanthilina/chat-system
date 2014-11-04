@@ -11,6 +11,7 @@
 #include "Utils.h"
 #include "Server.h"
 #include "Client.h"
+#include "Message.h"
 
 
 class SCallBack {
@@ -18,11 +19,11 @@ public:
 
 	virtual void OnConnect(Server* pServer, Client* pClient)=0;
 	virtual void OnDisconnect(Server* pServer, Client* pClient)=0;
-	virtual void OnData(Server* pServer, Client* pClient, string sData)=0;
+	virtual void OnData(Server* pServer, Client* pClient, Message* pMessage)=0;
 
 	virtual void OnConnect(Client* pClient)=0;
 	virtual void OnDisconnect(Client* pClient)=0;
-	virtual void OnData(Client* pClient, string sData)=0;
+	virtual void OnData(Client* pClient, Message* pMessage)=0;
 
 private:
 	
