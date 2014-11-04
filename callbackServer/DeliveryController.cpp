@@ -60,7 +60,7 @@ void DeliveryController::processMessage(ChatMessage* pMessage)
 
 
 		//log event
-		p_Logger->LogEvent(pUser,pReplyMsg->GetEncodedMessage());
+		p_Logger->LogEvent(pUser,pReplyMsg->GetEncodedMessage().c_str());
 
 		}
 }

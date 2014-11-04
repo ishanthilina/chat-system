@@ -2,10 +2,11 @@
 #define _LOGGER_HEADER_
 
 #include <string>
-#include <iostream>
+#include <stdio.h>
 #include <fstream>
 #include "User.h"
 #include "Utils.h"
+#include <stdarg.h>
 
 
 
@@ -14,7 +15,8 @@ using namespace std;
 class Logger
 {
 public:
-	void LogEvent(User * pUser, string sMessage);
+	Logger();
+	void LogEvent(User * pUser, const char* zFormat, ...);
 protected:
 private:
 };

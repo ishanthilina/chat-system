@@ -103,7 +103,6 @@ int Client::ProcessClientEvent()
 				
 				//delete pMessage;
 				p_Buffer =NULL;
-				delete p_Buffer;//TODO: better be handled at the processing party - remove from this layer
 				return 0;
 
 			}

@@ -27,6 +27,7 @@ void ServerSideCallBack::OnData(Server* pServer, Client* pClient,
 	ChatMessage* pChatMessage = new ChatMessage(pMessage);
 	p_DeliveryController->processMessage(pChatMessage);
 	delete pChatMessage;
+	delete pMessage;
 }
 
 void ServerSideCallBack::OnConnect(Client* pClient)
@@ -42,4 +43,5 @@ void ServerSideCallBack::OnDisconnect(Client* pClient)
 void ServerSideCallBack::OnData(Client* pClient, Message* pMessage)
 {
 	LogDebug("ServerSideCallBack.cpp : Invalid callback - %s : %s","Data", pMessage->GetMessage().c_str());
+	delete pMessage;
 }

@@ -1,11 +1,28 @@
 #include "Logger.h"
 
-void Logger::LogEvent( User * pUser, string sMessage )//TODO: use C style with variable arg handling support.
+bool gb_IsLoggingOn = true;
+
+void Logger::LogEvent( User * pUser, const char* zFormat, ... )
 {
-	LogDebug("Logger.cpp - Logging message %s", sMessage.c_str());
-	ofstream oMyFile;
-	oMyFile.open (pUser->GetLogName().c_str(), ios::out | ios::app);
-	oMyFile << sMessage.c_str()<<endl;
-	oMyFile.close();
+
+	if (gb_IsLoggingOn)
+		{
+			va_list oArglist;
+
+			va_start( oArglist, zFormat );
+
+			FILE * pFile;
+			pFile = fopen (pUser->GetLogName().c_str(),"w");
+
+			vfprintf (pFile, zFormat, oArglist);
+			va_end( oArglist );
+
+		}
+
+
+}
+
+Logger::Logger()
+{
 
 }
