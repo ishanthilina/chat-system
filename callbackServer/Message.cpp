@@ -33,7 +33,7 @@ int GetProtocolLength()
 }
 
 
-string Message::GetMessage()
+char* Message::GetMessage()
 {
 	return s_Message;
 
@@ -45,7 +45,7 @@ string Message::GetMessage()
 
 bool Message::IsMessageComplete()
 {
-	if(s_EncodedMessage.length()==i_MsgLength)
+	if(i_CurrentMsgLength == i_ExpectedMsgLength)
 	{
 		return true;
 	}
@@ -57,17 +57,18 @@ bool Message::IsMessageComplete()
 
 
 
-Message::Message(string sEncodedMessage, Server* pServer, Client* pClient)
+Message::Message(char* sEncodedMessage, int iMsgLength, Server* pServer, Client* pClient)
 {
 	LogDebug("Message.cpp : Creating message using the string : %s", sEncodedMessage.c_str());
 	s_EncodedMessage = sEncodedMessage;
+	i_CurrentMsgLength = iMsgLength;
 	p_Server = pServer;
 	p_Client = pClient;
 
 	//set the expected message length
 	string sMsgLength = sEncodedMessage.substr(GetMessageHeader().length(),GetMessageLengthSectionLength()-1);
 	const char* pzMsgLength=sMsgLength.c_str();
-	i_MsgLength=atoi(pzMsgLength);
+	i_ExpectedMsgLength=atoi(pzMsgLength);
 	
 	b_ValidMessage=true;
 
@@ -88,8 +89,8 @@ Message::Message( string sMessage )
 
 bool Message::IsValidMessage() {
 
-	if(s_EncodedMessage.length()>i_MsgLength){
-		LogDebug("Message.cpp: Message is invalid. s_EncodedMessage.length: %d, i_MsgLength: %d",s_EncodedMessage.length(),i_MsgLength);
+	if(s_EncodedMessage.length()>i_ExpectedMsgLength){
+		LogDebug("Message.cpp: Message is invalid. s_EncodedMessage.length: %d, i_MsgLength: %d",s_EncodedMessage.length(),i_ExpectedMsgLength);
 		b_ValidMessage=false;
 	}
 
@@ -130,7 +131,7 @@ void Message::ProcessMessage()
 {
 	if (IsValidMessage() && IsMessageComplete())
 	{
-		s_Message = s_EncodedMessage.substr(GetTotalHeaderLength(),(i_MsgLength-(GetTotalHeaderLength()+GetTotalFooterLength())));
+		s_Message = s_EncodedMessage.substr(GetTotalHeaderLength(),(i_ExpectedMsgLength-(GetTotalHeaderLength()+GetTotalFooterLength())));
 	}
 	else{
 		LogDebug("Message.cpp: Cannot process non-valid message");

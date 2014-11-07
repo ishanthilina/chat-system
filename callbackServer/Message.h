@@ -31,24 +31,24 @@ int GetMessageLengthSectionLength();
 class Message
 {
 public:
-	string GetMessage();
-	string GetEncodedMessage();
+	char* GetMessage();
+	char* GetEncodedMessage();
 
 	Client * GetClient();
 	Server* GetServer();
 	bool IsMessageComplete();
-	void FillMessage(string sMessage);
+	void FillMessage(char* sMessage);
 	bool IsValidMessage();
 	bool IsNetworkMessage();
 	
-	Message(string sEncodedMessage, Server* pServer, Client* pClient);
-	Message(string sMessage);	
+	Message(char* sEncodedMessage, int iMsgLength, Server* pServer, Client* pClient);
+	Message(char* sMessage);
 
 protected:
 	void ProcessMessage();
 
-	string s_EncodedMessage;
-	string s_Message;
+	char* s_EncodedMessage;
+	char* s_Message;
 
 	Server* p_Server;
 	Client* p_Client;
@@ -57,10 +57,11 @@ private:
 	void EncodeMessage();
 	
 
-	int i_MsgLength;
+	int i_ExpectedMsgLength;
+	int i_CurrentMsgLength;
 	bool b_ValidMessage;
 	bool b_NetworkMessage;
-	
+
 };
 
 

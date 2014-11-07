@@ -81,19 +81,22 @@ int Client::ProcessClientEvent()
 		string sNewMessage = string(zInputBuffer); //TODO: use char*
 
 		//remove any null characters or new lines at the end of the string
-		if(sNewMessage.compare(sNewMessage.length()-1,1,"\n") ==0)
+		if(zInputBuffer[iReadValue-1] == '\n')
 		{
-			sNewMessage=sNewMessage.substr(0,sNewMessage.size()-1);
+			iReadValue--;
+			zInputBuffer[iReadValue] = '\0';
 		}
-		if(sNewMessage.compare(sNewMessage.length()-1,1,"\r") ==0)
+		if(zInputBuffer[iReadValue-1] == '\n')
 		{
-			sNewMessage=sNewMessage.substr(0,sNewMessage.size()-1);
+			iReadValue--;
+			zInputBuffer[iReadValue] = '\0';
 		}
+
 
 		//check if a message is already being built for this client
 		if (p_Buffer !=NULL)
 		{
-			LogDebug("Client.cpp: Going to fill the existing buffer on client socket %d",i_SocketFd); 
+			LogDebug("Client.cpp: Going to fill the existing buffer on client socket %d",i_SocketFd);
 			p_Buffer->FillMessage(sNewMessage);
 			//if the message is complete now
 			if(p_Buffer->IsMessageComplete())
