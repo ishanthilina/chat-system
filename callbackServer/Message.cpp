@@ -59,15 +59,16 @@ bool Message::IsMessageComplete()
 
 Message::Message(char* sEncodedMessage, int iMsgLength, Server* pServer, Client* pClient)
 {
-	LogDebug("Message.cpp : Creating message using the string : %s", sEncodedMessage.c_str());
+	LogDebug("Message.cpp : Creating message using the string : %s", sEncodedMessage);
 	s_EncodedMessage = sEncodedMessage;
 	i_CurrentMsgLength = iMsgLength;
 	p_Server = pServer;
 	p_Client = pClient;
 
 	//set the expected message length
-	string sMsgLength = sEncodedMessage.substr(GetMessageHeader().length(),GetMessageLengthSectionLength()-1);
-	const char* pzMsgLength=sMsgLength.c_str();
+	//string sMsgLength = sEncodedMessage.substr(GetMessageHeader().length(),GetMessageLengthSectionLength()-1);
+	const char* pzMsgLength=&sEncodedMessage[GetMessageHeader().length()];
+
 	i_ExpectedMsgLength=atoi(pzMsgLength);
 	
 	b_ValidMessage=true;
@@ -80,7 +81,7 @@ Message::Message(char* sEncodedMessage, int iMsgLength, Server* pServer, Client*
 
 }
 
-Message::Message( string sMessage )
+Message::Message( char* sMessage )
 {
 	s_Message = sMessage;
 	EncodeMessage();
@@ -89,15 +90,15 @@ Message::Message( string sMessage )
 
 bool Message::IsValidMessage() {
 
-	if(s_EncodedMessage.length()>i_ExpectedMsgLength){
-		LogDebug("Message.cpp: Message is invalid. s_EncodedMessage.length: %d, i_MsgLength: %d",s_EncodedMessage.length(),i_ExpectedMsgLength);
+	if(i_CurrentMsgLength > i_ExpectedMsgLength){
+		LogDebug("Message.cpp: Message is invalid. s_EncodedMessage.length: %d, i_MsgLength: %d",i_CurrentMsgLength,i_ExpectedMsgLength);
 		b_ValidMessage=false;
 	}
 
 	return b_ValidMessage;
 }
 
-void Message::FillMessage(string sMessage)
+void Message::FillMessage(char* sMessage)
 {
 	if(!IsMessageComplete() && IsValidMessage()){
 		s_EncodedMessage.append(sMessage);
