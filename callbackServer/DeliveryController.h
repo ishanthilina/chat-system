@@ -13,7 +13,6 @@
 #include "Client.h"
 #include "Server.h"
 #include "UserRegistry.h"
-//#include "Message.h"
 #include "Logger.h"
 #include "User.h"
 #include "MessageFactory.h"

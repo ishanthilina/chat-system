@@ -95,7 +95,7 @@ ChatMessage* MessageFactory::CreateAuthStatusMessage(bool bAuthStatus,
 
 std::string MessageFactory::CreateEncodedMessageString( MessageType eMessageType,string s_Message )
 {
-	//TODO - should not add headers and footers, they should be managed by the message class
+
 
 	//get the protocol string
 	string sProtocol(GetTextForEnum(eMessageType));

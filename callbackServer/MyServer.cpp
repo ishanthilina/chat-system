@@ -14,8 +14,6 @@ int main()
 
 	DeliveryController* pDeliveryController = new DeliveryController(pUserRegistry,pMessageFactory);
 
-	//MessageBuffer* pMessageBuffer = new MessageBuffer(pDeliveryController);
-
 	ServerSideCallBack* pServerSideCallBack = new ServerSideCallBack(pDeliveryController);
 	EventManager* pEventManager = new EventManager();
 
@@ -25,7 +23,6 @@ int main()
 	delete pUserRegistry;
 	delete pMessageFactory;
 	delete pDeliveryController;
-	//delete pMessageBuffer;
 	delete pServerSideCallBack;
 	delete pEventManager;
 	delete pServer;

@@ -195,10 +195,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MessageBuffer.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MessageFactory.cpp"
 				>
 			</File>
@@ -258,10 +254,6 @@
 			</File>
 			<File
 				RelativePath=".\Message.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MessageBuffer.h"
 				>
 			</File>
 			<File

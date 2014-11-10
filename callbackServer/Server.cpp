@@ -30,11 +30,6 @@ void Server::AddClient( Client* pClient )
 		(*p_Clients).push_back(pClient);
 }
 
-//vector<Client*>* Server::GetClients()
-//{
-//	return p_Clients;
-//}
-
 ServersClientIterator* Server::GetClientIterator()
 {
 	return new ServersClientIterator(this);

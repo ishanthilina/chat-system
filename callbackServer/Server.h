@@ -34,7 +34,6 @@ public:
 	void AddClient(Client* pClient);
 	void ProcessServerEvent();
 	ServersClientIterator* GetClientIterator();
-	//void ProcessServerEvent();
 	void DeleteClient(Client* pClient);
 
 	friend class ServersClientIterator;

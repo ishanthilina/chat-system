@@ -23,7 +23,6 @@ void ServerSideCallBack::OnData(Server* pServer, Client* pClient,
 		Message* pMessage)
 {
 	LogDebug("ServerSideCallBack.cpp : Client on socket %d sent : %s", pClient->GetSocket(), pMessage->GetMessage().c_str());
-	//p_MessageBuffer->CreateMessage(pServer, pClient, sData);
 	ChatMessage* pChatMessage = new ChatMessage(pMessage);
 	p_DeliveryController->processMessage(pChatMessage);
 	delete pChatMessage;

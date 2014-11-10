@@ -64,10 +64,6 @@ int Client::ProcessClientEvent()
 
 		p_SCallBack->OnDisconnect(p_Server,this);
 
-
-		//remove from the servers clients as well
-		//(*pClients).erase(oServerClientIter);
-
 		return 1;
 
 

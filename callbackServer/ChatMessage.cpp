@@ -36,7 +36,6 @@ void ChatMessage::ProcessMessage()
 
 		//find the ending location of the receivers list in the message
 		int iReceiverListEndLoc=s_EncodedMessage.substr(iMsgStartLocation).find_first_of(";");
-		//LogDebug("iReceiverListEndLoc %d",iReceiverListEndLoc);
 		string sReceivers = s_EncodedMessage.substr(iMsgStartLocation,iReceiverListEndLoc);
 		//get all the receiver names
 		p_Receivers = new list<string>;
@@ -62,7 +61,6 @@ void ChatMessage::ProcessMessage()
 
 
 		s_Message = s_EncodedMessage.substr(iReceiverListEndLoc+iMsgStartLocation+1, s_EncodedMessage.substr(iReceiverListEndLoc+iMsgStartLocation+1).find_first_of("|"));
-		//LogDebug("%s", s_Message.c_str());
 
 	}
 	//|;|0000019|LIN;1|;|
@@ -172,10 +170,7 @@ ChatMessage::ChatMessage(string sEncodedMessage, string sMessage, Server* pServe
 				 :Message(sEncodedMessage,pServer,pClient)
 {
 	LogDebug("ChatMessage.cpp : Creating message(with target users) using the string : %s", sEncodedMessage.c_str());
-	//s_EncodedMessage = sEncodedMessage;
 	s_Message = sMessage;
-	//p_Server = pServer;
-	//p_Client = pClient;
 	p_TargetUsers = pTargetUsers;
 
 	//set the message type
@@ -194,10 +189,6 @@ ChatMessage::ChatMessage( Message* pMessage ):Message(pMessage->GetEncodedMessag
 {
 	LogDebug("ChatMessage.cpp : Creating chat message using message : %s", pMessage->GetEncodedMessage().c_str());
 	
-	/*s_EncodedMessage = pMessage->GetEncodedMessage();
-	p_Server = pMessage->GetServer();
-	p_Client = pMessage->GetClient();*/
-
 	//set the message type
 	e_MessageType = GetEnumFromString(s_EncodedMessage.substr(GetMessageHeader().length()+GetMessageLengthSectionLength(), GetProtocolLength()));
 

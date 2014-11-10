@@ -2,7 +2,6 @@
 #define _SERVER_SIDE_CALL_BACK_HEADER
 
 #include "SCallBack.h"
-//#include "MessageBuffer.h"
 #include "Utils.h"
 #include "DeliveryController.h"
 
@@ -20,7 +19,6 @@ public:
 	void OnData(Client* pClient, Message* pMessage);
 
 private:
-	//MessageBuffer* p_MessageBuffer;
 	DeliveryController* p_DeliveryController;
 
 
